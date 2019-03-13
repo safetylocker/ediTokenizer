@@ -7,37 +7,25 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.StringTokenizer;
 
 public class EDIFACT extends EdiDocument {
 
-
-    @Override
-    public void setDocType() {
-        setDocType(Constants.DOCUMENT_TYPE_EDIFACT);
-    }
-
-    @Override
-    public void setDocType(String docType) {
-
-    }
-
-    @Override
-    public void setDocDelimeters() {
+    public EDIFACT(){
+        super(Constants.DOCUMENT_TYPE_EDIFACT);
 
     }
 
     @Override
     public String convertToJson(String message) throws JSONException {
         String response="";
-        response = getEdiSepration(getEdiSepration(message,Constants.EDIFACT_SEGMENT_TERMINATOR),Constants.EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR);
+        response =  getEdiSepration(
+                    getEdiSepration(
+                    getEdiSepration(message,Constants.EDIFACT_SEGMENT_TERMINATOR),
+                            Constants.EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR),
+                            Constants.EDIFACT_DATA_ELEMENT_SEPERATOR);
         return response;
     }
 
-    @Override
-    public String convertToEdiDocument() {
-        return null;
-    }
 
     public String getEdiSepration(String segment,String delimeter) throws JSONException {
 
