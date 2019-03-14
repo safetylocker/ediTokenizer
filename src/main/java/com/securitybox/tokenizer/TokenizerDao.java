@@ -5,6 +5,6 @@ import com.securitybox.storage.DataStore;
 import java.security.MessageDigest;
 
 public interface TokenizerDao {
-    MessageDigest md = null;
-    DataStore dataStore=null;
+    String tokenize(String input, int keyLenght);
+    String deTokenize(String token);
 }

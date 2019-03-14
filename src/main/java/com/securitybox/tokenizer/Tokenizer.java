@@ -13,7 +13,9 @@ public class Tokenizer implements TokenizerDao {
   public Tokenizer() {
       dataStore = new DataStore();
     }
-    public static String tokenize(String input, int keyLenght) {
+    //tokenize a given string value, keyLenght is used to select the algorithm
+    //such that returned token is fit into specified max limit by client
+    public String tokenize(String input, int keyLenght) {
         String token;
         try {
             md = MessageDigest.getInstance("MD2");
@@ -30,7 +32,8 @@ public class Tokenizer implements TokenizerDao {
         return token;
     }
 
-    public static String deTokenize(String token) {
+    //deokenize a given token
+    public String deTokenize(String token) {
         return dataStore.retrieveValue(token);
     }
 }
