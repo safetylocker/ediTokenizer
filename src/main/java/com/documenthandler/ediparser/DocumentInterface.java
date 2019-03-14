@@ -1,5 +1,6 @@
 package com.documenthandler.ediparser;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 
 public interface DocumentInterface {
@@ -8,5 +9,5 @@ public interface DocumentInterface {
     String getDocumentType();
 
 
-    String convertToJson(String message) throws JSONException;
+    String convertToJson(String message, JSONArray objectsToBeTokenized) throws JSONException;
 }
