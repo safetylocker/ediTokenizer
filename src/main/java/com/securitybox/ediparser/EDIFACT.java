@@ -20,11 +20,24 @@ public class EDIFACT extends EdiDocument {
 
     @Override
     public String docuemntHandler(String method,JSONArray objectToBeTokenized,String message) throws JSONException, NoSuchAlgorithmException {
-        String response = "";
-        JSONArray segmentArr = seperateElements(message, Constants.EDIFACT_SEGMENT_TERMINATOR);
+        String response = "",EDIFACT_SEGMENT_TERMINATOR="",EDIFACT_DATA_ELEMENT_SEPERATOR="",segmentUNA="";
+        //Identify the EDIFACT seperators from the incoming message
+        try {
+            //Extract the UNA segment if exists
+            segmentUNA = message.substring(0, message.indexOf("UNB"));
+            EDIFACT_SEGMENT_TERMINATOR = segmentUNA.substring(6,7);
+            EDIFACT_DATA_ELEMENT_SEPERATOR = segmentUNA.substring(2,3);
+        }catch (Exception e){
+            //if not use the default stadard seperators
+            EDIFACT_SEGMENT_TERMINATOR = Constants.EDIFACT_SEGMENT_TERMINATOR;
+            EDIFACT_DATA_ELEMENT_SEPERATOR = Constants.EDIFACT_DATA_ELEMENT_SEPERATOR;
+        }
+
+
+        JSONArray segmentArr = seperateElements(message,EDIFACT_SEGMENT_TERMINATOR);
         //Iterate through all the segments
         for (int i = 0; i < segmentArr.length(); i++){
-            JSONArray componentArr = seperateElements(segmentArr.get(i).toString(), Constants.EDIFACT_DATA_ELEMENT_SEPERATOR);
+            JSONArray componentArr = seperateElements(segmentArr.get(i).toString(),EDIFACT_DATA_ELEMENT_SEPERATOR);
             //iterator thorugh all components inside the segment
             for (int j = 0; j < componentArr.length(); j++){
                 JSONArray dataElementArray = seperateElements(componentArr.get(j).toString(), Constants.EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR);
@@ -38,8 +51,7 @@ public class EDIFACT extends EdiDocument {
                                     if(method.equalsIgnoreCase(Constants.TOKENIZER_METHOD_TOKENIZE)) {
                                         jsonObjTemp.put("item", tokenizer.tokenize(dataElementArray.get(k).toString(), requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_LENGTH)));
                                         System.out.println("Tokenized Value/Token : "  + dataElementArray.get(k).toString() + "/"  + jsonObjTemp.get("item")) ;
-                                        System.out.println("Detokenized Token/Value : "  + jsonObjTemp.get("item") +  "/"  + tokenizer.deTokenize(jsonObjTemp.get("item").toString())) ;
-                                    }else if(method.equalsIgnoreCase(Constants.TOKENIZER_METHOD_DETOKENIZE)) {
+                                  }else if(method.equalsIgnoreCase(Constants.TOKENIZER_METHOD_DETOKENIZE)) {
                                         System.out.println("Detokenized Token/Value : "  + dataElementArray.get(k).toString() +  "/"  + tokenizer.deTokenize(dataElementArray.get(k).toString())) ;
                                         jsonObjTemp.put("item", tokenizer.deTokenize(dataElementArray.get(k).toString()));
                                   }else{
@@ -57,10 +69,10 @@ public class EDIFACT extends EdiDocument {
                 }
 
                 if(j < componentArr.length()-1)
-                    response = response + Constants.EDIFACT_DATA_ELEMENT_SEPERATOR;
+                    response = response + EDIFACT_DATA_ELEMENT_SEPERATOR;
             }
 
-            response = response + Constants.EDIFACT_SEGMENT_TERMINATOR;
+            response = response + EDIFACT_SEGMENT_TERMINATOR;
 
         }
         return response;
