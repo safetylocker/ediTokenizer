@@ -3,6 +3,7 @@ package com.securitybox.constants;
 public class Constants {
     public final static String DOCUMENT_TYPE_EDIFACT="EDIFACT";
     public final static String DOCUMENT_TYPE_CSV="CSV";
+    public final static String DOCUMENT_TYPE_ALL="ALL";
 
     public static String EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR=":";
     public static String EDIFACT_DATA_ELEMENT_SEPERATOR="+";
