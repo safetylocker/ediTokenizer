@@ -82,7 +82,7 @@ public  class DataStore implements DataStoreDao{
         System.out.println("current hash value storeValue() " + cacheEntryObject.hashCode());
         System.out.println("current key used to cache " + key);
         try {
-            System.out.println("Value inside cache object " + cacheEntryObject.getObject().get("item"));
+            System.out.println("Value inside cache object : " + cacheEntryObject.getObject().get("item").toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -98,7 +98,7 @@ public  class DataStore implements DataStoreDao{
     public CacheEntryObject retrieveObject(int key) {
         System.out.println("Current key to detokenize retrieveObject()" + key);
         try {
-            System.out.println("Current key to detokenize retrieveObject()" + objectCache.get(key).getObject().get("item"));
+            System.out.println("Current key to detokenize retrieveObject() : " + objectCache.get(key).getObject().get("item").toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }

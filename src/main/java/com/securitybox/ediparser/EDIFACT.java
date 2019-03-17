@@ -18,20 +18,31 @@ public class EDIFACT extends EdiDocument {
         super(Constants.DOCUMENT_TYPE_EDIFACT);
     }
 
+    @Deprecated
     @Override
     public String docuemntHandler(String method,JSONArray objectToBeTokenized,String message) throws JSONException, NoSuchAlgorithmException {
-        String response = "",EDIFACT_SEGMENT_TERMINATOR="",EDIFACT_DATA_ELEMENT_SEPERATOR="",segmentUNA="";
+        String response = "";
+        String EDIFACT_SEGMENT_TERMINATOR="";
+        String EDIFACT_DATA_ELEMENT_SEPERATOR="";
+        String EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR="";
+        String segmentUNA="";
         //Identify the EDIFACT seperators from the incoming message
-        try {
+
             //Extract the UNA segment if exists
+        try {
             segmentUNA = message.substring(0, message.indexOf("UNB"));
-            EDIFACT_SEGMENT_TERMINATOR = segmentUNA.substring(6,7);
-            EDIFACT_DATA_ELEMENT_SEPERATOR = segmentUNA.substring(2,3);
-        }catch (Exception e){
-            //if not use the default stadard seperators
-            EDIFACT_SEGMENT_TERMINATOR = Constants.EDIFACT_SEGMENT_TERMINATOR;
+            EDIFACT_SEGMENT_TERMINATOR = segmentUNA.substring(8,9);
+            EDIFACT_DATA_ELEMENT_SEPERATOR = segmentUNA.substring(4,5);
+            EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR=segmentUNA.substring(3,4);
+        }catch(Exception e){
+            EDIFACT_SEGMENT_TERMINATOR=Constants.EDIFACT_SEGMENT_TERMINATOR;
             EDIFACT_DATA_ELEMENT_SEPERATOR = Constants.EDIFACT_DATA_ELEMENT_SEPERATOR;
+            EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR= Constants.EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR;
         }
+
+        System.out.println("EDIFACT_SEGMENT_TERMINATOR :" + EDIFACT_SEGMENT_TERMINATOR);
+        System.out.println("EDIFACT_DATA_ELEMENT_SEPERATOR :" + EDIFACT_DATA_ELEMENT_SEPERATOR);
+        System.out.println("EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR :" + EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR);
 
 
         JSONArray segmentArr = seperateElements(message,EDIFACT_SEGMENT_TERMINATOR);
@@ -40,7 +51,7 @@ public class EDIFACT extends EdiDocument {
             JSONArray componentArr = seperateElements(segmentArr.get(i).toString(),EDIFACT_DATA_ELEMENT_SEPERATOR);
             //iterator thorugh all components inside the segment
             for (int j = 0; j < componentArr.length(); j++){
-                JSONArray dataElementArray = seperateElements(componentArr.get(j).toString(), Constants.EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR);
+                JSONArray dataElementArray = seperateElements(componentArr.get(j).toString(), EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR);
                 //iterator trhough all data elements inside a component
                 for (int k = 0; k < dataElementArray.length(); k++){
                     //check and tokenize if the value now in concern is requested to be tokenized
@@ -65,7 +76,7 @@ public class EDIFACT extends EdiDocument {
 
                     }
                     if(k > 0 )
-                        response = response + Constants.EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR + dataElementArray.get(k).toString();
+                        response = response + EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR + dataElementArray.get(k).toString();
                     else
                         response = response + dataElementArray.get(k).toString();
                 }
@@ -82,18 +93,28 @@ public class EDIFACT extends EdiDocument {
 
     @Override
     public String docuemntHandler(String method, JSONArray objectsToBeTokenized, String message, final ArrayList<String> senderIds, final ArrayList<String> receiverIds) throws JSONException, NoSuchAlgorithmException {
-        String response = "",EDIFACT_SEGMENT_TERMINATOR="",EDIFACT_DATA_ELEMENT_SEPERATOR="",segmentUNA="";
+        String response = "";
+        String EDIFACT_SEGMENT_TERMINATOR="";
+        String EDIFACT_DATA_ELEMENT_SEPERATOR="";
+        String EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR="";
+        String segmentUNA="";
         //Identify the EDIFACT seperators from the incoming message
+
+        //Extract the UNA segment if exists
         try {
-            //Extract the UNA segment if exists
             segmentUNA = message.substring(0, message.indexOf("UNB"));
-            EDIFACT_SEGMENT_TERMINATOR = segmentUNA.substring(6,7);
-            EDIFACT_DATA_ELEMENT_SEPERATOR = segmentUNA.substring(2,3);
-        }catch (Exception e){
-            //if not use the default stadard seperators
-            EDIFACT_SEGMENT_TERMINATOR = Constants.EDIFACT_SEGMENT_TERMINATOR;
+            EDIFACT_SEGMENT_TERMINATOR = segmentUNA.substring(8,9);
+            EDIFACT_DATA_ELEMENT_SEPERATOR = segmentUNA.substring(4,5);
+            EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR=segmentUNA.substring(3,4);
+        }catch(Exception e){
+            EDIFACT_SEGMENT_TERMINATOR=Constants.EDIFACT_SEGMENT_TERMINATOR;
             EDIFACT_DATA_ELEMENT_SEPERATOR = Constants.EDIFACT_DATA_ELEMENT_SEPERATOR;
+            EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR= Constants.EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR;
         }
+
+        System.out.println("EDIFACT_SEGMENT_TERMINATOR :" + EDIFACT_SEGMENT_TERMINATOR);
+        System.out.println("EDIFACT_DATA_ELEMENT_SEPERATOR :" + EDIFACT_DATA_ELEMENT_SEPERATOR);
+        System.out.println("EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR :" + EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR);
 
         JSONArray segmentArr = seperateElements(message,EDIFACT_SEGMENT_TERMINATOR);
         //Iterate through all the segments
@@ -101,7 +122,7 @@ public class EDIFACT extends EdiDocument {
             JSONArray componentArr = seperateElements(segmentArr.get(i).toString(),EDIFACT_DATA_ELEMENT_SEPERATOR);
             //iterator thorugh all components inside the segment
             for (int j = 0; j < componentArr.length(); j++){
-                JSONArray dataElementArray = seperateElements(componentArr.get(j).toString(), Constants.EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR);
+                JSONArray dataElementArray = seperateElements(componentArr.get(j).toString(), EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR);
                 //iterator trhough all data elements inside a component
                 for (int k = 0; k < dataElementArray.length(); k++){
                     //check and tokenize if the value now in concern is requested to be tokenized
@@ -164,7 +185,7 @@ public class EDIFACT extends EdiDocument {
                     }
                     //collect back the response to create the EDIFACT message back
                     if(k > 0 )
-                        response = response + Constants.EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR + dataElementArray.get(k).toString();
+                        response = response + EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR + dataElementArray.get(k).toString();
                     else
                         response = response + dataElementArray.get(k).toString();
                 }
