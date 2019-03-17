@@ -1,29 +1,24 @@
-package com.securitybox.storage;
+package com.securitybox.tokenizer;
 
+import com.securitybox.storage.CacheEntryObject;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
-public class DataStoreTest {
-
-    @Test
-    public void storeValue() throws IllegalAccessException, InstantiationException {
-        DataStore dataStore =  new DataStore();
-        //System.out.println(dataStore.storeValue("1","myvalue"));
-        //System.out.println(dataStore.retrieveValue("1"));
-        //dataStore.databaseTest();
+public class TokenizerTest {
 
 
-        //Test the cacheobject injection
-        ArrayList<String> sender = new ArrayList<String>();
+    public static void main(String args[]){
+        Tokenizer tokenizer = new Tokenizer();
+        final ArrayList<String> sender = new ArrayList<String>();
         sender.add("clientA");
-        ArrayList<String> receiver = new ArrayList<String>();
+        final ArrayList<String> receiver = new ArrayList<String>();
         receiver.add("clientB");
+
         CacheEntryObject cacheEntryObject = new CacheEntryObject() {
             @Override
             public ArrayList getSenderIds() {
@@ -31,8 +26,8 @@ public class DataStoreTest {
             }
 
             @Override
-            public void setSenderIds(ArrayList senderIds) {
-                super.setSenderIds(senderIds);
+            public void setSenderIds(ArrayList arrayList) {
+                super.setSenderIds(arrayList);
             }
 
             @Override
@@ -41,8 +36,8 @@ public class DataStoreTest {
             }
 
             @Override
-            public void setReceiverIds(ArrayList receiverIds) {
-                super.setReceiverIds(receiverIds);
+            public void setReceiverIds(ArrayList arrayList) {
+                super.setReceiverIds(arrayList);
             }
 
             @Override
@@ -58,16 +53,18 @@ public class DataStoreTest {
             e.printStackTrace();
         }
         cacheEntryObject.setObject(jsonObjTemp);
-        dataStore.storeValue(jsonObjTemp.hashCode(),cacheEntryObject);
+        tokenizer.tokenize(cacheEntryObject);
         try {
-            System.out.println(dataStore.retrieveObject(jsonObjTemp.hashCode()).getObject().get("mykey"));
+            CacheEntryObject newCa;
+            newCa = tokenizer.detokenize(cacheEntryObject.hashCode());
+            System.out.println(
+                    newCa.getObject().get("mykey")
+            );
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
+
     }
 
-    @Test
-    public void retrieveValue() {
-    }
 }

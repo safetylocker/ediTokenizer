@@ -1,5 +1,6 @@
 package com.securitybox.tokenizer;
 
+import com.securitybox.storage.CacheEntryObject;
 import com.securitybox.storage.DataStore;
 
 import javax.transaction.TransactionRequiredException;
@@ -35,5 +36,23 @@ public class Tokenizer implements TokenizerDao {
     //deokenize a given token
     public String deTokenize(String token) {
         return dataStore.retrieveValue(token);
+    }
+
+    //return the key of the object used to cache if caching is successfull
+    //else return -1 to indicate it failes, thus it needs to be handled by the calling object
+    @Override
+    public int tokenize(CacheEntryObject cacheEntryObject) {
+          System.out.println("current hash value " + cacheEntryObject.hashCode());
+           if(dataStore.storeValue(cacheEntryObject.hashCode(), cacheEntryObject))
+               return cacheEntryObject.hashCode();
+           else
+               return -1;
+    }
+
+    @Override
+    public CacheEntryObject detokenize(int key) {
+       System.out.println("Current key to detokenize detokenize()" + key);
+      return dataStore.retrieveObject(key);
+
     }
 }

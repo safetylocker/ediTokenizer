@@ -8,7 +8,7 @@ public class Constants {
     public static String EDIFACT_DATA_ELEMENT_SEPERATOR="+";
     public static String EDIFACT_SEGMENT_TERMINATOR="'";
 
-    public static final String EDIFACT_SEGMENT_NUMBER =  "segmentNumber";
+    public final static String EDIFACT_SEGMENT_NUMBER =  "segmentNumber";
     public final static String EDIFACT_DATA_ELEMENT_NUMBER = "dataElementNumber";
     public final static String EDIFACT_DATA_ELEMENT_POSITION = "dataElementPosition";
     public final static String EDIFACT_DATA_ELEMENT_LENGTH = "dataElementLength";
