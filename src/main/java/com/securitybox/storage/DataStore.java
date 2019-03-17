@@ -3,6 +3,7 @@ package com.securitybox.storage;
 import com.securitybox.constants.Constants;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
+import org.apache.ignite.IgniteState;
 import org.apache.ignite.Ignition;
 import org.apache.ignite.configuration.CacheConfiguration;
 import org.apache.ignite.transactions.TransactionException;
@@ -21,7 +22,9 @@ public  class DataStore implements DataStoreDao{
      */
     public DataStore(){
         //initialize the ignite cache and start instance
-        ignite = Ignition.start();
+        if(Ignition.state() == IgniteState.STOPPED) {
+            ignite = Ignition.start();
+        }
         CacheConfiguration cfg = new CacheConfiguration();
         cfg.setName(Constants.IGNITE_DEFAULT_CACHE_NAME);
         cfg.setAtomicityMode(TRANSACTIONAL);
