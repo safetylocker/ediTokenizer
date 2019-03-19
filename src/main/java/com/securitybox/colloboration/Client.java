@@ -1,17 +1,17 @@
 package com.securitybox.colloboration;
 
 class Client {
-    private String clienUsertName;
+    private String clientId;
 
     public Client(String clienUsertName){
-        this.clienUsertName = clienUsertName;
+        this.clientId = clienUsertName;
 
     }
-    public String getClienUsertName() {
-        return clienUsertName;
+    public String getClientId() {
+        return clientId;
     }
 
-    public void setClienUsertName(String clienUsertName) {
-        this.clienUsertName = clienUsertName;
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
 }
