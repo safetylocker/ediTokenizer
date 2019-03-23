@@ -173,7 +173,10 @@ public class EDIFACT extends EdiDocument {
                                 //retreive the cacheentry object from the cache
                                 CacheEntryObject tmpCacheEntryObject = tokenizer.detokenize(Integer.valueOf(dataElementArray.get(k).toString()));
                                 //retierve the values from the object stored in the cache object.
-                                jsonObjTemp.put("item",tmpCacheEntryObject.getObject().get("item"));
+                                if(tmpCacheEntryObject==null)
+                                    jsonObjTemp.put("item",dataElementArray.get(k).toString());
+                                else
+                                    jsonObjTemp.put("item",tmpCacheEntryObject.getObject().get("item"));
 
                             }else{
                                 //DO nothing

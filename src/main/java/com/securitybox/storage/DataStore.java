@@ -9,6 +9,8 @@ import org.apache.ignite.configuration.CacheConfiguration;
 import org.apache.ignite.transactions.TransactionException;
 import org.json.JSONException;
 
+import java.util.jar.JarEntry;
+
 import static org.apache.ignite.cache.CacheAtomicityMode.TRANSACTIONAL;
 
 public  class DataStore implements DataStoreDao{
@@ -32,27 +34,6 @@ public  class DataStore implements DataStoreDao{
         objectCache = ignite.getOrCreateCache("CacheEntryObject");
     }
 
-
-    /*public void databaseTest() throws InstantiationException, IllegalAccessException {
-        //Initiate a cache dor SQL Datastore
-        Connection connection = null;
-        try {
-
-            connection = new DataStoreDatabase().getConn();
-            Statement stat;
-            stat = connection.createStatement();
-            ResultSet rs = stat.executeQuery("SELECT * from Books");
-            while (rs.next()) {
-                System.out.println(rs.getString(1) + rs.getString(2) + rs.getString(3));
-            }
-            } catch (SQLException e) {
-                e.printStackTrace();
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }*/
-
     //function to store the key value pair, given a token together with the string value
     @Override
     public  boolean storeValue(String key, String value) {
@@ -69,19 +50,14 @@ public  class DataStore implements DataStoreDao{
     @Override
     public String retrieveValue(int token) {
         String response="";
-        try {
             try {
                 response = objectCache.get(Integer.valueOf(token)).getObject().get("item").toString();
-            } catch (JSONException e) {
-                e.printStackTrace();
-                response = "Value not found for token " + token;
+            } catch (Exception e) {
+                e.getCause();
+                response = Integer.toString(token);
             }
             if(response==null)
-                response= "Value not found for token " + token;
-        }catch(TransactionException e){
-            System.out.println(e.getCause());
-            response = "Value not found for token " + token;
-        }
+                response= Integer.toString(token);
         return response;
     }
 
@@ -106,10 +82,11 @@ public  class DataStore implements DataStoreDao{
     public CacheEntryObject retrieveObject(int key) {
         System.out.println("Current key to detokenize retrieveObject()" + key);
         try {
-            System.out.println("Current key to detokenize retrieveObject() : " + objectCache.get(key).getObject().get("item").toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
+            return objectCache.get(key);
+        } catch (Exception e) {
+            e.getCause();
+            return null;
         }
-        return objectCache.get(key);
+
     }
 }
