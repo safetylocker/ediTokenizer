@@ -18,7 +18,7 @@ public class EDIFACT extends EdiDocument {
         super(Constants.DOCUMENT_TYPE_EDIFACT);
     }
 
-    @Deprecated
+
     @Override
     public String docuemntHandler(String method,JSONArray objectToBeTokenized,String message) throws JSONException, NoSuchAlgorithmException {
         String response = "";
@@ -64,8 +64,8 @@ public class EDIFACT extends EdiDocument {
                                         jsonObjTemp.put("item", tokenizer.tokenize(dataElementArray.get(k).toString(), requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_LENGTH)));
                                         System.out.println("Tokenized Value/Token : "  + dataElementArray.get(k).toString() + "/"  + jsonObjTemp.get("item")) ;
                                   }else if(method.equalsIgnoreCase(Constants.TOKENIZER_METHOD_DETOKENIZE)) {
-                                        System.out.println("Detokenized Token/Value : "  + dataElementArray.get(k).toString() +  "/"  + tokenizer.deTokenize(dataElementArray.get(k).toString())) ;
-                                        jsonObjTemp.put("item", tokenizer.deTokenize(dataElementArray.get(k).toString()));
+                                        System.out.println("Detokenized Token/Value : "  + dataElementArray.get(k).toString() +  "/"  + tokenizer.deTokenize(Integer.parseInt(dataElementArray.get(k).toString())));
+                                        jsonObjTemp.put("item", tokenizer.deTokenize(Integer.parseInt(dataElementArray.get(k).toString())));
                                   }else{
                                         //DO nothing
                                     }

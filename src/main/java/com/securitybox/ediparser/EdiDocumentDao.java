@@ -12,7 +12,6 @@ public interface EdiDocumentDao {
 
     String getDocumentType();
 
-    String docuemntHandler(String method, JSONArray objectsToBeTokenized,String message) throws JSONException, NoSuchAlgorithmException;
     String docuemntHandler(String method, JSONArray objectsToBeTokenized, String message, ArrayList<String> senderIds,ArrayList<String> receiverIds) throws JSONException, NoSuchAlgorithmException;
 
 

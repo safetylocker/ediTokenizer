@@ -67,15 +67,20 @@ public  class DataStore implements DataStoreDao{
     //de-tokenize a given token
     //NOTE : if token is not found in the cache, the same token value returned
     @Override
-    public String retrieveValue(String token) {
+    public String retrieveValue(int token) {
         String response="";
         try {
-            response = cache.get(token);
+            try {
+                response = objectCache.get(Integer.valueOf(token)).getObject().get("item").toString();
+            } catch (JSONException e) {
+                e.printStackTrace();
+                response = "Value not found for token " + token;
+            }
             if(response==null)
-                response=token;
+                response= "Value not found for token " + token;
         }catch(TransactionException e){
             System.out.println(e.getCause());
-            response = token;
+            response = "Value not found for token " + token;
         }
         return response;
     }

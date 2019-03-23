@@ -33,10 +33,11 @@ public class Tokenizer implements TokenizerDao {
         return token;
     }
 
-    //deokenize a given token
-    public String deTokenize(String token) {
+    @Override
+    public String deTokenize(Integer token) {
         return dataStore.retrieveValue(token);
     }
+
 
     //return the key of the object used to cache if caching is successfull
     //else return -1 to indicate it failes, thus it needs to be handled by the calling object
