@@ -1,36 +1,43 @@
 package com.securitybox.ediparser;
 
 class CSVRecord{
-    public CSVRecord(String delFields, String escapeChar, boolean isHeaderSkipped) {
-        this.delFields = delFields;
-        this.escapeChar = escapeChar;
-        this.isHeaderSkipped = isHeaderSkipped;
+    String[] fields;
+    String fieldDelimeter;
+
+    public CSVRecord(String fieldDelimeter, String escapeChar,String record) {
+
+        fields = record.split(fieldDelimeter);
+        this.fieldDelimeter = fieldDelimeter;
     }
 
-    public String getDelFields() {
-        return delFields;
+    public String getField(int i){
+        return i<=fields.length ?fields[i]:null;
     }
 
-    public void setDelFields(String delFields) {
-        this.delFields = delFields;
+    public boolean setFiled(int pos,String s) {
+        if (pos <= fields.length) {
+            fields[pos] = s;
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public String getEscapeChar() {
-        return escapeChar;
+    public int getCount(){
+        return  fields.length;
     }
 
-    public void setEscapeChar(String escapeChar) {
-        this.escapeChar = escapeChar;
+    public String getRecord(){
+        String ret="";
+        for(int i=0;i< fields.length ; i++){
+            if(i == fields.length -1)
+                ret = ret + fields[i];
+            else
+                ret = ret + fields[i] + fieldDelimeter ;
+        }
+
+        return ret;
+
     }
 
-    public boolean isHeaderSkipped() {
-        return isHeaderSkipped;
-    }
-
-    public void setHeaderSkipped(boolean headerSkipped) {
-        isHeaderSkipped = headerSkipped;
-    }
-
-    private String delEndOfLine,delFields,escapeChar;
-    boolean isHeaderSkipped;
 }
