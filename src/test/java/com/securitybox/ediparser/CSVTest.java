@@ -19,12 +19,13 @@ public class CSVTest {
     @Test
 
         public void testFile() throws JSONException, NoSuchAlgorithmException {
-            CSV csv = new CSV(Constants.DOCUMENT_TYPE_CSV,"\n",":");
+            CSV csv = new CSV("\n",":");
             jsonArray.put(new JSONObject().put(Constants.CSV_DATA_ELEMENT_POSITION,2));
             jsonArray.put(new JSONObject().put(Constants.CSV_DATA_ELEMENT_POSITION,5));
 
-            System.out.println(csv.docuemntHandler(Constants.TOKENIZER_METHOD_TOKENIZE,jsonArray,csvFile,null,null));
-
+            System.out.println(
+            csv.docuemntHandler(Constants.TOKENIZER_METHOD_DETOKENIZE,jsonArray,csv.docuemntHandler(Constants.TOKENIZER_METHOD_TOKENIZE,jsonArray,csvFile,null,null),null,null)
+            );
         }
 
 }

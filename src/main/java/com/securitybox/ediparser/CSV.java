@@ -17,15 +17,30 @@ public class CSV extends EdiDocument {
     String recordDelimeter,fieldDelimeter;
     public Tokenizer tokenizer = new Tokenizer();
 
-    public CSV(String docType,String recordDelimeter,String fieldDelimeter) {
+    public CSV(String recordDelimeter,String fieldDelimeter) {
         super(Constants.DOCUMENT_TYPE_CSV);
         this.recordDelimeter=recordDelimeter;
         this.fieldDelimeter=fieldDelimeter;
     }
 
-    @Override
-    public String docuemntHandler(String method, JSONArray objectToBeTokenized, String message) throws JSONException, NoSuchAlgorithmException {
-        return null;
+    public String getRecordDelimeter() {
+        return recordDelimeter;
+    }
+
+    public void setRecordDelimeter(String recordDelimeter) {
+        this.recordDelimeter = recordDelimeter;
+    }
+
+    public String getFieldDelimeter() {
+        return fieldDelimeter;
+    }
+
+    public void setFieldDelimeter(String fieldDelimeter) {
+        this.fieldDelimeter = fieldDelimeter;
+    }
+
+    public CSV() {
+        super(Constants.DOCUMENT_TYPE_CSV);
     }
 
 
@@ -77,12 +92,15 @@ public class CSV extends EdiDocument {
                             cacheEntryObject.setObject(jsonObjTemp);
                             //call tokernization service with cacheObject to be tokenized
                             jsonObjTemp.put("item",tokenizer.tokenize(cacheEntryObject));
+                            //test with varied key lenght that client can support...
+                            //jsonObjTemp.put("item",tokenizer.tokenize(cacheEntryObject,csvRecord.getField(j),127));
 
                         }else if(method.equalsIgnoreCase(Constants.TOKENIZER_METHOD_DETOKENIZE)) {
                             //get hte key to be retrived from current message
                             System.out.println("current key to be de-tokenized " + csvRecord.getField(j));
                             //retreive the cacheentry object from the cache
-                            CacheEntryObject tmpCacheEntryObject = tokenizer.detokenize(Integer.valueOf(csvRecord.getField(j)));
+                            //CacheEntryObject tmpCacheEntryObject = tokenizer.detokenize(Integer.valueOf(csvRecord.getField(j)));
+                            CacheEntryObject tmpCacheEntryObject = tokenizer.detokenize(csvRecord.getField(j));
                             //retierve the values from the object stored in the cache object.
                             if(tmpCacheEntryObject==null)
                                 jsonObjTemp.put("item",csvRecord.getField(j));
@@ -108,7 +126,7 @@ public class CSV extends EdiDocument {
     }
 
     public JSONArray seperateElements(String input, String delimeter) throws JSONException {
-        ArrayList<String> arrayList = new ArrayList<String>(Arrays.asList(input.split(delimeter)));
+        ArrayList<String> arrayList = new ArrayList<String>(Arrays.asList(input.split("\\"+delimeter)));
         JSONArray jsonArray= new JSONArray();
 
         String response="";

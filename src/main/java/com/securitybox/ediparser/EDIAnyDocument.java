@@ -13,11 +13,6 @@ public class EDIAnyDocument  extends  EdiDocument{
     }
 
     @Override
-    public String docuemntHandler(String method, JSONArray objectsToBeTokenized, String message) throws JSONException, NoSuchAlgorithmException {
-        return null;
-    }
-
-    @Override
     public String docuemntHandler(String method, JSONArray objectsToBeTokenized, String message, ArrayList<String> senderIds, ArrayList<String> receiverIds) throws JSONException, NoSuchAlgorithmException {
         return null;
     }
