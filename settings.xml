@@ -5,6 +5,8 @@
     <servers>
         <server>
             <id>myCompanyRepo</id>
+            <username>myMavenRepo</username>
+            <password>myMavenRepo</password>
         </server>
     </servers>
 

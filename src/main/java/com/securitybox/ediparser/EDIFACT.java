@@ -58,7 +58,7 @@ public class EDIFACT extends EdiDocument {
                         if(requestedElements.getInt(Constants.EDIFACT_SEGMENT_NUMBER)== i+1 && requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_NUMBER )== j+1 && requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_POSITION) == k+1 )  {
                             //Create temproary JSON object to handle the current content.
                             JSONObject jsonObjTemp = new JSONObject();
-                            jsonObjTemp.put("item",dataElementArray.get(k));
+                            jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,dataElementArray.get(k));
                             //initialize cashe object item with the data to be written
                             if(method.equalsIgnoreCase(Constants.TOKENIZER_METHOD_TOKENIZE)) {
                                 CacheEntryObject cacheEntryObject = new CacheEntryObject() {
@@ -92,7 +92,7 @@ public class EDIFACT extends EdiDocument {
 
                                 cacheEntryObject.setObject(jsonObjTemp);
                                 //call tokernization service with cacheObject to be tokenized
-                                jsonObjTemp.put("item",tokenizer.tokenize(cacheEntryObject));
+                                jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,tokenizer.tokenize(cacheEntryObject));
 
                             }else if(method.equalsIgnoreCase(Constants.TOKENIZER_METHOD_DETOKENIZE)) {
                                 //get hte key to be retrived from current message
@@ -101,15 +101,15 @@ public class EDIFACT extends EdiDocument {
                                 CacheEntryObject tmpCacheEntryObject = tokenizer.detokenize(Integer.valueOf(dataElementArray.get(k).toString()));
                                 //retierve the values from the object stored in the cache object.
                                 if(tmpCacheEntryObject==null)
-                                    jsonObjTemp.put("item",dataElementArray.get(k).toString());
+                                    jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,dataElementArray.get(k).toString());
                                 else
-                                    jsonObjTemp.put("item",tmpCacheEntryObject.getObject().get("item"));
+                                    jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,tmpCacheEntryObject.getObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME));
 
                             }else{
                                 //DO nothing
                             }
                             //put back the retrieved values from the cached object/key received from tokenization to element position back
-                            dataElementArray.put(k,jsonObjTemp.get("item"));
+                            dataElementArray.put(k,jsonObjTemp.get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME));
                         }
 
                     }

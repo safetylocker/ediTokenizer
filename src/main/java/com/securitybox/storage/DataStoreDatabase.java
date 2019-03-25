@@ -19,7 +19,7 @@ public class DataStoreDatabase {
         try {
             conn = DriverManager.getConnection("jdbc:mysql://remotemysql.com:3306/f486cLdauJ?" +
                     "user=f486cLdauJ&password=l5u4SLi22H");
-            System.out.println("KKKK db connection succss");
+            System.out.println("db connection succss");
         } catch (SQLException e) {
            System.out.println(e.getCause());
         }

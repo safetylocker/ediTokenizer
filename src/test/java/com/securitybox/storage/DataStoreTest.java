@@ -1,5 +1,6 @@
 package com.securitybox.storage;
 
+import com.securitybox.constants.Constants;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Assert;
@@ -53,15 +54,16 @@ public class DataStoreTest {
 
         JSONObject jsonObjTemp = new JSONObject();
         try {
-            jsonObjTemp.put("mykey","myvalue");
+            jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,"value");
         } catch (JSONException e) {
             e.printStackTrace();
         }
         cacheEntryObject.setObject(jsonObjTemp);
-        dataStore.storeValue(jsonObjTemp.hashCode(),cacheEntryObject);
+        dataStore.storeValue(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,cacheEntryObject);
         try {
-            System.out.println(dataStore.retrieveObject(jsonObjTemp.hashCode()).getObject().get("mykey"));
-        } catch (JSONException e) {
+            String result = dataStore.retrieveValue(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME);
+            assertEquals("value",result);
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

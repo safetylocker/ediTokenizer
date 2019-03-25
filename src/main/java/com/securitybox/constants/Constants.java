@@ -15,14 +15,12 @@ public class Constants {
 
     public final static String DOCUMENT_TYPE_ALL="ALL";
 
-
-
-
-
     public final static String TOKENIZER_METHOD_TOKENIZE = "tokenize";
     public final static String TOKENIZER_METHOD_DETOKENIZE = "detokenize";
 
-    public final static String  IGNITE_DEFAULT_CACHE_NAME="securityBoxCache";
+
+    public final static String IGNITE_DEFAULT_CACHE_NAME="securityBoxCache";
+    public final static String IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME="item";
 
 
 }

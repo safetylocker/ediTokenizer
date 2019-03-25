@@ -1,5 +1,6 @@
 package com.securitybox.tokenizer;
 
+import com.securitybox.constants.Constants;
 import com.securitybox.storage.CacheEntryObject;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,20 +48,26 @@ public class TokenizerTest {
         };
 
         JSONObject jsonObjTemp = new JSONObject();
-        try {
-            jsonObjTemp.put("mykey","myvalue");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        cacheEntryObject.setObject(jsonObjTemp);
-        tokenizer.tokenize(cacheEntryObject);
-        try {
-            CacheEntryObject newCa;
-            newCa = tokenizer.detokenize(cacheEntryObject.hashCode());
-            System.out.println(
-                    newCa.getObject().get("mykey")
-            );
-        } catch (JSONException e) {
+        try{
+            //token based on integer type
+            //create a JSON object with key "item"
+             jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,"Value Stored");
+             cacheEntryObject.setObject(jsonObjTemp);
+             int token = tokenizer.tokenize(cacheEntryObject);
+             CacheEntryObject newCa_0;
+             newCa_0 = tokenizer.detokenize(token);
+             assertEquals("Value Stored",newCa_0.getObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString());
+
+            //token based on String type
+            jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,"Value Stored");
+            cacheEntryObject.setObject(jsonObjTemp);
+            String tokenStr = tokenizer.tokenize(cacheEntryObject,"Value Stored",127);
+            CacheEntryObject newCa_1;
+            newCa_1 = tokenizer.detokenize(tokenStr);
+            assertEquals("Value Stored",newCa_1.getObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString());
+
+
+        } catch(Exception e) {
             e.printStackTrace();
         }
 

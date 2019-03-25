@@ -17,7 +17,7 @@ public class Tokenizer implements TokenizerDao {
     }
     //tokenize a given string value, keyLenght is used to select the algorithm
     //such that returned token is fit into specified max limit by client
-    public String tokenize(String input,int keyLength) {
+    private String tokenize(String input,int keyLength) {
         String token;
 
         try {
@@ -62,7 +62,6 @@ public class Tokenizer implements TokenizerDao {
     //return the key of the object used to cache if caching is successfull
     //else return -1 to indicate it failes, thus it needs to be handled by the calling object
     public int tokenize(CacheEntryObject cacheEntryObject) {
-          System.out.println("current hash value " + cacheEntryObject.hashCode());
            if(dataStore.storeValue(cacheEntryObject.hashCode(), cacheEntryObject))
                return cacheEntryObject.hashCode();
            else
@@ -73,7 +72,6 @@ public class Tokenizer implements TokenizerDao {
     public String tokenize(CacheEntryObject cacheEntryObject,String valueToTokenize,int lenght) {
         try {
             String token=tokenize(valueToTokenize,lenght);
-            System.out.println("current hash value " + token);
             if(dataStore.storeValue(token, cacheEntryObject))
                 return token;
             else

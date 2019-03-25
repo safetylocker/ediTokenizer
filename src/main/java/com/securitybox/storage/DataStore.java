@@ -43,7 +43,7 @@ public  class DataStore implements DataStoreDao{
     public String retrieveValue(int token) {
         String response="";
         try {
-            response = objectCache.get(Integer.valueOf(token)).getObject().get("item").toString();
+            response = objectCache.get(Integer.valueOf(token)).getObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString();
         } catch (Exception e) {
             e.getCause();
             response = Integer.toString(token);
@@ -58,7 +58,7 @@ public  class DataStore implements DataStoreDao{
     public String retrieveValue(String token) {
         String response="";
         try {
-            response = objectCacheStr.get(token).getObject().get("item").toString();
+            response = objectCacheStr.get(token).getObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString();
         } catch (Exception e) {
             e.getCause();
             response = token;
@@ -74,7 +74,7 @@ public  class DataStore implements DataStoreDao{
         System.out.println("current hash value storeValue() " + cacheEntryObject.hashCode());
         System.out.println("current key used to cache " + key);
         try {
-            System.out.println("Value inside cache object : " + cacheEntryObject.getObject().get("item").toString());
+            System.out.println("Value inside cache object : " + cacheEntryObject.getObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -92,7 +92,7 @@ public  class DataStore implements DataStoreDao{
         System.out.println("current hash value storeValue() " + cacheEntryObject.hashCode());
         System.out.println("current key used to cache " + key);
         try {
-            System.out.println("Value inside cache object : " + cacheEntryObject.getObject().get("item").toString());
+            System.out.println("Value inside cache object : " + cacheEntryObject.getObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }

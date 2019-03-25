@@ -57,7 +57,7 @@ public class CSV extends EdiDocument {
                     if(requestedElements.getInt(Constants.CSV_DATA_ELEMENT_POSITION)== j){
                         //Create temproary JSON object to handle the current content.
                         JSONObject jsonObjTemp = new JSONObject();
-                        jsonObjTemp.put("item",csvRecord.getField(j));
+                        jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,csvRecord.getField(j));
                         //initialize cashe object item with the data to be written
                         if(method.equalsIgnoreCase(Constants.TOKENIZER_METHOD_TOKENIZE)) {
                             CacheEntryObject cacheEntryObject = new CacheEntryObject() {
@@ -91,9 +91,9 @@ public class CSV extends EdiDocument {
 
                             cacheEntryObject.setObject(jsonObjTemp);
                             //call tokernization service with cacheObject to be tokenized
-                            jsonObjTemp.put("item",tokenizer.tokenize(cacheEntryObject));
+                            jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,tokenizer.tokenize(cacheEntryObject));
                             //test with varied key lenght that client can support...
-                            //jsonObjTemp.put("item",tokenizer.tokenize(cacheEntryObject,csvRecord.getField(j),127));
+                            //jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,tokenizer.tokenize(cacheEntryObject,csvRecord.getField(j),127));
 
                         }else if(method.equalsIgnoreCase(Constants.TOKENIZER_METHOD_DETOKENIZE)) {
                             //get hte key to be retrived from current message
@@ -103,15 +103,15 @@ public class CSV extends EdiDocument {
                             CacheEntryObject tmpCacheEntryObject = tokenizer.detokenize(csvRecord.getField(j));
                             //retierve the values from the object stored in the cache object.
                             if(tmpCacheEntryObject==null)
-                                jsonObjTemp.put("item",csvRecord.getField(j));
+                                jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,csvRecord.getField(j));
                             else
-                                jsonObjTemp.put("item",tmpCacheEntryObject.getObject().get("item"));
+                                jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,tmpCacheEntryObject.getObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME));
 
                         }else{
                             //DO nothing
                         }
                         //put back the retrieved values from the cached object/key received from tokenization to element position back
-                        csvRecord.setFiled(j,jsonObjTemp.get("item").toString());
+                        csvRecord.setFiled(j,jsonObjTemp.get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString());
                     }
 
                 }
