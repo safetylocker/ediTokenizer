@@ -12,6 +12,13 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>myMavenRepo</id>
+            <url>https://mymavenrepo.com/repo/COgMeZKcgMwsws1u2oAm/</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
