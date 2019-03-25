@@ -3,14 +3,20 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <version>LATEST</version>
+
     <groupId>ediparser</groupId>
     <artifactId>ediparser</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>Maven Quick Start Archetype</name>
+    <url>http://maven.apache.org</url>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
+
 
     <repositories>
         <repository>
@@ -54,13 +60,36 @@
     </dependencies>
 
     <build>
-        <plugins>
-
-
-        </plugins>
-
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>2.1.2</version>
+                    <executions>
+                        <execution>
+                            <phase>deploy</phase>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
     </build>
 
-
+    <distributionManagement>
+        <repository>
+            <id>myCompanyRepo</id>
+            <name>MyCompany Repository</name>
+            <url>https://mymavenrepo.com/repo/COgMeZKcgMwsws1u2oAm/</url>
+        </repository>
+    </distributionManagement>
 
 </project>
