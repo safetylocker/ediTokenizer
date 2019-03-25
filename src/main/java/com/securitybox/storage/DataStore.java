@@ -57,8 +57,10 @@ public  class DataStore implements DataStoreDao{
     @Override
     public String retrieveValue(String token) {
         String response="";
+        System.out.println("Key to be detokenized : " + token);
         try {
             response = objectCacheStr.get(token).getObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString();
+            System.out.println("Reterved value from cache : " + response);
         } catch (Exception e) {
             e.getCause();
             response = token;
@@ -89,13 +91,6 @@ public  class DataStore implements DataStoreDao{
     //Stote object for token type string
     @Override
     public boolean storeValue(String key,CacheEntryObject cacheEntryObject) {
-        System.out.println("current hash value storeValue() " + cacheEntryObject.hashCode());
-        System.out.println("current key used to cache " + key);
-        try {
-            System.out.println("Value inside cache object : " + cacheEntryObject.getObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
         try {
             objectCacheStr.put(key,cacheEntryObject);
         }catch (TransactionException e){

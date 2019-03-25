@@ -17,7 +17,7 @@ public class Tokenizer implements TokenizerDao {
     }
     //tokenize a given string value, keyLenght is used to select the algorithm
     //such that returned token is fit into specified max limit by client
-    public String tokenize(String input,int keyLength) {
+    private String tokenize(String input,int keyLength) {
         String token;
 
         try {
@@ -74,7 +74,7 @@ public class Tokenizer implements TokenizerDao {
         try {
             String token=tokenize(valueToTokenize,lenght);
             if(dataStore.storeValue(token, cacheEntryObject))
-                return token;
+             return token;
             else
                 return null;
         } catch (Exception e) {
