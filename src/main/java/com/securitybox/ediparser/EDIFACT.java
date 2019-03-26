@@ -25,6 +25,7 @@ public class EDIFACT extends EdiDocument {
         String EDIFACT_DATA_ELEMENT_SEPERATOR="";
         String EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR="";
         String segmentUNA="";
+        String EDIFACT_DECIMAL_SEPERATOR="";
         //Identify the EDIFACT seperators from the incoming message
 
         //Extract the UNA segment if exists
@@ -32,16 +33,20 @@ public class EDIFACT extends EdiDocument {
             segmentUNA = message.substring(0, message.indexOf("UNB"));
             EDIFACT_SEGMENT_TERMINATOR = segmentUNA.substring(8,9);
             EDIFACT_DATA_ELEMENT_SEPERATOR = segmentUNA.substring(4,5);
+            EDIFACT_DECIMAL_SEPERATOR = segmentUNA.substring(5,6);
             EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR=segmentUNA.substring(3,4);
+
         }catch(Exception e){
             EDIFACT_SEGMENT_TERMINATOR=Constants.EDIFACT_SEGMENT_TERMINATOR;
             EDIFACT_DATA_ELEMENT_SEPERATOR = Constants.EDIFACT_DATA_ELEMENT_SEPERATOR;
             EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR= Constants.EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR;
+            EDIFACT_DECIMAL_SEPERATOR = Constants.EDIFACT_DECIMAL_SEPERATOR;
         }
 
         System.out.println("EDIFACT_SEGMENT_TERMINATOR :" + EDIFACT_SEGMENT_TERMINATOR);
         System.out.println("EDIFACT_DATA_ELEMENT_SEPERATOR :" + EDIFACT_DATA_ELEMENT_SEPERATOR);
         System.out.println("EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR :" + EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR);
+        System.out.println("EDIFACT_DECIMAL_SEPERATOR :" + EDIFACT_DECIMAL_SEPERATOR);
 
         JSONArray segmentArr = seperateElements(message,EDIFACT_SEGMENT_TERMINATOR);
         //Iterate through all the segments
@@ -97,8 +102,11 @@ public class EDIFACT extends EdiDocument {
                             }else if(method.equalsIgnoreCase(Constants.TOKENIZER_METHOD_DETOKENIZE)) {
                                 //get hte key to be retrived from current message
                                 System.out.println("current key to be de-tokenized " + dataElementArray.get(k).toString());
-                                //retreive the cacheentry object from the cache
-                                CacheEntryObject tmpCacheEntryObject = tokenizer.detokenize(Integer.valueOf(dataElementArray.get(k).toString()));
+                                CacheEntryObject tmpCacheEntryObject = null;
+                                //retreive the cachentry object from the cache
+                                if(isNumeric(dataElementArray.get(k).toString())) {
+                                    tmpCacheEntryObject = tokenizer.detokenize(Integer.valueOf(dataElementArray.get(k).toString()));
+                                }
                                 //retierve the values from the object stored in the cache object.
                                 if(tmpCacheEntryObject==null)
                                     jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,dataElementArray.get(k).toString());
@@ -126,11 +134,32 @@ public class EDIFACT extends EdiDocument {
             }
             ///collect back the response to create the EDIFACT message back
             response = response + EDIFACT_SEGMENT_TERMINATOR;
-
         }
+
+
+        //Fix for UNA segment malformation issue https://github.com/kkavindra/ediTokenizer/issues/3
+        if(response.indexOf("UNA") >= 0 ) {
+            response = "UNA" +
+                    EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR +
+                    EDIFACT_DATA_ELEMENT_SEPERATOR +
+                    EDIFACT_DECIMAL_SEPERATOR +
+                    "? " + EDIFACT_SEGMENT_TERMINATOR +
+                    response.substring(response.indexOf("UNB"));
+            System.out.println(response);
+        }
+
         return response;
     }
 
+    //Check if given string is a number
+    private boolean isNumeric(String strNum) {
+        try {
+            double d = Double.parseDouble(strNum);
+        } catch (NumberFormatException | NullPointerException nfe) {
+            return false;
+        }
+        return true;
+    }
 
     public JSONArray seperateElements(String input, String delimeter) throws JSONException {
         ArrayList<String> arrayList = new ArrayList<String>(Arrays.asList(input.split("\\"+delimeter)));

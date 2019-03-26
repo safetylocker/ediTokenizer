@@ -10,6 +10,7 @@ public class Constants {
     public static String EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR=":";
     public static String EDIFACT_DATA_ELEMENT_SEPERATOR="+";
     public static String EDIFACT_SEGMENT_TERMINATOR="'";
+    public static String EDIFACT_DECIMAL_SEPERATOR=".";
 
     public final static String DOCUMENT_TYPE_CSV="CSV";
     public final static String CSV_DATA_ELEMENT_POSITION = "dataElementPosition";
