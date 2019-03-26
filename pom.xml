@@ -15,13 +15,6 @@
     </properties>
 
 
-    <repositories>
-        <repository>
-            <id>myMavenRepo</id>
-            <url>https://mymavenrepo.com/repo/COgMeZKcgMwsws1u2oAm/</url>
-        </repository>
-    </repositories>
-
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -76,6 +69,7 @@
                         </execution>
                     </executions>
                 </plugin>
+
             </plugins>
         </pluginManagement>
         <resources>
@@ -86,12 +80,26 @@
         </resources>
     </build>
 
+    <repositories>
+        <repository>
+            <id>myMavenRepo.write</id>
+            <url>${myMavenRepo.write.url}</url>
+        </repository>
+        <repository>
+            <id>myMavenRepo.read</id>
+            <url>${myMavenRepo.read.url}</url>
+        </repository>
+    </repositories>
+
     <distributionManagement>
         <repository>
-            <id>myCompanyRepo</id>
-            <name>MyCompany Repository</name>
-            <url>https://mymavenrepo.com/repo/COgMeZKcgMwsws1u2oAm/</url>
+            <id>myMavenRepo.write</id>
+            <url>${myMavenRepo.write.url}</url>
         </repository>
+        <snapshotRepository>
+            <id>myMavenRepo.write</id>
+            <url>${myMavenRepo.write.url}</url>
+        </snapshotRepository>
     </distributionManagement>
 
 </project>
