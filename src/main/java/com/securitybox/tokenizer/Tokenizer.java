@@ -63,8 +63,9 @@ public class Tokenizer implements TokenizerDao {
     //return the key of the object used to cache if caching is successfull
     //else return -1 to indicate it failes, thus it needs to be handled by the calling object
     public int tokenize(CacheEntryObject cacheEntryObject) {
-           if(dataStore.storeValue(cacheEntryObject.hashCode(), cacheEntryObject))
-               return cacheEntryObject.hashCode();
+           int tmpHashCode= cacheEntryObject.hashCode();
+           if(dataStore.storeValue(tmpHashCode, cacheEntryObject))
+               return tmpHashCode;
            else
                return -1;
     }
