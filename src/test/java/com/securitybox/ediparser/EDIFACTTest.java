@@ -17,6 +17,7 @@ public class EDIFACTTest {
     JSONObject jsonObject = new JSONObject();
 
     public EDIFACTTest() throws NoSuchAlgorithmException {
+
     }
 
     @Test
@@ -70,10 +71,12 @@ public class EDIFACTTest {
         receiver.add("clientB");
         String completeEdiTokenized_0="",completeEdiDeTokenized_0 = "",completeEdiTokenized_1="",completeEdiDeTokenized_1 = "";
 
+        //test with complete EDIFACT file
         completeEdiTokenized_0 = edifact.docuemntHandler(Constants.TOKENIZER_METHOD_TOKENIZE,objectToTokenized,completeEDIFACT,sender,receiver);
         completeEdiDeTokenized_0= edifact.docuemntHandler(Constants.TOKENIZER_METHOD_DETOKENIZE,objectToTokenized,completeEdiTokenized_0,sender,receiver);
         assertEquals(completeEDIFACT,completeEdiDeTokenized_0);
 
+        //test with partial EDIFACT file
         completeEdiTokenized_1 = edifact.docuemntHandler(Constants.TOKENIZER_METHOD_TOKENIZE,objectToTokenized,oneLineSegment,sender,receiver);
         completeEdiDeTokenized_1= edifact.docuemntHandler(Constants.TOKENIZER_METHOD_DETOKENIZE,objectToTokenized,completeEdiTokenized_1,sender,receiver);
         assertEquals(oneLineSegment,completeEdiDeTokenized_1);
