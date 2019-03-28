@@ -4,12 +4,14 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
 public abstract class CacheEntryObject<senderIds, receiverIds> implements Serializable {
 
     ArrayList<senderIds> senderIds;
     ArrayList<receiverIds> receiverIds;
     JSONObject object;
+    public Date tokenCretionTime,tokenValidityTime;
 
     public JSONObject getObject() {
         return object;
@@ -36,5 +38,7 @@ public abstract class CacheEntryObject<senderIds, receiverIds> implements Serial
     public void setReceiverIds(ArrayList<receiverIds> receiverIds) {
         this.receiverIds = receiverIds;
     }
+
+
 
 }

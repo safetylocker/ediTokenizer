@@ -17,23 +17,23 @@ public class Tokenizer implements TokenizerDao {
     }
     //tokenize a given string value, keyLenght is used to select the algorithm
     //such that returned token is fit into specified max limit by client
-    private String tokenize(String input,int keyLength) {
-        String token;
+    public String tokenize(String input,int maxkeyLength) {
+        String token="";
 
         try {
-            if(0 <=keyLength &&  keyLength <= 32) {
-                md = MessageDigest.getInstance("MD5");
+            if(maxkeyLength >= 128) {
+                md = MessageDigest.getInstance("SHA-512");
             }
-            else if(33 <=keyLength && keyLength <= 40) {
-                md = MessageDigest.getInstance("SHA-1");
-            }
-            else if(40 <=keyLength && keyLength <= 64){
+            else if(maxkeyLength >= 64) {
                 md = MessageDigest.getInstance("SHA-256");
             }
-            else if(64 <=keyLength && keyLength <= 128){
-                md = MessageDigest.getInstance("SHA-512");
+            else if(maxkeyLength >= 39) {
+                md = MessageDigest.getInstance("SHA-1");
+            }
+            else if(maxkeyLength >= 32){
+                md = MessageDigest.getInstance("MD5");
             }else{
-                md = MessageDigest.getInstance("MD2");
+                return null;
             }
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();

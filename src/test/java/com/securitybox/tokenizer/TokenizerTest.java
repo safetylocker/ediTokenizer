@@ -66,6 +66,10 @@ public class TokenizerTest {
             newCa_1 = tokenizer.detokenize(tokenStr);
             assertEquals("Value Stored",newCa_1.getObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString());
 
+            //check token lenght
+
+
+
 
         } catch(Exception e) {
             e.printStackTrace();
