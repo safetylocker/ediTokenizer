@@ -16,8 +16,7 @@ public class SimpleTokenizerTest {
     @Test
     public void tokenizeSingleValue() throws JSONException, NoSuchAlgorithmException {
          token = simpleTokenizer.tokenizeSingleValue(Constants.TOKENIZER_METHOD_TOKENIZE,strToTokenized,null,null,78);
-         System.out.println("Token received from tokenization request : " + token);
-         assertEquals("64f4f7333ab4613e7100d09e6e7c7fb762817edc3ecc35a9145e6a22d54eec88d1de18ebebec7adaad170e84720d522178475bedf5caf6b52b1a68e8b3b83df",token);
+         assertEquals("139a0144b4c514408bd514b3ccbb8377a885b194721503dce05dba78a7a1c5bd",token);
 
     }
 
