@@ -62,9 +62,13 @@ public class TokenizerTest {
             jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,"Value Stored");
             cacheEntryObject.setObject(jsonObjTemp);
             String tokenStr = tokenizer.tokenize(cacheEntryObject,"Value Stored",127);
-            CacheEntryObject newCa_1;
+            CacheEntryObject newCa_1,newCa_2;
             newCa_1 = tokenizer.detokenize(tokenStr);
             assertEquals("Value Stored",newCa_1.getObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString());
+            //tokenizer test mixed values, insert as a cache object, retireve as a string token
+            newCa_2 = tokenizer.detokenize(tokenStr.toString());
+            assertEquals("Value Stored",newCa_2.getObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString());
+
         } catch(Exception e) {
             e.printStackTrace();
         }

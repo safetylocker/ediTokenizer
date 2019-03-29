@@ -9,6 +9,8 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import static jdk.nashorn.internal.runtime.JSType.isNumber;
+
 public class Tokenizer implements TokenizerDao {
   public static MessageDigest md;
   public static DataStore dataStore;
@@ -94,7 +96,10 @@ public class Tokenizer implements TokenizerDao {
 
     public CacheEntryObject detokenize(String key) {
         System.out.println("Current key to detokenize detokenize()" + key);
-        return dataStore.retrieveObject(key);
+        if(isNumber(key))
+            return dataStore.retrieveObject(Integer.valueOf(key));
+        else
+            return dataStore.retrieveObject(key);
 
     }
 }
