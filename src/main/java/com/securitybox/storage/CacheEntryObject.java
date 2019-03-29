@@ -11,6 +11,10 @@ public abstract class CacheEntryObject<senderIds, receiverIds> implements Serial
     ArrayList<senderIds> senderIds;
     ArrayList<receiverIds> receiverIds;
     JSONObject object;
+
+    public CacheEntryObject(){
+        tokenCretionTime = new Date();
+    }
     public Date tokenCretionTime,tokenValidityTime;
 
     public JSONObject getObject() {
