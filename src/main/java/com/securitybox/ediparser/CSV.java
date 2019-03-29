@@ -99,7 +99,7 @@ public class CSV extends EdiDocument {
                             //get hte key to be retrived from current message
                             System.out.println("current key to be de-tokenized " + csvRecord.getField(j));
                             //retreive the cacheentry object from the cache
-                            CacheEntryObject tmpCacheEntryObject = tokenizer.detokenize(Integer.valueOf(csvRecord.getField(j)));
+                            CacheEntryObject tmpCacheEntryObject = tokenizer.deTokenize(csvRecord.getField(j));
                             //retierve the values from the object stored in the cache object.
                             if(tmpCacheEntryObject==null) {
                                 jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME, csvRecord.getField(j));

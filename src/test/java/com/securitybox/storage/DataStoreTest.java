@@ -12,15 +12,17 @@ import static org.junit.Assert.*;
 
 public class DataStoreTest {
 
+    DataStore dataStore;
+    final String storeValue ="Data item to be stored";
+
+    public DataStoreTest(){
+        dataStore =  new DataStore();
+    }
+
     @Test
     public void storeValue() throws IllegalAccessException, InstantiationException {
-        DataStore dataStore =  new DataStore();
-        //System.out.println(dataStore.storeValue("1","myvalue"));
-        //System.out.println(dataStore.retrieveValue("1"));
-        //dataStore.databaseTest();
 
-
-        //Test the cacheobject injection
+       //Test the cacheobject injection
         ArrayList<String> sender = new ArrayList<String>();
         sender.add("clientA");
         ArrayList<String> receiver = new ArrayList<String>();
@@ -54,22 +56,23 @@ public class DataStoreTest {
 
         JSONObject jsonObjTemp = new JSONObject();
         try {
-            jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,"value");
+            jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,storeValue);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         cacheEntryObject.setObject(jsonObjTemp);
         dataStore.storeValue(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,cacheEntryObject);
-        try {
-            String result = dataStore.retrieveValue(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME);
-            assertEquals("value",result);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
     }
 
     @Test
     public void retrieveValue() {
+
+        try {
+            String result = dataStore.retrieveValue(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME);
+            assertEquals(storeValue,result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -2,14 +2,10 @@ package com.securitybox.tokenizer;
 
 import com.securitybox.storage.CacheEntryObject;
 import com.securitybox.storage.DataStore;
-import org.json.JSONException;
-
-import javax.transaction.TransactionRequiredException;
+import org.apache.maven.shared.utils.StringUtils;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-import static jdk.nashorn.internal.runtime.JSType.isNumber;
 
 public class Tokenizer implements TokenizerDao {
   public static MessageDigest md;
@@ -50,18 +46,6 @@ public class Tokenizer implements TokenizerDao {
         return token;
     }
 
-
-    //Detokenize fucntion for integer type token
-    public String deTokenize(Integer token) {
-        return dataStore.retrieveValue(token);
-    }
-
-    //Detokenize fucntion for string type token
-    public String deTokenize(String token) {
-        return dataStore.retrieveValue(token);
-    }
-
-
     //return the key of the object used to cache if caching is successfull
     //else return -1 to indicate it failes, thus it needs to be handled by the calling object
     public int tokenize(CacheEntryObject cacheEntryObject) {
@@ -87,19 +71,15 @@ public class Tokenizer implements TokenizerDao {
 
     }
 
-
-    public CacheEntryObject detokenize(int key) {
+    @Override
+    public CacheEntryObject deTokenize(String key) {
         System.out.println("Current key to detokenize detokenize()" + key);
-        return dataStore.retrieveObject(key);
-
-    }
-
-    public CacheEntryObject detokenize(String key) {
-        System.out.println("Current key to detokenize detokenize()" + key);
-        if(isNumber(key))
-            return dataStore.retrieveObject(Integer.valueOf(key));
-        else
+        if(StringUtils.isNumeric(key)) {
+              return dataStore.retrieveObject(Integer.valueOf(key));
+        }else {
             return dataStore.retrieveObject(key);
+
+        }
 
     }
 }
