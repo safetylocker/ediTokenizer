@@ -1,11 +1,13 @@
 package com.securitybox.tokenizer;
 
+import com.securitybox.storage.AccessEntry;
 import com.securitybox.storage.CacheEntryObject;
 import com.securitybox.storage.DataStore;
 import org.apache.maven.shared.utils.StringUtils;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 public class Tokenizer implements TokenizerDao {
   public static MessageDigest md;
@@ -81,5 +83,25 @@ public class Tokenizer implements TokenizerDao {
 
         }
 
+    }
+
+    public CacheEntryObject deTokenize(String key, String clientId) {
+        System.out.println("Current key to detokenize detokenize()" + key);
+        if (StringUtils.isNumeric(key)) {
+            return dataStore.retrieveObject(Integer.valueOf(key), clientId);
+        } else {
+            return dataStore.retrieveObject(key, clientId);
+
+        }
+
+    }
+
+    public ArrayList<AccessEntry> getAccessLogs(String key){
+        if(StringUtils.isNumeric(key)) {
+            return dataStore.retrieveObject(Integer.valueOf(key)).getAccessLogs();
+        }else {
+            return dataStore.retrieveObject(key).getAccessLogs();
+
+        }
     }
 }
