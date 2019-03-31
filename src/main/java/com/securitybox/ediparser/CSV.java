@@ -45,7 +45,7 @@ public class CSV extends EdiDocument {
 
 
     @Override
-    public String docuemntHandler(String method, JSONArray objectsToBeTokenized, String message, ArrayList<String> senderIds, ArrayList<String> receiverIds) throws JSONException, NoSuchAlgorithmException {
+    public String docuemntHandler(String method, JSONArray objectsToBeTokenized, String message, String senderId, ArrayList<String> receiverIds) throws JSONException, NoSuchAlgorithmException {
         String response="";
         //get line as objects
         JSONArray csvResponse = seperateElements(message,this.recordDelimeter);

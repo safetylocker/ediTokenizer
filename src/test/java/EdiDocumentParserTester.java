@@ -73,8 +73,7 @@ public class EdiDocumentParserTester {
 
         //Test to check only de-tokenization with object approach
         //System.out.println(edifact.docuemntHandler(Constants.TOKENIZER_METHOD_DETOKENIZE,objectToTokenized,"NAD+CN+++202ecb3be3593a77acf4ab1abd7e3bbd+Sdervsvn 12 +VTRA FRUNDA++42651+SE'"));
-        ArrayList<String> sender = new ArrayList<String>();
-        sender.add("clientA");
+        String sender = "clientA";
         ArrayList<String> receiver = new ArrayList<String>();
         receiver.add("clientB");
          String tmp,tmp1 = "";
