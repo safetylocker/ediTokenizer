@@ -4,6 +4,10 @@ import com.securitybox.storage.AccessEntry;
 import com.securitybox.storage.CacheEntryObject;
 import com.securitybox.storage.DataStore;
 import org.apache.maven.shared.utils.StringUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -96,12 +100,34 @@ public class Tokenizer implements TokenizerDao {
 
     }
 
-    public ArrayList<AccessEntry> getAccessLogs(String key){
+    public JSONArray getAccessLogs(String key){
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObject;
+        ArrayList<AccessEntry> accessEntries;
         if(StringUtils.isNumeric(key)) {
-            return dataStore.retrieveObject(Integer.valueOf(key)).getAccessLogs();
+            accessEntries = dataStore.retrieveObject(Integer.valueOf(key)).getAccessLogs();
+
         }else {
-            return dataStore.retrieveObject(key).getAccessLogs();
+            accessEntries =  dataStore.retrieveObject(key).getAccessLogs();
+        }
+
+        if(accessEntries.size() >= 0){
+            jsonObject = new JSONObject();
+
+
+            for(int i=0;i<accessEntries.size();i++){
+                try {
+                    jsonObject.put("Client Id",accessEntries.get(i).getClientId());
+                    jsonObject.put("Acces Time",accessEntries.get(i).getAcccesTime());
+                    jsonArray.put(jsonObject);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
 
         }
+
+        return jsonArray;
     }
 }
