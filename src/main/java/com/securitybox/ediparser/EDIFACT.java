@@ -96,7 +96,7 @@ public class EDIFACT extends EdiDocument {
                                 //set the object to be included in the cacheEntryObject
 
                                 cacheEntryObject.setObject(jsonObjTemp);
-                                //call tokernization service with cacheObject to be tokenized
+                                //call tokenization service with cacheObject to be tokenized
                                 jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,tokenizer.tokenize(cacheEntryObject));
 
                             }else if(method.equalsIgnoreCase(Constants.TOKENIZER_METHOD_DETOKENIZE)) {
@@ -105,6 +105,7 @@ public class EDIFACT extends EdiDocument {
                                 CacheEntryObject tmpCacheEntryObject = null;
                                 //retreive the cachentry object from the cache
                                 if(isNumeric(dataElementArray.get(k).toString())) {
+                                    tmpCacheEntryObject = tokenizer.deTokenize(dataElementArray.get(k).toString(),senderId);
                                 }
                                 //retierve the values from the object stored in the cache object.
                                 if(tmpCacheEntryObject==null)
