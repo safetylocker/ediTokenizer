@@ -105,7 +105,6 @@ public class EDIFACT extends EdiDocument {
                                 CacheEntryObject tmpCacheEntryObject = null;
                                 //retreive the cachentry object from the cache
                                 if(isNumeric(dataElementArray.get(k).toString())) {
-                                    tmpCacheEntryObject = tokenizer.deTokenize(dataElementArray.get(k).toString());
                                 }
                                 //retierve the values from the object stored in the cache object.
                                 if(tmpCacheEntryObject==null)

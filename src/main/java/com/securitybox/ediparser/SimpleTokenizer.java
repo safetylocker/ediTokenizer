@@ -64,8 +64,8 @@ public class SimpleTokenizer extends EdiDocument {
         return response ;
     }
 
-    public String deTokenizeSingleValue(String method,String token, ArrayList<String> senderIds, ArrayList<String> receiverIds) throws JSONException, NoSuchAlgorithmException {
-        return  tokenizer.deTokenize(token).getObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString();
+    public String deTokenizeSingleValue(String method,String token, String senderId, ArrayList<String> receiverIds) throws JSONException, NoSuchAlgorithmException {
+        return  tokenizer.deTokenize(token,senderId).getObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString();
     }
 
 
