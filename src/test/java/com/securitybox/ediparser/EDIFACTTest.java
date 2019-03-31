@@ -25,7 +25,7 @@ public class EDIFACTTest {
         jsonObject.put(Constants.EDIFACT_SEGMENT_NUMBER,16);
         jsonObject.put(Constants.EDIFACT_DATA_ELEMENT_NUMBER,5);
         jsonObject.put(Constants.EDIFACT_DATA_ELEMENT_POSITION,1);
-        jsonObject.put(Constants.EDIFACT_DATA_ELEMENT_LENGTH,30);
+        jsonObject.put(Constants.EDIFACT_DATA_ELEMENT_LENGTH,35);
         objectToTokenized.put(jsonObject);
 
         JSONObject jsonObject1 = new JSONObject();

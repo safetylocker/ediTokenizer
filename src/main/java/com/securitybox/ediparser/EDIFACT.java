@@ -97,16 +97,20 @@ public class EDIFACT extends EdiDocument {
 
                                 cacheEntryObject.setObject(jsonObjTemp);
                                 //call tokenization service with cacheObject to be tokenized
-                                jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,tokenizer.tokenize(cacheEntryObject));
+                                //if element lenght is sufficent to use the general tokenization mechanims based on hash key, allow to use it
+                                if(requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_LENGTH )>= 32) {
+                                    jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME, tokenizer.tokenize(cacheEntryObject,jsonObjTemp.get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString(),requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_LENGTH)));
+                                } else {
+                                    jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME, tokenizer.tokenize(cacheEntryObject));
+                                }
 
                             }else if(method.equalsIgnoreCase(Constants.TOKENIZER_METHOD_DETOKENIZE)) {
                                 //get hte key to be retrived from current message
                                 System.out.println("current key to be de-tokenized " + dataElementArray.get(k).toString());
                                 CacheEntryObject tmpCacheEntryObject = null;
                                 //retreive the cachentry object from the cache
-                                if(isNumeric(dataElementArray.get(k).toString())) {
-                                    tmpCacheEntryObject = tokenizer.deTokenize(dataElementArray.get(k).toString(),senderId);
-                                }
+                                tmpCacheEntryObject = tokenizer.deTokenize(dataElementArray.get(k).toString(),senderId);
+
                                 //retierve the values from the object stored in the cache object.
                                 if(tmpCacheEntryObject==null)
                                     jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,dataElementArray.get(k).toString());
