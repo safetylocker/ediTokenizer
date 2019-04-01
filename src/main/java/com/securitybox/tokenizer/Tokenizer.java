@@ -23,7 +23,6 @@ public class Tokenizer implements TokenizerDao {
     //such that returned token is fit into specified max limit by client
     public String tokenize(String input,int minTokenLenght) {
         String token="";
-
         try {
             if(minTokenLenght >= 128) {
                 md = MessageDigest.getInstance("SHA-512");
@@ -74,7 +73,6 @@ public class Tokenizer implements TokenizerDao {
             e.printStackTrace();
             return null;
         }
-
     }
 
     @Override
@@ -84,9 +82,7 @@ public class Tokenizer implements TokenizerDao {
               return dataStore.retrieveObject(Integer.valueOf(key));
         }else {
             return dataStore.retrieveObject(key);
-
         }
-
     }
 
     public CacheEntryObject deTokenize(String key, String clientId) {
@@ -95,13 +91,11 @@ public class Tokenizer implements TokenizerDao {
             return dataStore.retrieveObject(Integer.valueOf(key), clientId);
         } else {
             return dataStore.retrieveObject(key, clientId);
-
         }
-
     }
 
-    public JSONArray getAccessLogs(String key){
-        JSONArray jsonArray = new JSONArray();
+    public ArrayList<AccessEntry> getAccessLogs(String key){
+        ArrayList<AccessEntry> jsonArray = new ArrayList();
         JSONObject jsonObject;
         ArrayList<AccessEntry> accessEntries;
         if(StringUtils.isNumeric(key)) {
@@ -112,20 +106,9 @@ public class Tokenizer implements TokenizerDao {
         }
 
         if(accessEntries.size() >= 0){
-            jsonObject = new JSONObject();
-
-
-            for(int i=0;i<accessEntries.size();i++){
-                try {
-                    jsonObject.put("Client Id",accessEntries.get(i).getClientId());
-                    jsonObject.put("Acces Time",accessEntries.get(i).getAcccesTime());
-                    jsonArray.put(jsonObject);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-
+             for(int i=0;i<accessEntries.size();i++){
+                 jsonArray.add(accessEntries.get(i));
+             }
         }
 
         return jsonArray;

@@ -161,11 +161,7 @@ public class TokenizerTest {
             newCaObj_4 = tokenizer.deTokenize(String.valueOf(tokenStr_4), "clientId_2");
 
             System.out.println(newCaObj_4.getObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString());
-            for (int i = 0; i < newCaObj_4.getAccessLogs().size(); i++) {
-                    AccessEntry ae = (AccessEntry)newCaObj_4.getAccessLogs().get(i);
-                    System.out.println("Client :  " + ae.getClientId() + " accessed token "+ tokenStr_4 + " at " + ae.getAcccesTime() );
-
-            }
+            System.out.println(newCaObj_4.getAccessLogs());
 
 
         }catch (Exception e){
