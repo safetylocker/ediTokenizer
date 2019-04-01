@@ -60,36 +60,10 @@ public class CSV extends EdiDocument {
                         jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,csvRecord.getField(j));
                         //initialize cashe object item with the data to be written
                         if(method.equalsIgnoreCase(Constants.TOKENIZER_METHOD_TOKENIZE)) {
-                            CacheEntryObject cacheEntryObject = new CacheEntryObject() {
-                                @Override
-                                public ArrayList getSenderIds() {
-                                    return super.getSenderIds();
-                                }
-
-                                @Override
-                                public void setSenderIds(ArrayList senderIds) {
-                                    super.setSenderIds(senderIds);
-                                }
-
-                                @Override
-                                public ArrayList getReceiverIds() {
-                                    return super.getReceiverIds();
-                                }
-
-                                @Override
-                                public void setReceiverIds(ArrayList receiverIds) {
-                                    super.setReceiverIds(receiverIds);
-                                }
-
-                                @Override
-                                public void setObject(JSONObject object) {
-                                    super.setObject(object);
-                                }
-                            };
-
+                            CacheEntryObject cacheEntryObject = new CacheEntryObject(senderId,receiverIds,jsonObjTemp);
                             //set the object to be included in the cacheEntryObject
 
-                            cacheEntryObject.setObject(jsonObjTemp);
+                            cacheEntryObject.setJsonObject(jsonObjTemp);
                             //call tokernization service with cacheObject to be tokenized
                             jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,tokenizer.tokenize(cacheEntryObject));
                             //test with varied key lenght that client can support...
@@ -104,7 +78,7 @@ public class CSV extends EdiDocument {
                             if(tmpCacheEntryObject==null) {
                                 jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME, csvRecord.getField(j));
                             }else {
-                                jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME, tmpCacheEntryObject.getObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME));
+                                jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME, tmpCacheEntryObject.getJsonObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME));
                             }
                         }
                         //put back the retrieved values from the cached object/key received from tokenization to element position back

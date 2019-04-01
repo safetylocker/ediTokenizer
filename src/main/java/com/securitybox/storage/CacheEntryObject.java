@@ -4,32 +4,45 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public abstract class CacheEntryObject<senderIds, receiverIds> implements Serializable {
-    ArrayList<senderIds> senderIds;
+public class CacheEntryObject<receiverIds> implements Serializable {
+    String senderId;
     ArrayList<receiverIds> receiverIds;
     ArrayList<AccessEntry> accessEntries;
-    JSONObject object;
-
+    JSONObject jsonObject;
 
     public CacheEntryObject(){
         tokenCretionTime = new Date();
-        accessEntries = new ArrayList<AccessEntry>();
+        accessEntries = new ArrayList();
 
     }
-    public Date tokenCretionTime,tokenValidityTime;
 
-    public JSONObject getObject() {
-        return object;
+    public CacheEntryObject(String senderId,ArrayList<receiverIds> receiverIds,JSONObject jsonObject){
+        tokenCretionTime = new Date();
+        accessEntries = new ArrayList();
+        this.senderId=senderId;
+        this.jsonObject =jsonObject;
+
     }
 
-    public void setObject(JSONObject object) {
-        this.object = object;
+    public Date tokenCretionTime;
+
+    public JSONObject getJsonObject() {
+        return jsonObject;
     }
-    public ArrayList<senderIds> getSenderIds() {
-        return senderIds;
+
+    public void setJsonObject(JSONObject jsonObject) {
+        this.jsonObject = jsonObject;
     }
-    public void setSenderIds(ArrayList<senderIds> senderIds) {
-        this.senderIds = senderIds;
+    public String getSenderIds() {
+        return senderId;
+    }
+
+    public  void setSenderId(String senderId){
+        this.senderId = senderId;
+    }
+
+    public String getSenderId(){
+        return senderId;
     }
     public ArrayList<receiverIds> getReceiverIds() {
         return receiverIds;

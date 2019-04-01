@@ -11,7 +11,7 @@ public interface DataStoreDao {
     CacheEntryObject retrieveObject(String key);
     CacheEntryObject retrieveObject(String key,String cleintId);
 
-    //method to get access logs from a cache object.
+    //method to get access logs from a cache jsonObject.
     abstract ArrayList<AccessEntry> getAccessLogs(int key);
     abstract ArrayList<AccessEntry> getAccessLogs(String key);
 }

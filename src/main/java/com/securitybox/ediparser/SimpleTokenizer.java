@@ -9,7 +9,6 @@ import org.json.JSONObject;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 
 public class SimpleTokenizer extends EdiDocument {
@@ -21,7 +20,7 @@ public class SimpleTokenizer extends EdiDocument {
     }
 
 
-    public String tokenizeSingleValue(String method,String message, ArrayList<String> senderIds, ArrayList<String> receiverIds,int maxLenght) throws JSONException, NoSuchAlgorithmException {
+    public String tokenizeSingleValue(String method,String message, String senderId, ArrayList<String> receiverIds,int maxLenght) throws JSONException, NoSuchAlgorithmException {
         String response="";
 
         //Create temproary JSON object to handle the current content.
@@ -29,43 +28,18 @@ public class SimpleTokenizer extends EdiDocument {
         jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,message);
         //initialize cashe object item with the data to be written
         if(method.equalsIgnoreCase(Constants.TOKENIZER_METHOD_TOKENIZE)) {
-            CacheEntryObject cacheEntryObject = new CacheEntryObject() {
-                @Override
-                public ArrayList getSenderIds() {
-                    return super.getSenderIds();
-                }
-
-                @Override
-                public void setSenderIds(ArrayList senderIds) {
-                    super.setSenderIds(senderIds);
-                }
-
-                @Override
-                public ArrayList getReceiverIds() {
-                    return super.getReceiverIds();
-                }
-
-                @Override
-                public void setReceiverIds(ArrayList receiverIds) {
-                    super.setReceiverIds(receiverIds);
-                }
-
-                @Override
-                public void setObject(JSONObject object) {
-                    super.setObject(object);
-                }
-            };
+            CacheEntryObject cacheEntryObject = new CacheEntryObject(senderId,receiverIds,jsonObjTemp);
 
             //set the object to be included in the cacheEntryObject
 
-            cacheEntryObject.setObject(jsonObjTemp);
+            cacheEntryObject.setJsonObject(jsonObjTemp);
             response = tokenizer.tokenize(cacheEntryObject,message,maxLenght);
         }
         return response ;
     }
 
     public String deTokenizeSingleValue(String method,String token, String senderId, ArrayList<String> receiverIds) throws JSONException, NoSuchAlgorithmException {
-        return  tokenizer.deTokenize(token,senderId).getObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString();
+        return  tokenizer.deTokenize(token,senderId).getJsonObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString();
     }
 
 

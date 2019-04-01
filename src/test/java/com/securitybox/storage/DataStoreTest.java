@@ -3,11 +3,10 @@ package com.securitybox.storage;
 import com.securitybox.constants.Constants;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.UUID;
+
 import static org.junit.Assert.*;
 
 public class DataStoreTest {
@@ -23,45 +22,17 @@ public class DataStoreTest {
     public void storeValue() throws IllegalAccessException, InstantiationException {
 
        //Test the cacheobject injection
-        ArrayList<String> sender = new ArrayList<String>();
-        sender.add("clientA");
-        ArrayList<String> receiver = new ArrayList<String>();
-        receiver.add("clientB");
-        CacheEntryObject cacheEntryObject = new CacheEntryObject() {
-            @Override
-            public ArrayList getSenderIds() {
-                return super.getSenderIds();
-            }
-
-            @Override
-            public void setSenderIds(ArrayList senderIds) {
-                super.setSenderIds(senderIds);
-            }
-
-            @Override
-            public ArrayList getReceiverIds() {
-                return super.getReceiverIds();
-            }
-
-            @Override
-            public void setReceiverIds(ArrayList receiverIds) {
-                super.setReceiverIds(receiverIds);
-            }
-
-            @Override
-            public void setObject(JSONObject object) {
-                super.setObject(object);
-            }
-        };
-
+        String senderId = "clientA";
+        ArrayList<String> receiverIds = new ArrayList<String>();
+        receiverIds.add("clientB");
         JSONObject jsonObjTemp = new JSONObject();
         try {
             jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,storeValue);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        cacheEntryObject.setObject(jsonObjTemp);
-        dataStore.storeValue(token,cacheEntryObject);
+        CacheEntryObject cacheEntryObject = new CacheEntryObject(senderId,receiverIds,jsonObjTemp);
+        assertEquals(true,dataStore.storeValue(token,cacheEntryObject));
 
     }
 
@@ -69,8 +40,8 @@ public class DataStoreTest {
     public void retrieveValue() {
 
         try {
-            String result = dataStore.retrieveObject(token).getObject().getString(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME);
-            assertEquals(storeValue,result);
+            assertEquals(storeValue,dataStore.retrieveObject(token).getJsonObject().getString(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME));
+            assertEquals(storeValue,dataStore.retrieveObject(token,"ID").getJsonObject().getString(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME));
         } catch (Exception e) {
             e.printStackTrace();
         }

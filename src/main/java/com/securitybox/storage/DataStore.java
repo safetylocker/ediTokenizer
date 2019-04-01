@@ -13,11 +13,8 @@ import org.apache.ignite.transactions.TransactionException;
 import org.json.JSONException;
 
 import javax.cache.configuration.FactoryBuilder;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.jar.JarEntry;
 
 import static org.apache.ignite.cache.CacheAtomicityMode.TRANSACTIONAL;
 
@@ -51,13 +48,13 @@ public  class DataStore implements DataStoreDao{
 
 
 
-    //Store object for token type integer
+    //Store jsonObject for token type integer
     @Override
     public boolean storeValue(int key,CacheEntryObject cacheEntryObject) {
         System.out.println("current hash value storeValue() " + cacheEntryObject.hashCode());
         System.out.println("current key used to cache " + key);
         try {
-            System.out.println("Value inside cache object : " + cacheEntryObject.getObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString());
+            System.out.println("Value inside cache jsonObject : " + cacheEntryObject.getJsonObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -69,7 +66,7 @@ public  class DataStore implements DataStoreDao{
         return true;
     }
 
-    //Store object for token type string
+    //Store jsonObject for token type string
     @Override
     public boolean storeValue(String key,CacheEntryObject cacheEntryObject) {
         try {
@@ -93,7 +90,7 @@ public  class DataStore implements DataStoreDao{
 
     }
 
-    //Token type String for retrieving cache object
+    //Token type String for retrieving cache jsonObject
     @Override
     public CacheEntryObject retrieveObject(String key) {
         System.out.println("Current key to detokenize retrieveObject()" + key);
@@ -110,7 +107,7 @@ public  class DataStore implements DataStoreDao{
     @Override
     public CacheEntryObject retrieveObject(int key, String cleintId) {
         System.out.println("Current key to detokenize retrieveObject()" + key);
-        CacheEntryObject cacheEntryObject=null;
+        CacheEntryObject cacheEntryObject;
         try {
             cacheEntryObject =  objectCache.get(key);
             cacheEntryObject.accessEntries.add(new AccessEntry(new Date(),cleintId));
@@ -127,7 +124,7 @@ public  class DataStore implements DataStoreDao{
     @Override
     public CacheEntryObject retrieveObject(String key, String cleintId) {
         System.out.println("Current key to detokenize retrieveObject()" + key);
-        CacheEntryObject cacheEntryObject=null;
+        CacheEntryObject cacheEntryObject;
         try {
             cacheEntryObject =  objectCacheStr.get(key);
             cacheEntryObject.accessEntries.add(new AccessEntry(new Date(),cleintId));
@@ -135,7 +132,7 @@ public  class DataStore implements DataStoreDao{
             objectCacheStr.put(key,cacheEntryObject);
             return cacheEntryObject;
         } catch (Exception e) {
-            e.getCause();
+            System.out.println(e.getMessage());
             return null;
         }
     }
@@ -151,7 +148,7 @@ public  class DataStore implements DataStoreDao{
         }
     }
 
-    //method to get access logs from a cache object.
+    //method to get access logs from a cache jsonObject.
     @Override
     public ArrayList<AccessEntry> getAccessLogs(String key) {
         System.out.println("Current key to get access logs" + key);

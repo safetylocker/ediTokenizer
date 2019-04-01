@@ -95,22 +95,12 @@ public class Tokenizer implements TokenizerDao {
     }
 
     public ArrayList<AccessEntry> getAccessLogs(String key){
-        ArrayList<AccessEntry> jsonArray = new ArrayList();
-        JSONObject jsonObject;
-        ArrayList<AccessEntry> accessEntries;
         if(StringUtils.isNumeric(key)) {
-            accessEntries = dataStore.retrieveObject(Integer.valueOf(key)).getAccessLogs();
+            return dataStore.retrieveObject(Integer.valueOf(key)).getAccessLogs();
 
         }else {
-            accessEntries =  dataStore.retrieveObject(key).getAccessLogs();
+            return dataStore.retrieveObject(key).getAccessLogs();
         }
 
-        if(accessEntries.size() >= 0){
-             for(int i=0;i<accessEntries.size();i++){
-                 jsonArray.add(accessEntries.get(i));
-             }
-        }
-
-        return jsonArray;
-    }
+            }
 }
