@@ -13,7 +13,6 @@ public class CacheEntryObject<receiverIds> implements Serializable {
     public CacheEntryObject(){
         tokenCretionTime = new Date();
         accessEntries = new ArrayList();
-
     }
 
     public CacheEntryObject(String senderId,ArrayList<receiverIds> receiverIds,JSONObject jsonObject){
@@ -21,26 +20,21 @@ public class CacheEntryObject<receiverIds> implements Serializable {
         accessEntries = new ArrayList();
         this.senderId=senderId;
         this.jsonObject =jsonObject;
-
     }
 
     public Date tokenCretionTime;
-
     public JSONObject getJsonObject() {
         return jsonObject;
     }
-
     public void setJsonObject(JSONObject jsonObject) {
         this.jsonObject = jsonObject;
     }
     public String getSenderIds() {
         return senderId;
     }
-
     public  void setSenderId(String senderId){
         this.senderId = senderId;
     }
-
     public String getSenderId(){
         return senderId;
     }
@@ -53,6 +47,5 @@ public class CacheEntryObject<receiverIds> implements Serializable {
     public ArrayList<AccessEntry> getAccessLogs(){
         return accessEntries;
     }
-
 }
 

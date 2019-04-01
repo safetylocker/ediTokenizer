@@ -4,21 +4,22 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class AccessEntry{
-    private Date acccesTime;
+    private String acccesTime;
     private String clientId;
     private SimpleDateFormat simpleDateFormat;
 
     public AccessEntry(Date accessTime,String clientId){
         this.clientId=clientId;
-        this.acccesTime = accessTime;
+        simpleDateFormat = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+        this.acccesTime = simpleDateFormat.format(accessTime);
 
     }
-    public Date getAcccesTime() {
+    public String getAcccesTime() {
         return acccesTime;
     }
 
     public void setAcccesTime(Date accessTime) {
-        this.acccesTime = accessTime;
+        this.acccesTime = simpleDateFormat.format(accessTime);
     }
 
     public String getClientId() {
