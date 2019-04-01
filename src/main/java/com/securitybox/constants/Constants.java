@@ -24,5 +24,7 @@ public class Constants {
     public final static String IGNITE_DEFAULT_CACHE_NAME="securityBoxCache";
     public final static String IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME="item";
 
+    public final static String DATE_FORMAT="MM/dd/yyyy hh:mm:ss";
+
 
 }
