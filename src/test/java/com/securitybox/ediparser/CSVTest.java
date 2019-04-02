@@ -1,6 +1,7 @@
 package com.securitybox.ediparser;
 
 import com.securitybox.constants.Constants;
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,10 +16,8 @@ public class CSVTest {
                 "KKK:2222:EEE:3333\n";
         JSONArray jsonArray = new JSONArray();
 
-
     @Test
-
-        public void testFile() throws JSONException, NoSuchAlgorithmException {
+    public void testFile() throws JSONException, NoSuchAlgorithmException {
             CSV csv = new CSV("\n",":");
             jsonArray.put(new JSONObject().put(Constants.CSV_DATA_ELEMENT_POSITION,2));
             jsonArray.put(new JSONObject().put(Constants.CSV_DATA_ELEMENT_POSITION,5));

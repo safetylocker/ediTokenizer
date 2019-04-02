@@ -1,7 +1,5 @@
 package com.securitybox.storage;
-
 import com.securitybox.constants.Constants;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -14,7 +12,6 @@ public class AccessEntry{
         this.clientId=clientId;
         simpleDateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
         this.acccesTime = simpleDateFormat.format(accessTime);
-
     }
     public String getAcccesTime() {
         return acccesTime;
