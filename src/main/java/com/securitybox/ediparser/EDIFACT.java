@@ -80,21 +80,36 @@ public class EDIFACT extends EdiDocument {
                                 edifactTokenization(dataElementArray, k, method, senderId, receiverIds, requestedElements);
                             }
                         }//if segment name is specififed only
-                        else if(requestedElements.has(Constants.EDIFACT_SEGMENT_NAME) && //If segment name exists in request to be tokenized
-                                requestedElements.getString(Constants.EDIFACT_SEGMENT_NAME).equalsIgnoreCase(componentArr.getString(0))){// and If segment name is equal
-
+                        else if(requestedElements.has(Constants.EDIFACT_SEGMENT_NAME)){  //If segment name exists in request to be tokenized
                             if(logger.isDebugEnabled())logger.debug("Inside segment " + componentArr.getString(0));
                             if(logger.isDebugEnabled())logger.debug(requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_NUMBER) + " ==" + (j + 1));
                             if(logger.isDebugEnabled())logger.debug(requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_POSITION) + "==" + (k + 1));
 
-                            if (requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_NUMBER) == (j + 1) //if composite element number is matched
-                                    && requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_POSITION) == (k + 1)) {//and if element position is matched
-                                if(logger.isDebugEnabled())logger.debug("Segment found to be tokenized : " + requestedElements.getString(Constants.EDIFACT_SEGMENT_NAME));
-                                edifactTokenization(dataElementArray, k, method, senderId, receiverIds, requestedElements);
+                            if(requestedElements.getString(Constants.EDIFACT_SEGMENT_NAME).equalsIgnoreCase(componentArr.getString(0))) {
+                                // and If segment name is equal
+                                if(requestedElements.has(Constants.EDIFACT_SEGMENT_QUALIFIER)){
+                                    if(requestedElements.getString(Constants.EDIFACT_SEGMENT_QUALIFIER).equalsIgnoreCase(componentArr.getString(1)))
+                                    {
+                                        if (requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_NUMBER) == (j + 1) //if composite element number is matched
+                                                && requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_POSITION) == (k + 1)) {//and if element position is matched
+                                            if (logger.isDebugEnabled())
+                                                logger.debug("Segment found to be tokenized : " + requestedElements.getString(Constants.EDIFACT_SEGMENT_NAME));
+                                            edifactTokenization(dataElementArray, k, method, senderId, receiverIds, requestedElements);
+                                        }
+                                    }
+                                }else{
+                                    if (requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_NUMBER) == (j + 1) //if composite element number is matched
+                                            && requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_POSITION) == (k + 1)) {//and if element position is matched
+                                        if(logger.isDebugEnabled())logger.debug("Segment found to be tokenized : " + requestedElements.getString(Constants.EDIFACT_SEGMENT_NAME));
+                                        edifactTokenization(dataElementArray, k, method, senderId, receiverIds, requestedElements);
+                                    }
+                                }
+
+                            } else{
+                                //if needed to handle it later
                             }
-                        } else{
-                            //if needed to handle it later
                         }
+
 
                     }
                     //collect back the response to create the EDIFACT message back
