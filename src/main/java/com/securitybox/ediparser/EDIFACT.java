@@ -71,8 +71,6 @@ public class EDIFACT extends EdiDocument {
                         //check if segment number is defined in object to be tokenized, priority is given to segment number
                         if(requestedElements.has(Constants.EDIFACT_SEGMENT_NUMBER)) {
                             //check and tokenize the element if found as requested
-                            if(logger.isDebugEnabled())logger.debug(requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_NUMBER) + " ==" + (j + 1));
-                            if(logger.isDebugEnabled())logger.debug(requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_POSITION) + "==" + (k + 1));
                             if (requestedElements.getInt(Constants.EDIFACT_SEGMENT_NUMBER) == (i + 1)//if segment number is matched
                                     && requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_NUMBER) == (j + 1) //and if composite element number is matched
                                     && requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_POSITION) == (k + 1)) {//and if element position is matched
@@ -81,10 +79,7 @@ public class EDIFACT extends EdiDocument {
                             }
                         }//if segment name is specififed only
                         else if(requestedElements.has(Constants.EDIFACT_SEGMENT_NAME)){  //If segment name exists in request to be tokenized
-                            if(logger.isDebugEnabled())logger.debug("Inside segment " + componentArr.getString(0));
-                            if(logger.isDebugEnabled())logger.debug(requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_NUMBER) + " ==" + (j + 1));
-                            if(logger.isDebugEnabled())logger.debug(requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_POSITION) + "==" + (k + 1));
-
+                            if(logger.isDebugEnabled())logger.debug("segment " + componentArr.getString(0));
                             if(requestedElements.getString(Constants.EDIFACT_SEGMENT_NAME).equalsIgnoreCase(componentArr.getString(0))) {
                                 // and If segment name is equal
                                 if(requestedElements.has(Constants.EDIFACT_SEGMENT_QUALIFIER)){
@@ -160,7 +155,7 @@ public class EDIFACT extends EdiDocument {
                 if(logger.isDebugEnabled())logger.debug("Maximuum token lenght suppurted by cleint is  greater than 32 and request tokenization with hash algorithm logic.");
                 jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME, tokenizer.tokenize(cacheEntryObject,jsonObjTemp.get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString(),requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_LENGTH)));
             } else {
-                if(logger.isDebugEnabled())logger.debug("Maximuum token lenght suppurted by cleint is  less than 32, request tokenizatio based on object hashcode.");
+                if(logger.isDebugEnabled())logger.debug("Maximuum token lenght suppurted by cleint is  less than 32, request tokenization based on object hashcode.");
                 jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME, tokenizer.tokenize(cacheEntryObject));
             }
 
