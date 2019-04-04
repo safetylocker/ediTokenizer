@@ -54,7 +54,7 @@ public class EDIFACT extends EdiDocument {
         JSONArray segmentArr = seperateElements(message,EDIFACT_SEGMENT_TERMINATOR);
         //Iterate through all the segments
         for (int i = 0; i < segmentArr.length(); i++){
-            //seperate segments using segment seperator
+            //seperate coponent using component seperator
             JSONArray componentArr = seperateElements(segmentArr.get(i).toString(),EDIFACT_DATA_ELEMENT_SEPERATOR);
             if(logger.isDebugEnabled())logger.debug("Handling segment " + segmentArr.get(i).toString());
             //iterator thorugh all components inside the segment

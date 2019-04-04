@@ -6,7 +6,7 @@ class CSVRecord{
 
     public CSVRecord(String fieldDelimeter, String escapeChar,String record) {
 
-        fields = record.split(fieldDelimeter);
+        fields = record.split(fieldDelimeter,-1);
         this.fieldDelimeter = fieldDelimeter;
     }
 
