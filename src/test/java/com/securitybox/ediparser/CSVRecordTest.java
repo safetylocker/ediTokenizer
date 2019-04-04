@@ -21,7 +21,7 @@ public class CSVRecordTest {
 
     @Test
     public void getCount() {
-        Assert.assertEquals(1,csvRecord.getCount());
+        Assert.assertEquals(21,csvRecord.getCount());
     }
 
     @Test
