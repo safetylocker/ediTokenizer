@@ -87,10 +87,14 @@ public class Tokenizer implements TokenizerDao {
 
     public CacheEntryObject deTokenize(String key, String clientId) {
         System.out.println("Current key to detokenize detokenize()" + key);
-        if (StringUtils.isNumeric(key)) {
-            return dataStore.retrieveObject(Integer.valueOf(key), clientId);
-        } else {
-            return dataStore.retrieveObject(key, clientId);
+        if(key=="" || key==null) {
+            return null;
+        }else {
+            if (StringUtils.isNumeric(key)) {
+                return dataStore.retrieveObject(Integer.valueOf(key), clientId);
+            } else {
+                return dataStore.retrieveObject(key, clientId);
+            }
         }
     }
 
