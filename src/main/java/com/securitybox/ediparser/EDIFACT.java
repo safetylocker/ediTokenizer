@@ -54,7 +54,7 @@ public class EDIFACT extends EdiDocument {
         JSONArray segmentArr = seperateElements(message,EDIFACT_SEGMENT_TERMINATOR);
         //Iterate through all the segments
         for (int i = 0; i < segmentArr.length(); i++){
-            //seperate coponent using component seperator
+            //seperate segments using segment seperator
             JSONArray componentArr = seperateElements(segmentArr.get(i).toString(),EDIFACT_DATA_ELEMENT_SEPERATOR);
             if(logger.isDebugEnabled())logger.debug("Handling segment " + segmentArr.get(i).toString());
             //iterator thorugh all components inside the segment
@@ -152,7 +152,7 @@ public class EDIFACT extends EdiDocument {
             //call tokenization service with cacheObject to be tokenized
             //if element lenght is sufficent to use the general tokenization mechanims based on hash key, allow to use it
             if(requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_LENGTH )>= 32) {
-                if(logger.isDebugEnabled())logger.debug("Maximuum token lenght suppurted by cleint is  greater than 32 and request tokenization with hash algorithm logic.");
+                if(logger.isDebugEnabled())logger.debug("Maximuum token lenght supported by cleint is  greater than 32 and request tokenization with hash algorithm logic.");
                 jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME, tokenizer.tokenize(cacheEntryObject,jsonObjTemp.get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString(),requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_LENGTH)));
             } else {
                 if(logger.isDebugEnabled())logger.debug("Maximuum token lenght suppurted by cleint is  less than 32, request tokenization based on object hashcode.");
