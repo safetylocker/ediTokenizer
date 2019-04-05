@@ -53,8 +53,8 @@ public class CSV extends EdiDocument {
             CSVRecord csvRecord = new CSVRecord(fieldDelimeter,"",csvResponse.getString(i).toString());
             for(int j=0;j<csvRecord.getCount(); j++ ){
                 for(int ja=0 ; ja < objectsToBeTokenized.length();ja++){
-                    JSONObject requestedElements = objectsToBeTokenized.getJSONObject(ja);
-                    if(requestedElements.getInt(Constants.CSV_DATA_ELEMENT_POSITION)== j){
+                    JSONObject requestedElement = objectsToBeTokenized.getJSONObject(ja);
+                    if(requestedElement.getInt(Constants.CSV_DATA_ELEMENT_POSITION)== j){
                         //Create temproary JSON object to handle the current content.
                         JSONObject jsonObjTemp = new JSONObject();
                         jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,csvRecord.getField(j));
@@ -62,12 +62,13 @@ public class CSV extends EdiDocument {
                         if(method.equalsIgnoreCase(Constants.TOKENIZER_METHOD_TOKENIZE)) {
                             CacheEntryObject cacheEntryObject = new CacheEntryObject(senderId,receiverIds,jsonObjTemp);
                             //set the object to be included in the cacheEntryObject
-
                             cacheEntryObject.setJsonObject(jsonObjTemp);
                             //call tokernization service with cacheObject to be tokenized
-                            jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,tokenizer.tokenize(cacheEntryObject));
-                            //test with varied key lenght that client can support...
-                            //jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,tokenizer.tokenize(cacheEntryObject,csvRecord.getField(j),127));
+                            if (requestedElement.has(Constants.CSV_DATA_ELEMENT_LENGTH)) {
+                                jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME, tokenizer.tokenize(cacheEntryObject, csvRecord.getField(j), requestedElement.getInt(Constants.CSV_DATA_ELEMENT_LENGTH)));
+                            }else{
+                                jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,tokenizer.tokenize(cacheEntryObject));
+                            }
 
                         }else if(method.equalsIgnoreCase(Constants.TOKENIZER_METHOD_DETOKENIZE)) {
                             //get hte key to be retrived from current message

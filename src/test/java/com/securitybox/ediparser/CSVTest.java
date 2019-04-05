@@ -19,8 +19,16 @@ public class CSVTest {
     @Test
     public void testFile() throws JSONException, NoSuchAlgorithmException {
             CSV csv = new CSV("\n",":");
-            jsonArray.put(new JSONObject().put(Constants.CSV_DATA_ELEMENT_POSITION,2));
-            jsonArray.put(new JSONObject().put(Constants.CSV_DATA_ELEMENT_POSITION,5));
+            JSONObject obj_1=new JSONObject();
+            obj_1.put(Constants.CSV_DATA_ELEMENT_POSITION,2);
+            //obj_1.put(Constants.CSV_DATA_ELEMENT_LENGTH,130);
+
+            JSONObject obj_2=new JSONObject();
+            obj_2.put(Constants.CSV_DATA_ELEMENT_POSITION,5);
+            obj_2.put(Constants.CSV_DATA_ELEMENT_LENGTH,45);
+
+            jsonArray.put(obj_1);
+            jsonArray.put(obj_2);
             assertEquals(csvFile,csv.docuemntHandler(Constants.TOKENIZER_METHOD_DETOKENIZE,jsonArray,csv.docuemntHandler(Constants.TOKENIZER_METHOD_TOKENIZE,jsonArray,csvFile,null,null),null,null));
     }
 
