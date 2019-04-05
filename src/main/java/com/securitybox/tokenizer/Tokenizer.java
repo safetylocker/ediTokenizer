@@ -12,10 +12,12 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Tokenizer implements TokenizerDao {
   public static MessageDigest md;
   public static DataStore dataStore;
+
   public Tokenizer() {
       dataStore = new DataStore();
     }
@@ -23,6 +25,7 @@ public class Tokenizer implements TokenizerDao {
     //such that returned token is fit into specified max limit by client
     public String tokenize(String input,int minTokenLenght) {
         String token="";
+        input= UUID.randomUUID().toString() + input;
         try {
             if(minTokenLenght >= 128) {
                 md = MessageDigest.getInstance("SHA-512");

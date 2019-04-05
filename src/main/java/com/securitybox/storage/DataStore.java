@@ -15,6 +15,7 @@ import org.json.JSONException;
 import javax.cache.configuration.FactoryBuilder;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 import static org.apache.ignite.cache.CacheAtomicityMode.TRANSACTIONAL;
 
@@ -23,6 +24,8 @@ public  class DataStore implements DataStoreDao{
     //public static IgniteCache<String, String> cache;
     IgniteCache<Integer,CacheEntryObject> objectCache;
     IgniteCache<String,CacheEntryObject> objectCacheStr;
+
+
 
     //initiate a ignite cache with default settings to be used for storing token and values
     /**
@@ -51,8 +54,7 @@ public  class DataStore implements DataStoreDao{
     //Store jsonObject for token type integer
     @Override
     public boolean storeValue(int key,CacheEntryObject cacheEntryObject) {
-        System.out.println("current hash value storeValue() " + cacheEntryObject.hashCode());
-        System.out.println("current key used to cache " + key);
+        System.out.println("current hash value storeValue() " + key);
         try {
             System.out.println("Value inside cache jsonObject : " + cacheEntryObject.getJsonObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString());
         } catch (JSONException e) {
