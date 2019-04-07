@@ -25,7 +25,7 @@ public class SimpleTokenizerTest {
     public void deTokenizeSingleValue() throws JSONException, NoSuchAlgorithmException {
         tokenToDetokenize = simpleTokenizer.tokenizeSingleValue(Constants.TOKENIZER_METHOD_TOKENIZE,strToTokenized,null,null,78);
         if(logger.isDebugEnabled())logger.debug("Token to be de-tokenized : " + tokenToDetokenize);
-        assertNotEquals(strToTokenized,simpleTokenizer.deTokenizeSingleValue(Constants.TOKENIZER_METHOD_DETOKENIZE,tokenToDetokenize,null,null));
+        assertEquals(strToTokenized,simpleTokenizer.deTokenizeSingleValue(Constants.TOKENIZER_METHOD_DETOKENIZE,tokenToDetokenize,null,null));
     }
 
 
