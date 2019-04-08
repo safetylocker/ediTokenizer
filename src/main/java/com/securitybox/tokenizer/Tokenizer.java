@@ -56,6 +56,7 @@ public class Tokenizer implements TokenizerDao {
 
     //return the key of the object used to cache if caching is successfull
     //else return -1 to indicate it failes, thus it needs to be handled by the calling object
+    @Override
     public int tokenize(CacheEntryObject cacheEntryObject) {
            int tmpHashCode= cacheEntryObject.hashCode();
            if(dataStore.storeValue(tmpHashCode, cacheEntryObject))
@@ -88,6 +89,17 @@ public class Tokenizer implements TokenizerDao {
         }
     }
 
+    @Override
+    public boolean removeTokenEntry(String key) {
+        return dataStore.removeToken(key);
+    }
+
+    @Override
+    public boolean removeTokenEntry(String key, String clientId) {
+
+        return dataStore.removeTokenEntry(key, clientId);
+    }
+
     public CacheEntryObject deTokenize(String key, String clientId) {
         System.out.println("Current key to detokenize detokenize()" + key);
         if(key=="" || key==null) {
@@ -101,6 +113,7 @@ public class Tokenizer implements TokenizerDao {
         }
     }
 
+    @Override
     public boolean removeToken(String key){
       return dataStore.removeToken(key);
     }
@@ -113,5 +126,7 @@ public class Tokenizer implements TokenizerDao {
             return dataStore.retrieveObject(key).getAccessLogs();
         }
 
-            }
+    }
+
+
 }

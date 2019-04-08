@@ -6,8 +6,21 @@ import com.securitybox.storage.DataStore;
 import java.security.MessageDigest;
 
 public interface TokenizerDao<E> {
-    int tokenize(CacheEntryObject cacheEntryObject);
+
+    //tokenize a cache object
+    abstract int tokenize(CacheEntryObject cacheEntryObject);
     String tokenize(CacheEntryObject cacheEntryObject,String valueToTokenize,int lenght);
-    CacheEntryObject deTokenize(String key);
+
+    //Method for detokenizing a given token
+    abstract CacheEntryObject deTokenize(String key);
+    //Function to remove the cotent from the cache entry from the data store.
+    //Cache object should not be removed, such that access logs still be availalbe for future reference for a given token
+    abstract boolean removeTokenEntry(String key);
+
+
+    boolean removeTokenEntry(String key, String clientId);
+
+    abstract boolean removeToken(String key);
+
 
 }

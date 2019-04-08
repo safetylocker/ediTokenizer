@@ -30,5 +30,7 @@ public class Constants {
 
     public final static String DATE_FORMAT="MM/dd/yyyy hh:mm:ss";
 
+    public final static String CACHE_ENTRY_OBJECT_NAME="CacheEntryObject";
+
 
 }

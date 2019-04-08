@@ -18,4 +18,7 @@ public interface DataStoreDao {
     //method to get access logs from a cache jsonObject.
     abstract ArrayList<AccessEntry> getAccessLogs(int key);
     abstract ArrayList<AccessEntry> getAccessLogs(String key);
+
+    //method to remove token entry but leave the cache object with access logs
+    abstract  boolean removeTokenEntry(String key, String clientId);
 }

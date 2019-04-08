@@ -14,6 +14,7 @@ import org.apache.ignite.configuration.IgniteReflectionFactory;
 import org.apache.ignite.transactions.TransactionException;
 import org.apache.maven.shared.utils.StringUtils;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.cache.configuration.FactoryBuilder;
 import java.util.ArrayList;
@@ -55,10 +56,9 @@ public  class DataStore implements DataStoreDao{
                 new IgniteReflectionFactory(CacheFileLocalStore.class);
         cfg.setCacheStoreFactory(FactoryBuilder.factoryOf(storeFactory));
 
-
         //cache = ignite.getOrCreateCache(cfg);
-        objectCache = ignite.getOrCreateCache("CacheEntryObject");
-        objectCacheStr = ignite.getOrCreateCache("CacheEntryObject");
+        objectCache = ignite.getOrCreateCache(Constants.CACHE_ENTRY_OBJECT_NAME);
+        objectCacheStr = ignite.getOrCreateCache(Constants.CACHE_ENTRY_OBJECT_NAME);
     }
 
 
@@ -182,4 +182,40 @@ public  class DataStore implements DataStoreDao{
             return null;
         }
     }
+
+    @Override
+    public boolean removeTokenEntry(String key, String clientId) {
+        CacheEntryObject cacheEntryObject;
+        try {
+            if (StringUtils.isNumeric(key)) {
+                cacheEntryObject =  objectCache.get(Integer.valueOf(key));
+            }else{
+                cacheEntryObject =  objectCacheStr.get(key);
+            }
+
+            cacheEntryObject.accessEntries.add(new AccessEntry(new Date(),clientId));
+            if (StringUtils.isNumeric(key)) {
+                objectCache.remove(Integer.valueOf(key));
+            }else{
+                objectCacheStr.remove(key);
+            }
+
+            JSONObject jsonObject = cacheEntryObject.getJsonObject();
+            jsonObject.remove(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME);
+            jsonObject.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,"N/A");
+            cacheEntryObject.setJsonObject(jsonObject);
+            if (StringUtils.isNumeric(key)) {
+                objectCache.put(Integer.valueOf(key),cacheEntryObject);
+            }else {
+                objectCacheStr.put(key,cacheEntryObject);
+            }
+
+            return true;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+
 }
