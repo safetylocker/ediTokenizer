@@ -186,6 +186,7 @@ public  class DataStore implements DataStoreDao{
     @Override
     public boolean removeTokenEntry(String key, String clientId) {
         CacheEntryObject cacheEntryObject;
+        //get the existing object from the cache.
         try {
             if (StringUtils.isNumeric(key)) {
                 cacheEntryObject =  objectCache.get(Integer.valueOf(key));
@@ -194,22 +195,26 @@ public  class DataStore implements DataStoreDao{
             }
 
             cacheEntryObject.accessEntries.add(new AccessEntry(new Date(),clientId));
+
+            //remove the existing object from the cache.
             if (StringUtils.isNumeric(key)) {
                 objectCache.remove(Integer.valueOf(key));
             }else{
                 objectCacheStr.remove(key);
             }
 
+            //create a new oject to be stored with empty value
             JSONObject jsonObject = cacheEntryObject.getJsonObject();
             jsonObject.remove(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME);
-            jsonObject.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,"N/A");
+            jsonObject.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,Constants.IGNITE_DEFAULT_VALUE_DELETED);
             cacheEntryObject.setJsonObject(jsonObject);
+
+            //add a modofied cache object with the same key
             if (StringUtils.isNumeric(key)) {
                 objectCache.put(Integer.valueOf(key),cacheEntryObject);
             }else {
                 objectCacheStr.put(key,cacheEntryObject);
             }
-
             return true;
         } catch (Exception e) {
             System.out.println(e.getMessage());

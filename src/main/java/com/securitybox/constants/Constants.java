@@ -9,6 +9,7 @@ public class Constants {
     public final static String DOCUMENT_TYPE_SINGLE_VALUE_TOKEN = "singleValueToken" ;
     public final static String EDIFACT_SEGMENT_NAME = "segmentName";
     public final static String EDIFACT_SEGMENT_QUALIFIER = "segmentQualifier";
+    public static final String IGNITE_DEFAULT_VALUE_DELETED ="DELETED" ;
 
     public static String EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR=":";
     public static String EDIFACT_DATA_ELEMENT_SEPERATOR="+";
