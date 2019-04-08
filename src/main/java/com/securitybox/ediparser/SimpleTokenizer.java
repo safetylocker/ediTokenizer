@@ -61,8 +61,8 @@ public class SimpleTokenizer extends EdiDocument {
         return tokenizer.removeToken(key);
     }
 
-    public boolean removeTokenEntry(String key){
-        return tokenizer.removeTokenEntry(key);
+    public boolean removeTokenEntry(String key,String senderId){
+        return tokenizer.removeTokenEntry(key,senderId);
     }
 }
 

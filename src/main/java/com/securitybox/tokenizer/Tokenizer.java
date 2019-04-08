@@ -90,11 +90,6 @@ public class Tokenizer implements TokenizerDao {
     }
 
     @Override
-    public boolean removeTokenEntry(String key) {
-        return dataStore.removeToken(key);
-    }
-
-    @Override
     public boolean removeTokenEntry(String key, String clientId) {
 
         return dataStore.removeTokenEntry(key, clientId);
