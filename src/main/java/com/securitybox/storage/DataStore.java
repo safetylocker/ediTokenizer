@@ -8,8 +8,11 @@ import org.apache.ignite.Ignition;
 import org.apache.ignite.cache.CacheMode;
 import org.apache.ignite.cache.store.CacheStore;
 import org.apache.ignite.configuration.CacheConfiguration;
+import org.apache.ignite.configuration.DataStorageConfiguration;
+import org.apache.ignite.configuration.IgniteConfiguration;
 import org.apache.ignite.configuration.IgniteReflectionFactory;
 import org.apache.ignite.transactions.TransactionException;
+import org.apache.maven.shared.utils.StringUtils;
 import org.json.JSONException;
 
 import javax.cache.configuration.FactoryBuilder;
@@ -40,10 +43,19 @@ public  class DataStore implements DataStoreDao{
         cfg.setName(Constants.IGNITE_DEFAULT_CACHE_NAME);
         cfg.setAtomicityMode(TRANSACTIONAL);
         cfg.setEncryptionEnabled(true);
-        cfg.setCacheMode(CacheMode.LOCAL);
+        cfg.setCacheMode(CacheMode.REPLICATED);
+
+        //set persitant cache settings.
+        /*DataStorageConfiguration dataStorageConfiguration = new DataStorageConfiguration();
+        dataStorageConfiguration.getDefaultDataRegionConfiguration().setPersistenceEnabled(true);
+        IgniteConfiguration igniteConfiguration = new IgniteConfiguration();
+        igniteConfiguration.setDataStorageConfiguration(dataStorageConfiguration);*/
+
         IgniteReflectionFactory<CacheStore> storeFactory =
                 new IgniteReflectionFactory(CacheFileLocalStore.class);
         cfg.setCacheStoreFactory(FactoryBuilder.factoryOf(storeFactory));
+
+
         //cache = ignite.getOrCreateCache(cfg);
         objectCache = ignite.getOrCreateCache("CacheEntryObject");
         objectCacheStr = ignite.getOrCreateCache("CacheEntryObject");
@@ -77,6 +89,15 @@ public  class DataStore implements DataStoreDao{
             return false;
         }
         return true;
+    }
+
+    @Override
+    public boolean removeToken(String key) {
+        if (StringUtils.isNumeric(key)) {
+            return objectCache.remove(Integer.valueOf(key));
+        } else {
+            return objectCacheStr.remove(key);
+        }
     }
 
     //Token type interger for retreiving value

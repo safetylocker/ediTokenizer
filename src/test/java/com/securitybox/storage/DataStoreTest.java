@@ -18,7 +18,7 @@ public class DataStoreTest {
         dataStore =  new DataStore();
     }
 
-    @Test
+ @Test
     public void storeValue() throws IllegalAccessException, InstantiationException {
 
        //Test the cacheobject injection
@@ -36,7 +36,7 @@ public class DataStoreTest {
 
     }
 
-    @Test
+ @Test
     public void retrieveValue() {
 
         try {
@@ -46,4 +46,5 @@ public class DataStoreTest {
             e.printStackTrace();
         }
     }
+
 }

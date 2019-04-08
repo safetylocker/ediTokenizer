@@ -101,6 +101,10 @@ public class Tokenizer implements TokenizerDao {
         }
     }
 
+    public boolean removeToken(String key){
+      return dataStore.removeToken(key);
+    }
+
     public ArrayList<AccessEntry> getAccessLogs(String key){
         if(StringUtils.isNumeric(key)) {
             return dataStore.retrieveObject(Integer.valueOf(key)).getAccessLogs();

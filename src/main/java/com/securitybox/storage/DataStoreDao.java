@@ -8,8 +8,12 @@ public interface DataStoreDao {
     abstract CacheEntryObject retrieveObject(int key,String clientId);
 
     abstract boolean storeValue(String key,CacheEntryObject cacheEntryObject);
-    CacheEntryObject retrieveObject(String key);
-    CacheEntryObject retrieveObject(String key,String cleintId);
+
+    abstract boolean removeToken(String key);
+
+    @Deprecated
+    abstract CacheEntryObject retrieveObject(String key);
+    abstract CacheEntryObject retrieveObject(String key,String cleintId);
 
     //method to get access logs from a cache jsonObject.
     abstract ArrayList<AccessEntry> getAccessLogs(int key);
