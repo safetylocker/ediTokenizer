@@ -7,10 +7,7 @@ import org.apache.ignite.IgniteState;
 import org.apache.ignite.Ignition;
 import org.apache.ignite.cache.CacheMode;
 import org.apache.ignite.cache.store.CacheStore;
-import org.apache.ignite.configuration.CacheConfiguration;
-import org.apache.ignite.configuration.DataStorageConfiguration;
-import org.apache.ignite.configuration.IgniteConfiguration;
-import org.apache.ignite.configuration.IgniteReflectionFactory;
+import org.apache.ignite.configuration.*;
 import org.apache.ignite.transactions.TransactionException;
 import org.apache.maven.shared.utils.StringUtils;
 import org.json.JSONException;
@@ -38,24 +35,25 @@ public  class DataStore implements DataStoreDao{
     public DataStore(){
         //initialize the ignite cache and start instance
         if(Ignition.state() == IgniteState.STOPPED) {
-            ignite = Ignition.start();
+            CacheConfiguration cfg = new CacheConfiguration();
+            cfg.setName(Constants.IGNITE_DEFAULT_CACHE_NAME);
+            cfg.setAtomicityMode(TRANSACTIONAL);
+            //cfg.setEncryptionEnabled(true);
+            cfg.setCacheMode(CacheMode.REPLICATED);
+
+            IgniteConfiguration igniteConfiguration = new IgniteConfiguration();
+            DataStorageConfiguration dataStorageConfiguration = new DataStorageConfiguration();
+            dataStorageConfiguration.getDefaultDataRegionConfiguration().setPersistenceEnabled(true);
+            dataStorageConfiguration.setWalPath(System.getProperty("user.dir") + "\\ignite\\walpath\\");
+            dataStorageConfiguration.setWalArchivePath(System.getProperty("user.dir") + "\\ignite\\walarchivepath\\");
+            igniteConfiguration.setDataStorageConfiguration(dataStorageConfiguration);
+            igniteConfiguration.setCacheConfiguration(cfg);
+            String cwd = System.getProperty("user.dir");
+
+            ignite = Ignition.start(igniteConfiguration);
+            ignite.active(true);
+            System.out.println("PATH " + cwd);
         }
-        CacheConfiguration cfg = new CacheConfiguration();
-        cfg.setName(Constants.IGNITE_DEFAULT_CACHE_NAME);
-        cfg.setAtomicityMode(TRANSACTIONAL);
-        cfg.setEncryptionEnabled(true);
-        cfg.setCacheMode(CacheMode.REPLICATED);
-
-        //set persitant cache settings.
-        /*DataStorageConfiguration dataStorageConfiguration = new DataStorageConfiguration();
-        dataStorageConfiguration.getDefaultDataRegionConfiguration().setPersistenceEnabled(true);
-        IgniteConfiguration igniteConfiguration = new IgniteConfiguration();
-        igniteConfiguration.setDataStorageConfiguration(dataStorageConfiguration);*/
-
-        IgniteReflectionFactory<CacheStore> storeFactory =
-                new IgniteReflectionFactory(CacheFileLocalStore.class);
-        cfg.setCacheStoreFactory(FactoryBuilder.factoryOf(storeFactory));
-
         //cache = ignite.getOrCreateCache(cfg);
         objectCache = ignite.getOrCreateCache(Constants.CACHE_ENTRY_OBJECT_NAME);
         objectCacheStr = ignite.getOrCreateCache(Constants.CACHE_ENTRY_OBJECT_NAME);
