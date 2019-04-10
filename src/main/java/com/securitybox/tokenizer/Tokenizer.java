@@ -68,7 +68,7 @@ public class Tokenizer implements TokenizerDao {
 
     //tokenize based on input value not object type
     @Override
-    public String tokenize(CacheEntryObject cacheEntryObject,String valueToTokenize,int lenght,String clientId) {
+    public String tokenize(CacheEntryObject cacheEntryObject, String valueToTokenize, int lenght, String clientId) {
         try {
             String token=tokenize(valueToTokenize,lenght);
             if(dataStore.storeValue(token, cacheEntryObject,clientId))
@@ -104,7 +104,7 @@ public class Tokenizer implements TokenizerDao {
     }
 
     public ArrayList<AccessEntry> getAccessLogs(String key,String clientId){
-        return dataStore.retrieveObject(key,clientId).getAccessLogs();
+        return dataStore.retrieveLogs(key,clientId).getAccessLogs();
     }
 
 

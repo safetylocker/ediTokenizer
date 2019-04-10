@@ -54,7 +54,7 @@ public  class DataStore implements DataStoreDao{
 
     //Store jsonObject for token type string
     @Override
-    public boolean storeValue(String key,CacheEntryObject cacheEntryObject,String clientId) {
+    public boolean storeValue(String key, CacheEntryObject cacheEntryObject, String clientId) {
         try {
             cacheEntryObject.accessEntries.add(new AccessEntry(new Date(),clientId,Constants.DATA_STORE_ACTION_CREATED));
             objectCacheStr.put(key,cacheEntryObject);
@@ -77,6 +77,17 @@ public  class DataStore implements DataStoreDao{
         CacheEntryObject cacheEntryObject;
         try {
             return updateEntry(key,clientId,Constants.DATA_STORE_ACTION_DETOKENIZED);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    public CacheEntryObject retrieveLogs(String key, String clientId) {
+        System.out.println("Current key to detokenize retrieveObject()" + key);
+        CacheEntryObject cacheEntryObject;
+        try {
+            return updateEntry(key,clientId,Constants.DATA_STORE_ACTION_ACCESED_LOGS);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return null;
