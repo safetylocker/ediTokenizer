@@ -65,45 +65,37 @@ public  class DataStore implements DataStoreDao{
 
     @Override
     public boolean removeToken(String key) {
-            return objectCacheStr.remove(key);
-    }
 
-    //Token type String for retrieving cache jsonObject
-    @Override
-    public CacheEntryObject retrieveObject(String key) {
-        System.out.println("Current key to detokenize retrieveObject()" + key);
-        try {
-            return objectCacheStr.get(key);
-        } catch (Exception e) {
-            e.getCause();
-            return null;
-        }
-
+        return objectCacheStr.remove(key);
     }
 
      //Token type string for retreiving value while updating the access entry
     @Override
-    public CacheEntryObject retrieveObject(String key, String cleintId) {
+    public CacheEntryObject retrieveObject(String key, String clientId) {
         System.out.println("Current key to detokenize retrieveObject()" + key);
         CacheEntryObject cacheEntryObject;
         try {
-            cacheEntryObject =  objectCacheStr.get(key);
-            cacheEntryObject.accessEntries.add(new AccessEntry(new Date(),cleintId));
-            objectCacheStr.remove(key);
-            objectCacheStr.put(key,cacheEntryObject);
-            return cacheEntryObject;
+            return updateEntry(key,clientId,Constants.DATA_STORE_ACTION_DETOKENIZED);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return null;
         }
     }
 
+    private CacheEntryObject updateEntry(String key,String clientId,String action){
+        CacheEntryObject cacheEntryObject =  objectCacheStr.get(key);
+        cacheEntryObject.accessEntries.add(new AccessEntry(new Date(),clientId,action));
+        objectCacheStr.remove(key);
+        objectCacheStr.put(key,cacheEntryObject);
+        return cacheEntryObject;
+    }
+
     //method to get access logs from a cache jsonObject.
     @Override
-    public ArrayList<AccessEntry> getAccessLogs(String key) {
+    public ArrayList<AccessEntry> getAccessLogs(String key,String clientId) {
         System.out.println("Current key to get access logs" + key);
         try {
-              return objectCacheStr.get(key).getAccessLogs();
+            return updateEntry(key,clientId,Constants.DATA_STORE_ACTION_ACCESED_LOGS).getAccessLogs();
         } catch (Exception e) {
             System.out.println(e.getCause());
             return null;
@@ -116,7 +108,7 @@ public  class DataStore implements DataStoreDao{
         //get the existing object from the cache.
         try {
             cacheEntryObject =  objectCacheStr.get(key);
-            cacheEntryObject.accessEntries.add(new AccessEntry(new Date(),clientId));
+            cacheEntryObject.accessEntries.add(new AccessEntry(new Date(),clientId,clientId));
             //remove the existing object from the cache.
             objectCacheStr.remove(key);
             //create a new oject to be stored with empty value

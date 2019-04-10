@@ -30,17 +30,17 @@ public class TokenizerTest {
         try {
             //token based on integer type
             String token = tokenizer.tokenize(cacheEntryObject_1,cacheValue,15);
-            newCaObj_1 = tokenizer.deTokenize(token);
+            newCaObj_1 = tokenizer.deTokenize(token,"C1");
             assertEquals(cacheValue, newCaObj_1.getJsonObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString());
 
             //token based on String type
             String tokenStr_1 = tokenizer.tokenize(cacheEntryObject_2, cacheValue, 127);
-            newCaObj_2 = tokenizer.deTokenize(tokenStr_1);
+            newCaObj_2 = tokenizer.deTokenize(tokenStr_1,"C1");
             assertEquals(cacheValue, newCaObj_2.getJsonObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString());
 
             //tokenizer test mixed values, insert as a cache object as integer, retireve as a string key
             String tokenStr_2 = tokenizer.tokenize(cacheEntryObject_3,cacheValue,45);
-            newCaObj_3 = tokenizer.deTokenize(tokenStr_2);
+            newCaObj_3 = tokenizer.deTokenize(tokenStr_2,"C1");
             assertEquals(cacheValue, newCaObj_3.getJsonObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString());
             //tokeizer test with client access log
 

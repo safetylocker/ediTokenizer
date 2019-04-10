@@ -33,6 +33,11 @@ public class Constants {
     public final static String DATE_FORMAT="MM/dd/yyyy hh:mm:ss";
 
     public final static String CACHE_ENTRY_OBJECT_NAME="CacheEntryObject";
+    public final static String DATA_STORE_ACTION_ACCESSED="Client has access the token entry.";
+    public final static String DATA_STORE_ACTION_DELETED="Client has access deleted token content.";
+    public final static String DATA_STORE_ACTION_UPDATE="Client has updated the token entry";
+    public final static String DATA_STORE_ACTION_ACCESED_LOGS="Client has accessed the log entry/entries";
+    public final static String DATA_STORE_ACTION_DETOKENIZED="Client has detokenized the token.";
 
 
 }

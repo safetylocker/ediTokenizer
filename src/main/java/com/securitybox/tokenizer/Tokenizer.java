@@ -81,11 +81,6 @@ public class Tokenizer implements TokenizerDao {
         }
     }
 
-    @Override
-    public CacheEntryObject deTokenize(String key) {
-        System.out.println("Current key to detokenize detokenize()" + key);
-        return dataStore.retrieveObject(key);
-    }
 
     @Override
     public boolean removeTokenEntry(String key, String clientId) {
@@ -104,11 +99,12 @@ public class Tokenizer implements TokenizerDao {
 
     @Override
     public boolean removeToken(String key){
+
       return dataStore.removeToken(key);
     }
 
-    public ArrayList<AccessEntry> getAccessLogs(String key){
-        return dataStore.retrieveObject(key).getAccessLogs();
+    public ArrayList<AccessEntry> getAccessLogs(String key,String clientId){
+        return dataStore.retrieveObject(key,clientId).getAccessLogs();
     }
 
 
