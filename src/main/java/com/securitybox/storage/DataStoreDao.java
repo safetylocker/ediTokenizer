@@ -3,7 +3,9 @@ package com.securitybox.storage;
 import java.util.ArrayList;
 
 public interface DataStoreDao {
-    abstract boolean storeValue(String key,CacheEntryObject cacheEntryObject);
+    //Store jsonObject for token type string
+    boolean storeValue(String key, CacheEntryObject cacheEntryObject, String clientId);
+    //Store jsonObject for token type string
     abstract boolean removeToken(String key);
     abstract CacheEntryObject retrieveObject(String key,String cleintId);
     //method to get access logs from a cache jsonObject.

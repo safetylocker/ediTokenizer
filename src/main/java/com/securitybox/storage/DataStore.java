@@ -54,8 +54,9 @@ public  class DataStore implements DataStoreDao{
 
     //Store jsonObject for token type string
     @Override
-    public boolean storeValue(String key,CacheEntryObject cacheEntryObject) {
+    public boolean storeValue(String key,CacheEntryObject cacheEntryObject,String clientId) {
         try {
+            cacheEntryObject.accessEntries.add(new AccessEntry(new Date(),clientId,Constants.DATA_STORE_ACTION_CREATED));
             objectCacheStr.put(key,cacheEntryObject);
         }catch (TransactionException e){
             return false;
@@ -108,7 +109,7 @@ public  class DataStore implements DataStoreDao{
         //get the existing object from the cache.
         try {
             cacheEntryObject =  objectCacheStr.get(key);
-            cacheEntryObject.accessEntries.add(new AccessEntry(new Date(),clientId,clientId));
+            cacheEntryObject.accessEntries.add(new AccessEntry(new Date(),clientId,Constants.DATA_ACTION_REMOVED_TOKEN_ENTRY_DATA));
             //remove the existing object from the cache.
             objectCacheStr.remove(key);
             //create a new oject to be stored with empty value

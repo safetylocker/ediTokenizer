@@ -152,9 +152,9 @@ public class EDIFACT extends EdiDocument {
             //call tokenization service with cacheObject to be tokenized
             //if element lenght is sufficent to use the general tokenization mechanims based on hash key, allow to use it
             if(requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_LENGTH )>= Constants.EDIFACT_MIN_SUPPORTED_LENGTH) {
-               jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME, tokenizer.tokenize(cacheEntryObject,jsonObjTemp.get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString(),requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_LENGTH)));
+               jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME, tokenizer.tokenize(cacheEntryObject,jsonObjTemp.get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString(),requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_LENGTH),senderId));
             } else {
-              jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME, tokenizer.tokenize(cacheEntryObject,jsonObjTemp.get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString(),0));
+              jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME, tokenizer.tokenize(cacheEntryObject,jsonObjTemp.get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString(),0,senderId));
             }
 
         }else if(method.equalsIgnoreCase(Constants.TOKENIZER_METHOD_DETOKENIZE)) {

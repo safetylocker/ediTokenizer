@@ -37,7 +37,7 @@ public class DataStoreTest {
 
        //Test the cacheobject injection
         CacheEntryObject cacheEntryObject = new CacheEntryObject(senderId,receiverIds,jsonObjTemp);
-        assertEquals(true,dataStore.storeValue(token,cacheEntryObject));
+        assertEquals(true,dataStore.storeValue(token,cacheEntryObject,senderId));
 
     }
 
@@ -60,13 +60,13 @@ public class DataStoreTest {
     public void removeTokenEntry() throws JSONException {
         CacheEntryObject cacheEntryObject = new CacheEntryObject(senderId,receiverIds,jsonObjTemp);
         token = UUID.randomUUID().toString();
-        dataStore.storeValue(token,cacheEntryObject);
+        dataStore.storeValue(token,cacheEntryObject,senderId);
         dataStore.removeTokenEntry(token,senderId);
         cacheEntryObject = dataStore.retrieveObject(token,"C1");
         assertEquals(Constants.IGNITE_DEFAULT_VALUE_DELETED,cacheEntryObject.getJsonObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString());
 
         String tokenString = UUID.randomUUID().toString();
-        dataStore.storeValue(tokenString,cacheEntryObject);
+        dataStore.storeValue(tokenString,cacheEntryObject,senderId);
         dataStore.removeTokenEntry(tokenString,senderId);
         cacheEntryObject = dataStore.retrieveObject(tokenString,"C!");
         assertEquals(Constants.IGNITE_DEFAULT_VALUE_DELETED,cacheEntryObject.getJsonObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString());

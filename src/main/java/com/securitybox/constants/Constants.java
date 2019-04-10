@@ -38,6 +38,8 @@ public class Constants {
     public final static String DATA_STORE_ACTION_UPDATE="Client has updated the token entry";
     public final static String DATA_STORE_ACTION_ACCESED_LOGS="Client has accessed the log entry/entries";
     public final static String DATA_STORE_ACTION_DETOKENIZED="Client has detokenized the token.";
+    public final static String DATA_ACTION_REMOVED_TOKEN_ENTRY_DATA="Client has removed the token entry details.";
+    public final static String DATA_STORE_ACTION_CREATED ="Client has created the token entry.";
 
 
 }

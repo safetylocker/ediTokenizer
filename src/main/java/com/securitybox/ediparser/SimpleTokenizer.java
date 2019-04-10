@@ -33,7 +33,7 @@ public class SimpleTokenizer extends EdiDocument {
             //set the object to be included in the cacheEntryObject
 
             cacheEntryObject.setJsonObject(jsonObjTemp);
-            response = tokenizer.tokenize(cacheEntryObject,message,maxLenght);
+            response = tokenizer.tokenize(cacheEntryObject,message,maxLenght,senderId);
         }
         return response ;
     }

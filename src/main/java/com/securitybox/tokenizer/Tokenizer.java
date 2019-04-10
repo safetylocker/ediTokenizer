@@ -68,10 +68,10 @@ public class Tokenizer implements TokenizerDao {
 
     //tokenize based on input value not object type
     @Override
-    public String tokenize(CacheEntryObject cacheEntryObject,String valueToTokenize,int lenght) {
+    public String tokenize(CacheEntryObject cacheEntryObject,String valueToTokenize,int lenght,String clientId) {
         try {
             String token=tokenize(valueToTokenize,lenght);
-            if(dataStore.storeValue(token, cacheEntryObject))
+            if(dataStore.storeValue(token, cacheEntryObject,clientId))
              return token;
             else
                 return null;
