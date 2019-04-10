@@ -13,9 +13,12 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.zip.Adler32;
+import java.util.zip.Checksum;
 
 public class Tokenizer implements TokenizerDao {
   public static MessageDigest md;
+  public Checksum checksum ;
   public static DataStore dataStore;
 
   public Tokenizer() {
@@ -38,8 +41,16 @@ public class Tokenizer implements TokenizerDao {
             }
             else if(minTokenLenght >= 32){
                 md = MessageDigest.getInstance("MD5");
+
+            }else if(minTokenLenght >= 10){
+                byte bytes[] = input.getBytes();
+                checksum = new Adler32();
+                checksum.update(bytes,0,bytes.length);
+                long lngChecksum = checksum.getValue();
+                return  Long.toString(lngChecksum);
+
             }else{
-                return null;
+                return UUID.randomUUID().toString();
             }
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -54,18 +65,9 @@ public class Tokenizer implements TokenizerDao {
         return token;
     }
 
-    //return the key of the object used to cache if caching is successfull
-    //else return -1 to indicate it failes, thus it needs to be handled by the calling object
-    @Override
-    public int tokenize(CacheEntryObject cacheEntryObject) {
-           int tmpHashCode= cacheEntryObject.hashCode();
-           if(dataStore.storeValue(tmpHashCode, cacheEntryObject))
-               return tmpHashCode;
-           else
-               return -1;
-    }
 
     //tokenize based on input value not object type
+    @Override
     public String tokenize(CacheEntryObject cacheEntryObject,String valueToTokenize,int lenght) {
         try {
             String token=tokenize(valueToTokenize,lenght);
@@ -82,11 +84,7 @@ public class Tokenizer implements TokenizerDao {
     @Override
     public CacheEntryObject deTokenize(String key) {
         System.out.println("Current key to detokenize detokenize()" + key);
-        if(StringUtils.isNumeric(key)) {
-              return dataStore.retrieveObject(Integer.valueOf(key));
-        }else {
-            return dataStore.retrieveObject(key);
-        }
+        return dataStore.retrieveObject(key);
     }
 
     @Override
@@ -100,11 +98,7 @@ public class Tokenizer implements TokenizerDao {
         if(key=="" || key==null) {
             return null;
         }else {
-            if (StringUtils.isNumeric(key)) {
-                return dataStore.retrieveObject(Integer.valueOf(key), clientId);
-            } else {
-                return dataStore.retrieveObject(key, clientId);
-            }
+            return dataStore.retrieveObject(key, clientId);
         }
     }
 
@@ -114,13 +108,7 @@ public class Tokenizer implements TokenizerDao {
     }
 
     public ArrayList<AccessEntry> getAccessLogs(String key){
-        if(StringUtils.isNumeric(key)) {
-            return dataStore.retrieveObject(Integer.valueOf(key)).getAccessLogs();
-
-        }else {
-            return dataStore.retrieveObject(key).getAccessLogs();
-        }
-
+        return dataStore.retrieveObject(key).getAccessLogs();
     }
 
 

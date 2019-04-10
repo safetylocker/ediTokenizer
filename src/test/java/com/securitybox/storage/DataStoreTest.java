@@ -65,10 +65,10 @@ public class DataStoreTest {
         cacheEntryObject = dataStore.retrieveObject(token);
         assertEquals(Constants.IGNITE_DEFAULT_VALUE_DELETED,cacheEntryObject.getJsonObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString());
 
-        int tokenInt = cacheEntryObject.hashCode();
-        dataStore.storeValue(tokenInt,cacheEntryObject);
-        dataStore.removeTokenEntry(Integer.toString(tokenInt),senderId);
-        cacheEntryObject = dataStore.retrieveObject(tokenInt);
+        String tokenString = UUID.randomUUID().toString();
+        dataStore.storeValue(tokenString,cacheEntryObject);
+        dataStore.removeTokenEntry(tokenString,senderId);
+        cacheEntryObject = dataStore.retrieveObject(tokenString);
         assertEquals(Constants.IGNITE_DEFAULT_VALUE_DELETED,cacheEntryObject.getJsonObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString());
 
     }

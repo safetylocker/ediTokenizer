@@ -29,8 +29,8 @@ public class TokenizerTest {
 
         try {
             //token based on integer type
-            int token = tokenizer.tokenize(cacheEntryObject_1);
-            newCaObj_1 = tokenizer.deTokenize(Integer.toString(token));
+            String token = tokenizer.tokenize(cacheEntryObject_1,cacheValue,15);
+            newCaObj_1 = tokenizer.deTokenize(token);
             assertEquals(cacheValue, newCaObj_1.getJsonObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString());
 
             //token based on String type
@@ -39,15 +39,15 @@ public class TokenizerTest {
             assertEquals(cacheValue, newCaObj_2.getJsonObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString());
 
             //tokenizer test mixed values, insert as a cache object as integer, retireve as a string key
-            int tokenStr_2 = tokenizer.tokenize(cacheEntryObject_3);
-            newCaObj_3 = tokenizer.deTokenize(Integer.toString(tokenStr_2));
+            String tokenStr_2 = tokenizer.tokenize(cacheEntryObject_3,cacheValue,45);
+            newCaObj_3 = tokenizer.deTokenize(tokenStr_2);
             assertEquals(cacheValue, newCaObj_3.getJsonObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString());
             //tokeizer test with client access log
 
-            int tokenStr_4 = tokenizer.tokenize(cacheEntryObject_4);
-            tokenizer.deTokenize(Integer.toString(tokenStr_4), "clientId_1");
-            tokenizer.deTokenize(Integer.toString(tokenStr_4), "clientId_2");
-            CacheEntryObject newCaObj_6 = tokenizer.deTokenize(Integer.toString(tokenStr_4),"new clinet");
+            String tokenStr_4 = tokenizer.tokenize(cacheEntryObject_4,cacheValue,67);
+            tokenizer.deTokenize(tokenStr_4, "clientId_1");
+            tokenizer.deTokenize(tokenStr_4, "clientId_2");
+            CacheEntryObject newCaObj_6 = tokenizer.deTokenize(tokenStr_4,"new clinet");
 
             AccessEntry accessEntry =(AccessEntry) newCaObj_6.getAccessLogs().get(0);
             //System.out.println("Access Log " + accessEntry.toString());

@@ -151,12 +151,12 @@ public class EDIFACT extends EdiDocument {
             cacheEntryObject.setJsonObject(jsonObjTemp);
             //call tokenization service with cacheObject to be tokenized
             //if element lenght is sufficent to use the general tokenization mechanims based on hash key, allow to use it
-            if(requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_LENGTH )>= 32) {
-                if(logger.isDebugEnabled())logger.debug("Maximuum token lenght supported by cleint is  greater than 32 and request tokenization with hash algorithm logic.");
+            if(requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_LENGTH )>= Constants.EDIFACT_MIN_SUPPORTED_LENGTH) {
+                if(logger.isDebugEnabled())logger.debug("Maximuum token lenght supported by cleint is  greater than " + Constants.EDIFACT_MIN_SUPPORTED_LENGTH + " and request tokenization with hash algorithm logic.");
                 jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME, tokenizer.tokenize(cacheEntryObject,jsonObjTemp.get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString(),requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_LENGTH)));
             } else {
-                if(logger.isDebugEnabled())logger.debug("Maximuum token lenght suppurted by cleint is  less than 32, request tokenization based on object hashcode.");
-                jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME, tokenizer.tokenize(cacheEntryObject));
+                if(logger.isDebugEnabled())logger.debug("Maximuum token lenght suppurted by cleint is  less than \" + Constants.EDIFACT_MIN_SUPPORTED_LENGTH + \" , request tokenization based on object hashcode.");
+                jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME, tokenizer.tokenize(cacheEntryObject,jsonObjTemp.get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString(),0));
             }
 
         }else if(method.equalsIgnoreCase(Constants.TOKENIZER_METHOD_DETOKENIZE)) {

@@ -8,7 +8,7 @@ import java.security.MessageDigest;
 public interface TokenizerDao<E> {
 
     //tokenize a cache object
-    abstract int tokenize(CacheEntryObject cacheEntryObject);
+    //abstract int tokenize(CacheEntryObject cacheEntryObject);
     String tokenize(CacheEntryObject cacheEntryObject,String valueToTokenize,int lenght);
 
     //Method for detokenizing a given token
