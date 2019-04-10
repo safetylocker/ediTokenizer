@@ -39,6 +39,7 @@ public  class DataStore implements DataStoreDao{
             //dataStorageConfiguration.getDefaultDataRegionConfiguration().setPersistenceEnabled(true);
             dataStorageConfiguration.setWalPath(System.getProperty("user.dir") + "\\ignite\\walpath\\");
             dataStorageConfiguration.setWalArchivePath(System.getProperty("user.dir") + "\\ignite\\walarchivepath\\");
+            dataStorageConfiguration.setWalMode(WALMode.BACKGROUND);
             igniteConfiguration.setDataStorageConfiguration(dataStorageConfiguration);
             igniteConfiguration.setCacheConfiguration(cfg);
             ignite = Ignition.start(igniteConfiguration);
