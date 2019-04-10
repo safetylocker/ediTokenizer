@@ -42,7 +42,7 @@ public class Tokenizer implements TokenizerDao {
             else if(minTokenLenght >= 32){
                 md = MessageDigest.getInstance("MD5");
 
-            }else if(minTokenLenght >= 10){
+            }else if(minTokenLenght >= 16){
                 byte bytes[] = input.getBytes();
                 checksum = new Adler32();
                 checksum.update(bytes,0,bytes.length);
