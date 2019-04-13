@@ -1,5 +1,6 @@
 package com.securitybox.storage;
 
+import com.securitybox.colloboration.ClientColloboration;
 import com.securitybox.constants.Constants;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
@@ -23,6 +24,7 @@ import static org.apache.ignite.cache.CacheAtomicityMode.TRANSACTIONAL;
 public  class DataStore implements DataStoreDao{
     public static Ignite ignite;
     IgniteCache<String,CacheEntryObject> objectCacheStr;
+
 
     //initiate a ignite cache with default settings to be used for storing token and values
     public DataStore(){
@@ -96,10 +98,22 @@ public  class DataStore implements DataStoreDao{
 
     private CacheEntryObject updateEntry(String key,String clientId,String action){
         CacheEntryObject cacheEntryObject =  objectCacheStr.get(key);
-        cacheEntryObject.accessEntries.add(new AccessEntry(new Date(),clientId,action));
-        objectCacheStr.remove(key);
-        objectCacheStr.put(key,cacheEntryObject);
-        return cacheEntryObject;
+        ClientColloboration clientColloboration = new ClientColloboration(cacheEntryObject);
+        //check if client is allowed to have action on the token
+        //if yes, return the new cacheentry object with new access logs
+        if(clientColloboration.isAllowed(clientId)) {
+            cacheEntryObject.accessEntries.add(new AccessEntry(new Date(), clientId, action));
+            objectCacheStr.remove(key);
+            objectCacheStr.put(key, cacheEntryObject);
+            return cacheEntryObject;
+        } else {
+            // if not update the access logs for the cache entry and reurn null
+            // such that the client requesting the operation will be denied but recorded as an audit log.
+            cacheEntryObject.accessEntries.add(new AccessEntry(new Date(), clientId, Constants.DATA_STORE_ACTION_DENIED));
+            objectCacheStr.remove(key);
+            objectCacheStr.put(key, cacheEntryObject);
+            return null;
+        }
     }
 
     //method to get access logs from a cache jsonObject.
@@ -120,17 +134,27 @@ public  class DataStore implements DataStoreDao{
         //get the existing object from the cache.
         try {
             cacheEntryObject =  objectCacheStr.get(key);
-            cacheEntryObject.accessEntries.add(new AccessEntry(new Date(),clientId,Constants.DATA_ACTION_REMOVED_TOKEN_ENTRY_DATA));
-            //remove the existing object from the cache.
-            objectCacheStr.remove(key);
-            //create a new oject to be stored with empty value
-            JSONObject jsonObject = cacheEntryObject.getJsonObject();
-            jsonObject.remove(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME);
-            jsonObject.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,Constants.IGNITE_DEFAULT_VALUE_DELETED);
-            cacheEntryObject.setJsonObject(jsonObject);
-            //add a modofied cache object with the same key
-            objectCacheStr.put(key,cacheEntryObject);
-            return true;
+            ClientColloboration clientColloboration = new ClientColloboration(cacheEntryObject);
+            if(clientColloboration.isAllowed(clientId)) {
+                cacheEntryObject.accessEntries.add(new AccessEntry(new Date(), clientId, Constants.DATA_ACTION_REMOVED_TOKEN_ENTRY_DATA));
+                //remove the existing object from the cache.
+                objectCacheStr.remove(key);
+                //create a new oject to be stored with empty value
+                JSONObject jsonObject = cacheEntryObject.getJsonObject();
+                jsonObject.remove(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME);
+                jsonObject.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME, Constants.IGNITE_DEFAULT_VALUE_DELETED);
+                cacheEntryObject.setJsonObject(jsonObject);
+                //add a modofied cache object with the same key
+                objectCacheStr.put(key, cacheEntryObject);
+                return true;
+            } else{
+                cacheEntryObject.accessEntries.add(new AccessEntry(new Date(), clientId, Constants.DATA_STORE_ACTION_DENIED));
+                //remove the existing object from the cache.
+                objectCacheStr.remove(key);
+                //add a modofied cache object with the same key
+                objectCacheStr.put(key, cacheEntryObject);
+                return false;
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return false;

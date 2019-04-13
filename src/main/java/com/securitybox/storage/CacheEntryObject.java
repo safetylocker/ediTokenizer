@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class CacheEntryObject<receiverIds> implements Serializable {
+public class CacheEntryObject implements Serializable {
     String senderId;
-    ArrayList<receiverIds> receiverIds;
+    ArrayList<String> receiverIds;
     ArrayList<AccessEntry> accessEntries;
     JSONObject jsonObject;
 
@@ -15,7 +15,7 @@ public class CacheEntryObject<receiverIds> implements Serializable {
         accessEntries = new ArrayList();
     }
 
-    public CacheEntryObject(String senderId,ArrayList<receiverIds> receiverIds,JSONObject jsonObject){
+    public CacheEntryObject(String senderId,ArrayList<String> receiverIds,JSONObject jsonObject){
         tokenCretionTime = new Date();
         accessEntries = new ArrayList();
         this.senderId=senderId;
@@ -38,10 +38,10 @@ public class CacheEntryObject<receiverIds> implements Serializable {
     public String getSenderId(){
         return senderId;
     }
-    public ArrayList<receiverIds> getReceiverIds() {
+    public ArrayList<String> getReceiverIds() {
         return receiverIds;
     }
-    public void setReceiverIds(ArrayList<receiverIds> receiverIds) {
+    public void setReceiverIds(ArrayList<String> receiverIds) {
         this.receiverIds = receiverIds;
     }
     public ArrayList<AccessEntry> getAccessLogs(){

@@ -8,12 +8,16 @@ import org.json.JSONObject;
 import org.junit.Test;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
 public class CSVTest {
-        String csvFile="AAA:BBB:CCC:DDD\n" +
-                "KKK:2222:EEE:3333\n";
+        String csvFile="AAA:BBB:CCC:DDD\n" + "KKK:2222:EEE:3333\n";
+        String senderId="ClientA";
+        String receiverId="ClientB";
+        ArrayList<String> receiverIds=new ArrayList<String>();
+
         JSONArray jsonArray = new JSONArray();
 
     @Test
@@ -27,9 +31,11 @@ public class CSVTest {
             obj_2.put(Constants.CSV_DATA_ELEMENT_POSITION,5);
             obj_2.put(Constants.CSV_DATA_ELEMENT_LENGTH,45);
 
+            receiverIds.add(receiverId);
+
             jsonArray.put(obj_1);
             jsonArray.put(obj_2);
-            assertEquals(csvFile,csv.docuemntHandler(Constants.TOKENIZER_METHOD_DETOKENIZE,jsonArray,csv.docuemntHandler(Constants.TOKENIZER_METHOD_TOKENIZE,jsonArray,csvFile,null,null),null,null));
+            assertEquals(csvFile,csv.docuemntHandler(Constants.TOKENIZER_METHOD_DETOKENIZE,jsonArray,csv.docuemntHandler(Constants.TOKENIZER_METHOD_TOKENIZE,jsonArray,csvFile,senderId,receiverIds),senderId,receiverIds));
     }
 
 }

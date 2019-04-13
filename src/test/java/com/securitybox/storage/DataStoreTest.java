@@ -45,8 +45,8 @@ public class DataStoreTest {
     public void retrieveValue() {
 
         try {
-            assertEquals(storeValue,dataStore.retrieveObject(token,"C1").getJsonObject().getString(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME));
-            assertEquals(storeValue,dataStore.retrieveObject(token,"C2").getJsonObject().getString(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME));
+            assertEquals(storeValue,dataStore.retrieveObject(token,senderId).getJsonObject().getString(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME));
+            assertEquals(storeValue,dataStore.retrieveObject(token,senderId).getJsonObject().getString(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -62,13 +62,13 @@ public class DataStoreTest {
         token = UUID.randomUUID().toString();
         dataStore.storeValue(token,cacheEntryObject,senderId);
         dataStore.removeTokenEntry(token,senderId);
-        cacheEntryObject = dataStore.retrieveObject(token,"C1");
+        cacheEntryObject = dataStore.retrieveObject(token,senderId);
         assertEquals(Constants.IGNITE_DEFAULT_VALUE_DELETED,cacheEntryObject.getJsonObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString());
 
         String tokenString = UUID.randomUUID().toString();
         dataStore.storeValue(tokenString,cacheEntryObject,senderId);
         dataStore.removeTokenEntry(tokenString,senderId);
-        cacheEntryObject = dataStore.retrieveObject(tokenString,"C!");
+        cacheEntryObject = dataStore.retrieveObject(tokenString,senderId);
         assertEquals(Constants.IGNITE_DEFAULT_VALUE_DELETED,cacheEntryObject.getJsonObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString());
 
     }
