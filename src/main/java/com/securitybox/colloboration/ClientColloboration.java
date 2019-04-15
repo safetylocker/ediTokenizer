@@ -34,14 +34,18 @@ public class ClientColloboration {
         }
 
         //if the client ID is in sender's list, grant the access to the client.
-        if(cacheEntryObject.getReceiverIds()!= null){
-            for(String receiver:cacheEntryObject.getReceiverIds()){
-                if(receiver.equalsIgnoreCase(clientId)){
-                    System.out.println("Receiver ID " + receiver + " matched  with  " + clientId);
-                    returnVal= true;
-                    break;
+            if(returnVal==false){
+                if(cacheEntryObject.getReceiverIds().size()>0) {
+                for (int i = 0 ; i< cacheEntryObject.getReceiverIds().size() ;i++) {
+                    System.out.println("Checking receiver id " +cacheEntryObject.getReceiverIds().get(i) );
+                    if (cacheEntryObject.getReceiverIds().get(i).equalsIgnoreCase(clientId)) {
+                        System.out.println("Receiver ID " + cacheEntryObject.getReceiverIds().get(i) + " matched  with  " + clientId);
+                        returnVal = true;
+                        break;
+                    }
                 }
             }
+
         }
 
 

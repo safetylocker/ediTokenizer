@@ -17,11 +17,13 @@ public class SimpleTokenizerTest {
     String strToTokenized = "message to be toknized";
     final static Logger logger = Logger.getLogger(SimpleTokenizerTest.class);
     String senderId="ClientA";
-    String receiverId="ClientB";
+    String receiverId_1="ClientB";
+    String receiverId_2="ClientC";
     ArrayList<String> receiverIds=new ArrayList<String>();
 
     public SimpleTokenizerTest() {
-        receiverIds.add(receiverId);
+        receiverIds.add(receiverId_1);
+        receiverIds.add(receiverId_2);
     }
 
 
