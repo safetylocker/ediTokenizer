@@ -26,15 +26,20 @@ public class ClientColloboration {
 
     public boolean isAllowed(String clientId){
         boolean returnVal=false;
+        System.out.println("Check client id for access to object " + clientId);
         //if the client is sender, grant the access to the client.
-        if(cacheEntryObject.getSenderId().equalsIgnoreCase(clientId))
-            returnVal= true;
+        if(cacheEntryObject.getSenderId().equalsIgnoreCase(clientId)) {
+            System.out.println("Sender ID " + cacheEntryObject.getSenderId() + " matched  with  " + clientId);
+            returnVal = true;
+        }
 
         //if the client ID is in sender's list, grant the access to the client.
         if(cacheEntryObject.getReceiverIds()!= null){
             for(String receiver:cacheEntryObject.getReceiverIds()){
                 if(receiver.equalsIgnoreCase(clientId)){
+                    System.out.println("Receiver ID " + receiver + " matched  with  " + clientId);
                     returnVal= true;
+                    break;
                 }
             }
         }

@@ -24,6 +24,7 @@ public class DataStoreAccessRightsTest {
         senderId = "clientA";
         receiverIds = new ArrayList<String>();
         receiverIds.add("clientB");
+        receiverIds.add("clientC");
         jsonObjTemp = new JSONObject();
         try {
             jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,storeValue);
@@ -41,5 +42,7 @@ public class DataStoreAccessRightsTest {
         assertFalse(dataStore.removeTokenEntry(token,"Sender_1234"));
         //test if token can be removed by same client Id
         assertTrue(dataStore.removeTokenEntry(token,senderId));
+        System.out.println(dataStore.retrieveObject(token,"clientC").getJsonObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME));
+        System.out.println(dataStore.retrieveObject(token,senderId).getAccessLogs().toString());
     }
 }

@@ -38,7 +38,7 @@ public class SimpleTokenizer extends EdiDocument {
         return response ;
     }
 
-    public String deTokenizeSingleValue(String method,String token, String senderId, ArrayList<String> receiverIds) throws JSONException, NoSuchAlgorithmException {
+    public String deTokenizeSingleValue(String method,String token, String senderId) throws JSONException, NoSuchAlgorithmException {
         CacheEntryObject cacheEntryObject = tokenizer.deTokenize(token,senderId);
         if(cacheEntryObject==null){
             return "Token not found";
