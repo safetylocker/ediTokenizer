@@ -39,17 +39,15 @@ public class SimpleTokenizer extends EdiDocument {
     }
 
     public String deTokenizeSingleValue(String method,String token, String senderId) throws JSONException, NoSuchAlgorithmException {
-        CacheEntryObject cacheEntryObject = tokenizer.deTokenize(token,senderId);
-        if(cacheEntryObject==null){
-            return "Token not found.";
-        }else{
-            if(cacheEntryObject.getJsonObject().has(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME)){
+        CacheEntryObject cacheEntryObject = tokenizer.deTokenize(token, senderId);
+        if (cacheEntryObject.isErrorExists()==false) {
                 return cacheEntryObject.getJsonObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString();
-            }else{
-                return "Token not found.";
-            }
+        } else {
+            return cacheEntryObject.getErrorEntries().toString();
         }
+
     }
+
 
 
     @Override

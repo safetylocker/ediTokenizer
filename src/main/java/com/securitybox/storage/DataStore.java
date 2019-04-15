@@ -111,7 +111,11 @@ public  class DataStore implements DataStoreDao{
             cacheEntryObject.accessEntries.add(new AccessEntry(new Date(), clientId, Constants.DATA_STORE_ACTION_DENIED));
             objectCacheStr.remove(key);
             objectCacheStr.put(key, cacheEntryObject);
-            return new CacheEntryObject();
+
+            //Return an error cache entry object back
+            CacheEntryObject tempCacheEntryObject_1 = new CacheEntryObject();
+            tempCacheEntryObject_1.addErrorEntry(new AccessEntry(new Date(),clientId,Constants.ERROR_LOGS_RETRIEVE));
+            return tempCacheEntryObject_1;
         }
     }
 
