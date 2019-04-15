@@ -81,7 +81,7 @@ public  class DataStore implements DataStoreDao{
             return updateEntry(key,clientId,Constants.DATA_STORE_ACTION_DETOKENIZED);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return null;
+            return new CacheEntryObject();
         }
     }
 
@@ -92,7 +92,7 @@ public  class DataStore implements DataStoreDao{
             return updateEntry(key,clientId,Constants.DATA_STORE_ACTION_ACCESED_LOGS);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return null;
+            return new CacheEntryObject();
         }
     }
 
@@ -112,7 +112,7 @@ public  class DataStore implements DataStoreDao{
             cacheEntryObject.accessEntries.add(new AccessEntry(new Date(), clientId, Constants.DATA_STORE_ACTION_DENIED));
             objectCacheStr.remove(key);
             objectCacheStr.put(key, cacheEntryObject);
-            return null;
+            return new CacheEntryObject();
         }
     }
 
