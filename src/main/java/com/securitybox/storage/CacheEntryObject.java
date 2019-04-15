@@ -20,6 +20,7 @@ public class CacheEntryObject implements Serializable {
         accessEntries = new ArrayList();
         this.senderId=senderId;
         this.jsonObject =jsonObject;
+        this.receiverIds = receiverIds;
     }
 
     public Date tokenCretionTime;
