@@ -7,17 +7,12 @@ import org.apache.ignite.IgniteCache;
 import org.apache.ignite.IgniteState;
 import org.apache.ignite.Ignition;
 import org.apache.ignite.cache.CacheMode;
-import org.apache.ignite.cache.store.CacheStore;
 import org.apache.ignite.configuration.*;
 import org.apache.ignite.transactions.TransactionException;
-import org.apache.maven.shared.utils.StringUtils;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.cache.configuration.FactoryBuilder;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.UUID;
 
 import static org.apache.ignite.cache.CacheAtomicityMode.TRANSACTIONAL;
 
@@ -46,7 +41,6 @@ public  class DataStore implements DataStoreDao{
             igniteConfiguration.setCacheConfiguration(cfg);
             ignite = Ignition.start(igniteConfiguration);
             //ignite.active(true);
-
         }
         //cache = ignite.getOrCreateCache(cfg);
         //objectCache = ignite.getOrCreateCache(Constants.CACHE_ENTRY_OBJECT_NAME);
@@ -68,7 +62,6 @@ public  class DataStore implements DataStoreDao{
 
     @Override
     public boolean removeToken(String key) {
-
         return objectCacheStr.remove(key);
     }
 
@@ -81,7 +74,10 @@ public  class DataStore implements DataStoreDao{
             return updateEntry(key,clientId,Constants.DATA_STORE_ACTION_DETOKENIZED);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return new CacheEntryObject();
+            //Return an error cache entry object back
+            CacheEntryObject tempCacheEntryObject_1 = new CacheEntryObject();
+            tempCacheEntryObject_1.addErrorEntry(new AccessEntry(new Date(),clientId,Constants.ERROR_TOKEN_RETRIEVE));
+            return tempCacheEntryObject_1;
         }
     }
 
@@ -92,7 +88,10 @@ public  class DataStore implements DataStoreDao{
             return updateEntry(key,clientId,Constants.DATA_STORE_ACTION_ACCESED_LOGS);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return new CacheEntryObject();
+            //Return an error cache entry object back
+            CacheEntryObject tempCacheEntryObject_1 = new CacheEntryObject();
+            tempCacheEntryObject_1.addErrorEntry(new AccessEntry(new Date(),clientId,Constants.ERROR_LOGS_RETRIEVE));
+            return tempCacheEntryObject_1;
         }
     }
 
@@ -124,7 +123,20 @@ public  class DataStore implements DataStoreDao{
             return updateEntry(key,clientId,Constants.DATA_STORE_ACTION_ACCESED_LOGS).getAccessLogs();
         } catch (Exception e) {
             System.out.println(e.getCause());
-            return null;
+            //Return and empty array list back
+            return new ArrayList<AccessEntry>();
+        }
+    }
+
+    @Override
+    public ArrayList<AccessEntry> getErrorEntries(String key, String clientId) {
+        System.out.println("Current key to get access logs" + key);
+        try {
+            return updateEntry(key,clientId,Constants.DATA_STORE_ACTION_ACCESED_LOGS).getErrorEntries();
+        } catch (Exception e) {
+            System.out.println(e.getCause());
+            //Return and empty array list back
+            return new ArrayList<AccessEntry>();
         }
     }
 

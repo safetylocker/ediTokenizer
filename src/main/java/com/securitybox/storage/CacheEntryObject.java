@@ -8,11 +8,14 @@ public class CacheEntryObject implements Serializable {
     String senderId;
     ArrayList<String> receiverIds;
     ArrayList<AccessEntry> accessEntries;
+    private ArrayList<AccessEntry> errorEntries;
+    private boolean isErrorExists=false;
     JSONObject jsonObject;
 
     public CacheEntryObject(){
         tokenCretionTime = new Date();
         accessEntries = new ArrayList();
+        errorEntries = new ArrayList<>();
     }
 
     public CacheEntryObject(String senderId,ArrayList<String> receiverIds,JSONObject jsonObject){
@@ -47,6 +50,27 @@ public class CacheEntryObject implements Serializable {
     }
     public ArrayList<AccessEntry> getAccessLogs(){
         return accessEntries;
+    }
+
+    public ArrayList<AccessEntry> getErrorEntries() {
+        return errorEntries;
+    }
+
+    public void addErrorEntry(AccessEntry accessEntry){
+        errorEntries.add(accessEntry);
+        this.setErrorExists(true);
+    }
+
+    public void setErrorEntries(ArrayList<AccessEntry> errorEntries) {
+        this.errorEntries = errorEntries;
+    }
+
+    public boolean isErrorExists() {
+        return isErrorExists;
+    }
+
+    public void setErrorExists(boolean errorExists) {
+        isErrorExists = errorExists;
     }
 }
 

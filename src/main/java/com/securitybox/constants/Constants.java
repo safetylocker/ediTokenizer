@@ -11,6 +11,8 @@ public class Constants {
     public final static String EDIFACT_SEGMENT_QUALIFIER = "segmentQualifier";
     public static final String IGNITE_DEFAULT_VALUE_DELETED ="DELETED" ;
     public static final int EDIFACT_MIN_SUPPORTED_LENGTH = 10;
+    public static final String ERROR_TOKEN_RETRIEVE = "Error retrieving token due to access restriction/token not available.";
+    public static final String ERROR_LOGS_RETRIEVE = "Error retrieving audit logs.";
 
     public static String EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR=":";
     public static String EDIFACT_DATA_ELEMENT_SEPERATOR="+";
