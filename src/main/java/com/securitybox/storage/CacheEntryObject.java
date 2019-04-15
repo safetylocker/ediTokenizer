@@ -14,8 +14,9 @@ public class CacheEntryObject implements Serializable {
 
     public CacheEntryObject(){
         tokenCretionTime = new Date();
-        accessEntries = new ArrayList();
-        errorEntries = new ArrayList<>();
+        accessEntries = new ArrayList<AccessEntry>();
+        errorEntries = new ArrayList<AccessEntry>();
+        receiverIds = new ArrayList<String>();
     }
 
     public CacheEntryObject(String senderId,ArrayList<String> receiverIds,JSONObject jsonObject){
