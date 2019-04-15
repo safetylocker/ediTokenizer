@@ -118,7 +118,7 @@ public class EDIFACT extends EdiDocument {
                 if(j < componentArr.length()-1)
                     response = response + EDIFACT_DATA_ELEMENT_SEPERATOR;
             }
-            ///collect back the response to create the EDIFACT message back
+            ///collect back the response to create the EDIFACT message back.
             response = response + EDIFACT_SEGMENT_TERMINATOR;
         }
 
@@ -146,11 +146,11 @@ public class EDIFACT extends EdiDocument {
         if(method.equalsIgnoreCase(Constants.TOKENIZER_METHOD_TOKENIZE)) {
             if(logger.isDebugEnabled())logger.debug("Tokenization selected for element");
             CacheEntryObject cacheEntryObject = new CacheEntryObject(senderId,receiverIds,jsonObjTemp);
-            //set the object to be included in the cacheEntryObject
+            //set the object to be included in the cacheEntryObject.
 
             cacheEntryObject.setJsonObject(jsonObjTemp);
-            //call tokenization service with cacheObject to be tokenized
-            //if element lenght is sufficent to use the general tokenization mechanims based on hash key, allow to use it
+            //call tokenization service with cacheObject to be tokenized.
+            //if element lenght is sufficent to use the general tokenization mechanims based on hash key, allow to use it.
             if(requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_LENGTH )>= Constants.EDIFACT_MIN_SUPPORTED_LENGTH) {
                jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME, tokenizer.tokenize(cacheEntryObject,jsonObjTemp.get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString(),requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_LENGTH),senderId));
             } else {
@@ -158,14 +158,14 @@ public class EDIFACT extends EdiDocument {
             }
 
         }else if(method.equalsIgnoreCase(Constants.TOKENIZER_METHOD_DETOKENIZE)) {
-            //get hte key to be retrived from current message
+            //get hte key to be retrived from current message.
             if(logger.isDebugEnabled())logger.debug("De-Tokenization selected for element for element " + dataElementArray.get(k).toString());
             CacheEntryObject tmpCacheEntryObject = null;
-            //retreive the cachentry object from the cache
+            //Retrieve the cache entry object from the cache.
             tmpCacheEntryObject = tokenizer.deTokenize(dataElementArray.get(k).toString(),senderId);
 
-            //retierve the values from the object stored in the cache object.
-            if(tmpCacheEntryObject==null) {
+            //Retrieve the values from the object stored in the cache object.
+            if(tmpCacheEntryObject.isErrorExists()) {
                 if (logger.isDebugEnabled()) logger.debug("No de-tokenized element returned from the data store");
                 jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME, dataElementArray.get(k).toString());
             }else {
@@ -176,11 +176,11 @@ public class EDIFACT extends EdiDocument {
         }else{
             //DO nothing
         }
-        //put back the retrieved values from the cached object/key received from tokenization to element position back
+        //put back the retrieved values from the cached object/key received from tokenization to element position back.
         dataElementArray.put(k,jsonObjTemp.get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME));
     }
 
-    //Check if given string is a number
+    //Check if given string is a number.
     private boolean isNumeric(String strNum) {
         try {
             double d = Double.parseDouble(strNum);

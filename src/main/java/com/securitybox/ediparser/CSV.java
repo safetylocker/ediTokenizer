@@ -76,7 +76,7 @@ public class CSV extends EdiDocument {
                             //Retrieve the cache entry object from the cache
                             CacheEntryObject tmpCacheEntryObject = tokenizer.deTokenize(csvRecord.getField(j),senderId);
                             //Retrieve the values from the object stored in the cache object.
-                            if(tmpCacheEntryObject==null) {
+                            if(tmpCacheEntryObject.isErrorExists()) {
                                 jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME, csvRecord.getField(j));
                             }else {
                                 jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME, tmpCacheEntryObject.getJsonObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME));
