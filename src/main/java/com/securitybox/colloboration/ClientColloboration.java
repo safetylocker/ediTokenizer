@@ -15,7 +15,7 @@ public class ClientColloboration {
 
     public boolean isAllowed(String clientId,String operation){
         //operation is for future use, where sender is able to specify what operation is a receiver allowed to do.
-        //Which can be implemeted in cache entry object level based on receivers input
+        //Which can be implemented in cache entry object level based on receivers input
         for(String receiver:cacheEntryObject.getReceiverIds()){
             if(receiver.equalsIgnoreCase(clientId)){
                 return true;
@@ -25,18 +25,21 @@ public class ClientColloboration {
     }
 
     public boolean isAllowed(String clientId){
-
-        //if the client is sender, return grant the access
+        boolean returnVal=false;
+        //if the client is sender, grant the access to the client.
         if(cacheEntryObject.getSenderId().equalsIgnoreCase(clientId))
-            return true;
+            returnVal= true;
 
-        //if the client is in sender's list, grant the access
-        for(String receiver:cacheEntryObject.getReceiverIds()){
-            if(receiver.equalsIgnoreCase(clientId)){
-                return true;
+        //if the client ID is in sender's list, grant the access to the client.
+        if(cacheEntryObject.getReceiverIds()!= null){
+            for(String receiver:cacheEntryObject.getReceiverIds()){
+                if(receiver.equalsIgnoreCase(clientId)){
+                    returnVal= true;
+                }
             }
         }
 
-        return false;
+
+        return  returnVal;
     }
 }

@@ -139,19 +139,19 @@ public  class DataStore implements DataStoreDao{
                 cacheEntryObject.accessEntries.add(new AccessEntry(new Date(), clientId, Constants.DATA_ACTION_REMOVED_TOKEN_ENTRY_DATA));
                 //remove the existing object from the cache.
                 objectCacheStr.remove(key);
-                //create a new oject to be stored with empty value
+                //create a new object to be stored with empty value.
                 JSONObject jsonObject = cacheEntryObject.getJsonObject();
                 jsonObject.remove(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME);
                 jsonObject.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME, Constants.IGNITE_DEFAULT_VALUE_DELETED);
                 cacheEntryObject.setJsonObject(jsonObject);
-                //add a modofied cache object with the same key
+                //add a modified cache object with the same key.
                 objectCacheStr.put(key, cacheEntryObject);
                 return true;
             } else{
                 cacheEntryObject.accessEntries.add(new AccessEntry(new Date(), clientId, Constants.DATA_STORE_ACTION_DENIED));
                 //remove the existing object from the cache.
                 objectCacheStr.remove(key);
-                //add a modofied cache object with the same key
+                //add a modified cache object with the same key.
                 objectCacheStr.put(key, cacheEntryObject);
                 return false;
             }
