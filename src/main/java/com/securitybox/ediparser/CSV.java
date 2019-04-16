@@ -50,7 +50,9 @@ public class CSV extends EdiDocument {
         //get line as objects
         JSONArray csvResponse = seperateElements(message,this.recordDelimeter);
         for(int i= 0 ; i < csvResponse.length(); i++ ) {
-            CSVRecord csvRecord = new CSVRecord(fieldDelimeter,"",csvResponse.getString(i).toString());
+
+            CSVRecord csvRecord = new CSVRecord(fieldDelimeter,"",csvResponse.getString(i).toString().replace(recordDelimeter,""));
+            //Iterate thoruhg CVS file records.
             for(int j=0;j<csvRecord.getCount(); j++ ){
                 for(int ja=0 ; ja < objectsToBeTokenized.length();ja++){
                     JSONObject requestedElement = objectsToBeTokenized.getJSONObject(ja);
@@ -58,12 +60,12 @@ public class CSV extends EdiDocument {
                         //Create temproary JSON object to handle the current content.
                         JSONObject jsonObjTemp = new JSONObject();
                         jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,csvRecord.getField(j));
-                        //initialize cashe object item with the data to be written
+                        //initialize cashe object item with the data to be written.
                         if(method.equalsIgnoreCase(Constants.TOKENIZER_METHOD_TOKENIZE)) {
                             CacheEntryObject cacheEntryObject = new CacheEntryObject(senderId,receiverIds,jsonObjTemp);
-                            //set the object to be included in the cacheEntryObject
+                            //set the object to be included in the cacheEntryObject.
                             cacheEntryObject.setJsonObject(jsonObjTemp);
-                            //call tokernization service with cacheObject to be tokenized
+                            //call tokenization service with cacheObject to be tokenized.
                             if (requestedElement.has(Constants.CSV_DATA_ELEMENT_LENGTH)) {
                                 jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME, tokenizer.tokenize(cacheEntryObject, csvRecord.getField(j), requestedElement.getInt(Constants.CSV_DATA_ELEMENT_LENGTH),senderId));
                             }else{
@@ -71,7 +73,7 @@ public class CSV extends EdiDocument {
                             }
 
                         }else if(method.equalsIgnoreCase(Constants.TOKENIZER_METHOD_DETOKENIZE)) {
-                            //get hte key to be retrived from current message
+                            //get hte key to be retrived from current message.
                             System.out.println("current key to be de-tokenized " + csvRecord.getField(j));
                             //Retrieve the cache entry object from the cache
                             CacheEntryObject tmpCacheEntryObject = tokenizer.deTokenize(csvRecord.getField(j),senderId);
@@ -82,7 +84,7 @@ public class CSV extends EdiDocument {
                                 jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME, tmpCacheEntryObject.getJsonObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME));
                             }
                         }
-                        //put back the retrieved values from the cached object/key received from tokenization to element position back
+                        //put back the retrieved values from the cached object/key received from tokenization to element position back.
                         csvRecord.setFiled(j,jsonObjTemp.get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString());
                     }
 
@@ -90,9 +92,7 @@ public class CSV extends EdiDocument {
             }
 
             response = response +  csvRecord.getRecord() + recordDelimeter;
-
         }
-
 
         return response ;
     }
