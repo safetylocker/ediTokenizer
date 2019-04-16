@@ -51,7 +51,7 @@ public class CSV extends EdiDocument {
         JSONArray csvResponse = seperateElements(message,this.recordDelimeter);
         for(int i= 0 ; i < csvResponse.length(); i++ ) {
 
-            CSVRecord csvRecord = new CSVRecord(fieldDelimeter,"",csvResponse.getString(i).toString().replace(recordDelimeter,""));
+            CSVRecord csvRecord = new CSVRecord(fieldDelimeter,"",csvResponse.getString(i).replaceAll(recordDelimeter,""));
             //Iterate thoruhg CVS file records.
             for(int j=0;j<csvRecord.getCount(); j++ ){
                 for(int ja=0 ; ja < objectsToBeTokenized.length();ja++){

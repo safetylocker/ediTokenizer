@@ -36,6 +36,8 @@ public class CSVTest {
             jsonArray.put(obj_1);
             jsonArray.put(obj_2);
             assertEquals(csvFile,csv.docuemntHandler(Constants.TOKENIZER_METHOD_DETOKENIZE,jsonArray,csv.docuemntHandler(Constants.TOKENIZER_METHOD_TOKENIZE,jsonArray,csvFile,senderId,receiverIds),senderId,receiverIds));
+                System.out.println(csv.docuemntHandler(Constants.TOKENIZER_METHOD_DETOKENIZE,jsonArray,csv.docuemntHandler(Constants.TOKENIZER_METHOD_TOKENIZE,jsonArray,csvFile,senderId,receiverIds),senderId,receiverIds));
+
     }
 
 }
