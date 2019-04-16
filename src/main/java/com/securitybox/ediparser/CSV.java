@@ -17,11 +17,15 @@ public class CSV extends EdiDocument {
     String recordDelimeter,fieldDelimeter;
     public Tokenizer tokenizer = new Tokenizer();
 
-    public CSV(String recordDelimeter,String fieldDelimeter) {
+    public CSV() {
         super(Constants.DOCUMENT_TYPE_CSV);
+    }
+
+    public void setDilemiters(String recordDelimeter,String fieldDelimeter){;
         this.recordDelimeter=recordDelimeter;
         this.fieldDelimeter=fieldDelimeter;
     }
+
 
     public String getRecordDelimeter() {
         return recordDelimeter;
@@ -39,13 +43,8 @@ public class CSV extends EdiDocument {
         this.fieldDelimeter = fieldDelimeter;
     }
 
-    public CSV() {
-        super(Constants.DOCUMENT_TYPE_CSV);
-    }
-
-
     @Override
-    public String docuemntHandler(String method, JSONArray objectsToBeTokenized, String message, String senderId, ArrayList<String> receiverIds) throws JSONException, NoSuchAlgorithmException {
+    public String docuemntHandler(String method, JSONArray objectsToBeTokenized, String message, String senderId, ArrayList<String> receiverIds,String recordDelimeter,String fieldDelimeter) throws JSONException, NoSuchAlgorithmException {
         String response="";
         //get line as objects
         JSONArray csvResponse = seperateElements(message,this.recordDelimeter);
@@ -119,5 +118,9 @@ public class CSV extends EdiDocument {
         return jsonArray;
     }
 
+    @Override
+    public String docuemntHandler(String method, JSONArray objectsToBeTokenized, String message, String senderId, ArrayList<String> receiverIds) throws JSONException, NoSuchAlgorithmException {
+        return null;
+    }
 }
 

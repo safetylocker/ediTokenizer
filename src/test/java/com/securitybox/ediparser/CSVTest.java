@@ -17,12 +17,13 @@ public class CSVTest {
         String senderId="ClientA";
         String receiverId="ClientB";
         ArrayList<String> receiverIds=new ArrayList<String>();
-
+        String recordDelimer="\n",fieldDelimeter=":";
         JSONArray jsonArray = new JSONArray();
 
     @Test
     public void testFile() throws JSONException, NoSuchAlgorithmException {
-            CSV csv = new CSV("\n",":");
+            CSV csv = new CSV();
+
             JSONObject obj_1=new JSONObject();
             obj_1.put(Constants.CSV_DATA_ELEMENT_POSITION,2);
             //obj_1.put(Constants.CSV_DATA_ELEMENT_LENGTH,130);

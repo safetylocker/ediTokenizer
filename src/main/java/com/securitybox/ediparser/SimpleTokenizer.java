@@ -62,5 +62,10 @@ public class SimpleTokenizer extends EdiDocument {
     public boolean removeTokenEntry(String key,String senderId){
         return tokenizer.removeTokenEntry(key,senderId);
     }
+
+    @Override
+    public String docuemntHandler(String method, JSONArray objectsToBeTokenized, String message, String senderId, ArrayList<String> receiverIds, String recordDelimeter, String fieldDelimeter) throws JSONException, NoSuchAlgorithmException {
+        return null;
+    }
 }
 

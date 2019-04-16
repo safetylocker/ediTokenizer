@@ -212,5 +212,9 @@ public class EDIFACT extends EdiDocument {
         return jsonArray;
     }
 
+    @Override
+    public String docuemntHandler(String method, JSONArray objectsToBeTokenized, String message, String senderId, ArrayList<String> receiverIds, String recordDelimeter, String fieldDelimeter) throws JSONException, NoSuchAlgorithmException {
+        return null;
+    }
 }
 
