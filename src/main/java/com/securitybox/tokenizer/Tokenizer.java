@@ -99,6 +99,7 @@ public class Tokenizer implements TokenizerDao {
       return dataStore.removeToken(key);
     }
 
+    //retrieves access/audit logs from a cache entry object related to token.
     public ArrayList<AccessEntry> getAccessLogs(String key,String clientId){
         return dataStore.retrieveLogs(key,clientId).getAccessLogs();
     }

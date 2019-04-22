@@ -4,11 +4,6 @@ import com.securitybox.models.CacheEntryObject;
 
 public class ClientColloboration {
     CacheEntryObject cacheEntryObject;
-    final static String ALLOW_DELETE="DELETE";
-    final static String ALLOW_READ="READ";
-    final static String ALLOW_UPDATE="UPDATE";
-    final static String ALLOW_CREATE="CREATE";
-
     public ClientColloboration(CacheEntryObject cacheEntryObject) {
         this.cacheEntryObject = cacheEntryObject;
     }

@@ -77,7 +77,7 @@ public class EDIFACT extends EdiDocument {
                                 if(logger.isDebugEnabled())logger.debug("Segment Number found to be tokenized " + requestedElements.getInt(Constants.EDIFACT_SEGMENT_NUMBER));
                                 edifactTokenization(dataElementArray, k, method, senderId, receiverIds, requestedElements);
                             }
-                        }//if segment name is specififed only
+                        }//if segment name is specified
                         else if(requestedElements.has(Constants.EDIFACT_SEGMENT_NAME)){  //If segment name exists in request to be tokenized
                             if(logger.isDebugEnabled())logger.debug("segment " + componentArr.getString(0));
                             if(requestedElements.getString(Constants.EDIFACT_SEGMENT_NAME).equalsIgnoreCase(componentArr.getString(0))) {
