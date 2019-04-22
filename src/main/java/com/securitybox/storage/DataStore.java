@@ -2,6 +2,8 @@ package com.securitybox.storage;
 
 import com.securitybox.colloboration.ClientColloboration;
 import com.securitybox.constants.Constants;
+import com.securitybox.models.AccessEntry;
+import com.securitybox.models.CacheEntryObject;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
 import org.apache.ignite.IgniteState;
@@ -18,7 +20,7 @@ import static org.apache.ignite.cache.CacheAtomicityMode.TRANSACTIONAL;
 
 public  class DataStore implements DataStoreDao{
     public static Ignite ignite;
-    IgniteCache<String,CacheEntryObject> objectCacheStr;
+    IgniteCache<String, CacheEntryObject> objectCacheStr;
 
 
     //initiate a ignite cache with default settings to be used for storing token and values
@@ -99,7 +101,7 @@ public  class DataStore implements DataStoreDao{
         CacheEntryObject cacheEntryObject =  objectCacheStr.get(key);
         ClientColloboration clientColloboration = new ClientColloboration(cacheEntryObject);
         //check if client is allowed to have action on the token
-        //if yes, return the new cacheentry object with new access logs
+        //if yes, return the new cache entry object with new access logs
         if(clientColloboration.isAllowed(clientId)) {
             cacheEntryObject.accessEntries.add(new AccessEntry(new Date(), clientId, action));
             objectCacheStr.remove(key);

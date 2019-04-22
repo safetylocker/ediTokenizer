@@ -1,4 +1,4 @@
-package com.securitybox.storage;
+package com.securitybox.models;
 import com.securitybox.constants.Constants;
 import java.text.SimpleDateFormat;
 import java.util.Date;

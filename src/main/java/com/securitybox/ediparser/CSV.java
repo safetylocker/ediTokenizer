@@ -1,7 +1,8 @@
 package com.securitybox.ediparser;
 
 import com.securitybox.constants.Constants;
-import com.securitybox.storage.CacheEntryObject;
+import com.securitybox.models.CSVRecord;
+import com.securitybox.models.CacheEntryObject;
 import com.securitybox.tokenizer.Tokenizer;
 
 import org.json.JSONArray;

@@ -1,9 +1,8 @@
 package com.securitybox.ediparser;
 
+import com.securitybox.models.CSVRecord;
 import org.junit.Assert;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class CSVRecordTest {
 

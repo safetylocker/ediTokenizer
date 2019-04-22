@@ -1,5 +1,8 @@
 package com.securitybox.storage;
 
+import com.securitybox.models.AccessEntry;
+import com.securitybox.models.CacheEntryObject;
+
 import java.util.ArrayList;
 
 public interface DataStoreDao {
@@ -9,7 +12,7 @@ public interface DataStoreDao {
     abstract boolean removeToken(String key);
     abstract CacheEntryObject retrieveObject(String key,String cleintId);
     //method to get access logs from a cache jsonObject.
-    abstract ArrayList<AccessEntry> getAccessLogs(String key,String clientId);
+    abstract ArrayList<AccessEntry> getAccessLogs(String key, String clientId);
 
     ArrayList<AccessEntry> getErrorEntries(String key, String clientId);
 

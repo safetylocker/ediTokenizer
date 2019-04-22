@@ -1,6 +1,6 @@
-package com.securitybox.ediparser;
+package com.securitybox.models;
 
-class CSVRecord{
+public class CSVRecord{
     String[] fields;
     String fieldDelimeter;
 

@@ -1,6 +1,6 @@
 package com.securitybox.colloboration;
 
-import com.securitybox.storage.CacheEntryObject;
+import com.securitybox.models.CacheEntryObject;
 
 public class ClientColloboration {
     CacheEntryObject cacheEntryObject;
@@ -34,8 +34,8 @@ public class ClientColloboration {
         }
 
         //if the client ID is in sender's list, grant the access to the client.
-            if(returnVal==false){
-                if(cacheEntryObject.getReceiverIds().size()>0) {
+        if(returnVal==false){
+            if(cacheEntryObject.getReceiverIds().size()>0) {
                 for (int i = 0 ; i< cacheEntryObject.getReceiverIds().size() ;i++) {
                     System.out.println("Checking receiver id " +cacheEntryObject.getReceiverIds().get(i) );
                     if (cacheEntryObject.getReceiverIds().get(i).equalsIgnoreCase(clientId)) {

@@ -1,6 +1,7 @@
 package com.securitybox.storage;
 
 import com.securitybox.constants.Constants;
+import com.securitybox.models.CacheEntryObject;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;

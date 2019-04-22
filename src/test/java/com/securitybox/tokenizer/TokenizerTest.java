@@ -1,8 +1,8 @@
 package com.securitybox.tokenizer;
 
 import com.securitybox.constants.Constants;
-import com.securitybox.storage.AccessEntry;
-import com.securitybox.storage.CacheEntryObject;
+import com.securitybox.models.AccessEntry;
+import com.securitybox.models.CacheEntryObject;
 import org.json.JSONException;
 import org.json.JSONObject;
 

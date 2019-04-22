@@ -1,4 +1,5 @@
-package com.securitybox.storage;
+package com.securitybox.models;
+import com.securitybox.models.AccessEntry;
 import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -7,7 +8,7 @@ import java.util.Date;
 public class CacheEntryObject implements Serializable {
     String senderId;
     ArrayList<String> receiverIds;
-    ArrayList<AccessEntry> accessEntries;
+    public ArrayList<AccessEntry> accessEntries;
     private ArrayList<AccessEntry> errorEntries;
     private boolean isErrorExists=false;
     JSONObject jsonObject;

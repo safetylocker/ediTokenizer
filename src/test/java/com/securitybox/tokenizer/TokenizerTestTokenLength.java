@@ -1,11 +1,7 @@
 package com.securitybox.tokenizer;
 
-import com.securitybox.constants.Constants;
-import com.securitybox.storage.CacheEntryObject;
 import junit.framework.TestCase;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;

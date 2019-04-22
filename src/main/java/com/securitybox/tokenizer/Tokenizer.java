@@ -1,12 +1,8 @@
 package com.securitybox.tokenizer;
 
-import com.securitybox.storage.AccessEntry;
-import com.securitybox.storage.CacheEntryObject;
+import com.securitybox.models.AccessEntry;
+import com.securitybox.models.CacheEntryObject;
 import com.securitybox.storage.DataStore;
-import org.apache.maven.shared.utils.StringUtils;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
