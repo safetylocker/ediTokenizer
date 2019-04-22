@@ -13,11 +13,9 @@ public abstract class EdiDocument implements EdiDocumentDao {
     public String getDocumentType() {
         return docType;
     }
-
     public EdiDocument(String docType) {
         this.docType = docType;
     }
-
     public abstract String docuemntHandler(String method, JSONArray objectsToBeTokenized, String message, String senderId, ArrayList<String> receiverIds, String recordDelimeter, String fieldDelimeter) throws JSONException, NoSuchAlgorithmException;
 }
 

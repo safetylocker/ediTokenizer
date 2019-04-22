@@ -26,7 +26,7 @@ public class CSVTest {
 
             JSONObject obj_1=new JSONObject();
             obj_1.put(Constants.CSV_DATA_ELEMENT_POSITION,2);
-            //obj_1.put(Constants.CSV_DATA_ELEMENT_LENGTH,130);
+            obj_1.put(Constants.CSV_DATA_ELEMENT_LENGTH,130);
 
             JSONObject obj_2=new JSONObject();
             obj_2.put(Constants.CSV_DATA_ELEMENT_POSITION,5);
@@ -37,8 +37,6 @@ public class CSVTest {
             jsonArray.put(obj_1);
             jsonArray.put(obj_2);
             assertEquals(csvFile,csv.docuemntHandler(Constants.TOKENIZER_METHOD_DETOKENIZE,jsonArray,csv.docuemntHandler(Constants.TOKENIZER_METHOD_TOKENIZE,jsonArray,csvFile,senderId,receiverIds,recordDelimer,fieldDelimeter),senderId,receiverIds,recordDelimer,fieldDelimeter));
-            System.out.println(csv.docuemntHandler(Constants.TOKENIZER_METHOD_DETOKENIZE,jsonArray,csv.docuemntHandler(Constants.TOKENIZER_METHOD_TOKENIZE,jsonArray,csvFile,senderId,receiverIds,recordDelimer,fieldDelimeter),senderId,receiverIds,recordDelimer,fieldDelimeter));
-
     }
 
 }

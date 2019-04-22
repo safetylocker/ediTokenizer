@@ -22,29 +22,26 @@ public class TokenizerTest {
         final String cacheValue="My Value";
         JSONObject jsonObjTemp = new JSONObject();
         jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,cacheValue);
-        CacheEntryObject cacheEntryObject_1 = new CacheEntryObject(sender,receiver,jsonObjTemp);
-        CacheEntryObject cacheEntryObject_2 = new CacheEntryObject(sender,receiver,jsonObjTemp);
-        CacheEntryObject cacheEntryObject_3 = new CacheEntryObject(sender,receiver,jsonObjTemp);
-        CacheEntryObject cacheEntryObject_4 = new CacheEntryObject(sender,receiver,jsonObjTemp);
 
         try {
             //token based on integer type
-            String token = tokenizer.tokenize(cacheEntryObject_1,cacheValue,15,sender);
+            String token = tokenizer.tokenize(cacheValue,15,sender,receiver);
             newCaObj_1 = tokenizer.deTokenize(token,"C1");
             assertEquals(cacheValue, newCaObj_1.getJsonObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString());
 
             //token based on String type
-            String tokenStr_1 = tokenizer.tokenize(cacheEntryObject_2, cacheValue, 127,sender);
+            String tokenStr_1 = tokenizer.tokenize(cacheValue,127,sender,receiver);
+
             newCaObj_2 = tokenizer.deTokenize(tokenStr_1,"C1");
             assertEquals(cacheValue, newCaObj_2.getJsonObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString());
 
             //tokenizer test mixed values, insert as a cache object as integer, retireve as a string key
-            String tokenStr_2 = tokenizer.tokenize(cacheEntryObject_3,cacheValue,45,sender);
+            String tokenStr_2 = tokenizer.tokenize(cacheValue,45,sender,receiver);
             newCaObj_3 = tokenizer.deTokenize(tokenStr_2,"C1");
             assertEquals(cacheValue, newCaObj_3.getJsonObject().get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString());
             //tokeizer test with client access log
 
-            String tokenStr_4 = tokenizer.tokenize(cacheEntryObject_4,cacheValue,67,sender);
+            String tokenStr_4 = tokenizer.tokenize(cacheValue,67,sender,receiver);
             tokenizer.deTokenize(tokenStr_4, "clientId_1");
             tokenizer.deTokenize(tokenStr_4, "clientId_2");
             CacheEntryObject newCaObj_6 = tokenizer.deTokenize(tokenStr_4,"new clinet");

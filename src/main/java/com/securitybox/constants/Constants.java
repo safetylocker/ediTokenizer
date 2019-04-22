@@ -10,7 +10,6 @@ public class Constants {
     public final static String EDIFACT_SEGMENT_NAME = "segmentName";
     public final static String EDIFACT_SEGMENT_QUALIFIER = "segmentQualifier";
     public static final String IGNITE_DEFAULT_VALUE_DELETED ="DELETED" ;
-    public static final int EDIFACT_MIN_SUPPORTED_LENGTH = 10;
     public static final String ERROR_TOKEN_RETRIEVE = "Error retrieving token due to access restriction/token not available.";
     public static final String ERROR_LOGS_RETRIEVE = "Error retrieving audit logs.";
 
@@ -42,6 +41,7 @@ public class Constants {
     public final static String DATA_STORE_ACTION_DETOKENIZED="Client has detokenized the token.";
     public final static String DATA_ACTION_REMOVED_TOKEN_ENTRY_DATA="Client has removed the token entry details.";
     public final static String DATA_STORE_ACTION_CREATED ="Client has created the token entry.";
+    public final static String DATA_STORE_ACTION_CREATTION_FAILURE ="Error storing token value.";
     public final static String DATA_STORE_ACTION_DENIED ="Client access denied due to access restrictions for the client.";
 
 

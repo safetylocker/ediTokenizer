@@ -22,6 +22,11 @@ public class EDIFACT extends EdiDocument {
     }
 
     @Override
+    public boolean removeToken(String key){
+        return tokenizer.removeToken(key);
+    }
+
+    @Override
     public String docuemntHandler(String method, JSONArray objectsToBeTokenized, String message, String senderId, final ArrayList<String> receiverIds) throws JSONException, NoSuchAlgorithmException {
         String response = "";
         String EDIFACT_SEGMENT_TERMINATOR="";
@@ -104,8 +109,6 @@ public class EDIFACT extends EdiDocument {
                                 //if needed to handle it later
                             }
                         }
-
-
                     }
                     //collect back the response to create the EDIFACT message back
                     if(k > 0 )
@@ -145,18 +148,7 @@ public class EDIFACT extends EdiDocument {
         //initialize cache object item with the data to be written
         if(method.equalsIgnoreCase(Constants.TOKENIZER_METHOD_TOKENIZE)) {
             if(logger.isDebugEnabled())logger.debug("Tokenization selected for element");
-            CacheEntryObject cacheEntryObject = new CacheEntryObject(senderId,receiverIds,jsonObjTemp);
-            //set the object to be included in the cacheEntryObject.
-
-            cacheEntryObject.setJsonObject(jsonObjTemp);
-            //call tokenization service with cacheObject to be tokenized.
-            //if element lenght is sufficent to use the general tokenization mechanims based on hash key, allow to use it.
-            if(requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_LENGTH )>= Constants.EDIFACT_MIN_SUPPORTED_LENGTH) {
-               jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME, tokenizer.tokenize(cacheEntryObject,jsonObjTemp.get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString(),requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_LENGTH),senderId));
-            } else {
-              jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME, tokenizer.tokenize(cacheEntryObject,jsonObjTemp.get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME).toString(),0,senderId));
-            }
-
+            jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,tokenizer.tokenize(dataElementArray.get(k).toString(),requestedElements.getInt(Constants.EDIFACT_DATA_ELEMENT_LENGTH),senderId,receiverIds)) ;
         }else if(method.equalsIgnoreCase(Constants.TOKENIZER_METHOD_DETOKENIZE)) {
             //get hte key to be retrived from current message.
             if(logger.isDebugEnabled())logger.debug("De-Tokenization selected for element for element " + dataElementArray.get(k).toString());
@@ -180,16 +172,7 @@ public class EDIFACT extends EdiDocument {
         dataElementArray.put(k,jsonObjTemp.get(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME));
     }
 
-    //Check if given string is a number.
-    private boolean isNumeric(String strNum) {
-        try {
-            double d = Double.parseDouble(strNum);
-        } catch (NumberFormatException | NullPointerException nfe) {
-            return false;
-        }
-        return true;
-    }
-
+    //method to seperate elemnts in edifact segments,composite elements given the separator.
     public JSONArray seperateElements(String input, String delimeter) throws JSONException {
         ArrayList<String> arrayList = new ArrayList<String>(Arrays.asList(input.split("\\"+delimeter)));
         JSONArray jsonArray= new JSONArray();

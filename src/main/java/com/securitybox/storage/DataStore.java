@@ -11,6 +11,7 @@ import org.apache.ignite.Ignition;
 import org.apache.ignite.cache.CacheMode;
 import org.apache.ignite.configuration.*;
 import org.apache.ignite.transactions.TransactionException;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -62,12 +63,31 @@ public  class DataStore implements DataStoreDao{
         return true;
     }
 
+    //method for storing the value in ignite cache storage.
+    public boolean storeValue(String value,String key, String senderId,ArrayList<String> receiverIds) {
+        try {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,value);
+            } catch (JSONException e) {
+                return false;
+            }
+            CacheEntryObject cacheEntryObject = new CacheEntryObject(senderId,receiverIds,jsonObject);
+            cacheEntryObject.accessEntries.add(new AccessEntry(new Date(),senderId,Constants.DATA_STORE_ACTION_CREATED));
+            objectCacheStr.put(key,cacheEntryObject);
+        }catch (TransactionException e){
+            return false;
+        }
+        return true;
+    }
+
+    //method for removing the token from the ignite cache storage.
     @Override
     public boolean removeToken(String key) {
         return objectCacheStr.remove(key);
     }
 
-     //Token type string for retreiving value while updating the access entry
+    //Token type string for retrieving value while updating the access entry
     @Override
     public CacheEntryObject retrieveObject(String key, String clientId) {
         System.out.println("Current key to detokenize retrieveObject()" + key);
@@ -83,7 +103,8 @@ public  class DataStore implements DataStoreDao{
         }
     }
 
-    public CacheEntryObject retrieveLogs(String key, String clientId) {
+    //method for retrieving the access/audit logs from the cache storage.
+     public CacheEntryObject retrieveLogs(String key, String clientId) {
         System.out.println("Current key to detokenize retrieveObject()" + key);
         CacheEntryObject cacheEntryObject;
         try {
@@ -97,6 +118,7 @@ public  class DataStore implements DataStoreDao{
         }
     }
 
+    //method for updating access entry in given cache object.
     private CacheEntryObject updateEntry(String key,String clientId,String action){
         CacheEntryObject cacheEntryObject =  objectCacheStr.get(key);
         ClientColloboration clientColloboration = new ClientColloboration(cacheEntryObject);
@@ -146,6 +168,7 @@ public  class DataStore implements DataStoreDao{
         }
     }
 
+    //method for removing the token entry from cache object and leave the access/audit logs.
     @Override
     public boolean removeTokenEntry(String key, String clientId) {
         CacheEntryObject cacheEntryObject;

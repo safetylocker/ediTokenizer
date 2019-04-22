@@ -1,5 +1,6 @@
 package com.securitybox.tokenizer;
 
+import com.securitybox.constants.Constants;
 import com.securitybox.models.AccessEntry;
 import com.securitybox.models.CacheEntryObject;
 import com.securitybox.storage.DataStore;
@@ -62,8 +63,9 @@ public class Tokenizer implements TokenizerDao {
     }
 
 
-    //tokenize based on input value not object type
+    //method for tokenize a cache entry  object given the cache entry object and value
     @Override
+    @Deprecated
     public String tokenize(CacheEntryObject cacheEntryObject, String valueToTokenize, int lenght, String clientId) {
         try {
             String token=tokenize(valueToTokenize,lenght);
@@ -77,7 +79,21 @@ public class Tokenizer implements TokenizerDao {
         }
     }
 
+    //method for tokenize a cache entry  given a value
+    public String tokenize(String valueToTokenize, int length, String senderId, ArrayList<String> receiverIds) {
+        try {
+            String token=tokenize(valueToTokenize,length);
+            if(dataStore.storeValue(valueToTokenize,token,senderId,receiverIds))
+                return token;
+            else
+                return Constants.DATA_STORE_ACTION_CREATTION_FAILURE;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Constants.DATA_STORE_ACTION_CREATTION_FAILURE;
+        }
+    }
 
+    //method fro removing token entry.
     @Override
     public boolean removeTokenEntry(String key, String clientId) {
 
@@ -93,6 +109,7 @@ public class Tokenizer implements TokenizerDao {
         }
     }
 
+    //method fro removing a token entry completely from the storage.
     @Override
     public boolean removeToken(String key){
 
