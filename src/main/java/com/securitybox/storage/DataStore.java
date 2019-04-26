@@ -61,9 +61,9 @@ public  class DataStore implements DataStoreDao{
 
             //Set encryption settings for the cache.
             KeystoreEncryptionSpi encSpi = new KeystoreEncryptionSpi();
-            encSpi.setKeyStorePath(System.getProperty("user.dir") + "\\ignite_keystore.jks");
+            encSpi.setKeyStorePath(System.getProperty("user.dir")  + System.getProperty("file.separator") + "ignite_keystore.jks");
             encSpi.setKeyStorePassword(appProps.getProperty("keystore.password").toCharArray());
-            encSpi.setKeySize(256);
+            //encSpi.setKeySize(256);
             encSpi.setMasterKeyName("ignite.master.key");
             igniteConfiguration.setEncryptionSpi(encSpi);
 
