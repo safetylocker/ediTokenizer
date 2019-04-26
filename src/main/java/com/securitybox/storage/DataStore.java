@@ -10,43 +10,61 @@ import org.apache.ignite.IgniteState;
 import org.apache.ignite.Ignition;
 import org.apache.ignite.cache.CacheMode;
 import org.apache.ignite.configuration.*;
+import org.apache.ignite.spi.encryption.keystore.KeystoreEncryptionSpi;
 import org.apache.ignite.transactions.TransactionException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Properties;
 
 import static org.apache.ignite.cache.CacheAtomicityMode.TRANSACTIONAL;
 
 public  class DataStore implements DataStoreDao{
     public static Ignite ignite;
     IgniteCache<String, CacheEntryObject> objectCacheStr;
+    Properties appProps;
 
 
     //initiate a ignite cache with default settings to be used for storing token and values
     public DataStore(){
+        //Init application property file
+        initPropertyFile();
         //initialize the ignite cache and start instance
         if(Ignition.state() == IgniteState.STOPPED) {
-            CacheConfiguration cfg = new CacheConfiguration();
+            CacheConfiguration cfg = new CacheConfiguration("encrypted-cache");
             cfg.setName(Constants.IGNITE_DEFAULT_CACHE_NAME);
             cfg.setAtomicityMode(TRANSACTIONAL);
-            //cfg.setEncryptionEnabled(true);
+            cfg.setEncryptionEnabled(true);
             cfg.setCacheMode(CacheMode.LOCAL);
 
+            //get ignite initial configuration
             IgniteConfiguration igniteConfiguration = new IgniteConfiguration();
+            //Set ignite data storage locations
             DataStorageConfiguration dataStorageConfiguration = new DataStorageConfiguration();
-            //dataStorageConfiguration.getDefaultDataRegionConfiguration().setPersistenceEnabled(true);
+            dataStorageConfiguration.getDefaultDataRegionConfiguration().setPersistenceEnabled(true);
+            dataStorageConfiguration.setStoragePath(System.getProperty("user.dir") + "\\ignite\\storage\\");
             dataStorageConfiguration.setWalPath(System.getProperty("user.dir") + "\\ignite\\walpath\\");
             dataStorageConfiguration.setWalArchivePath(System.getProperty("user.dir") + "\\ignite\\walarchivepath\\");
             dataStorageConfiguration.setWalMode(WALMode.BACKGROUND);
+
+            //Set encryption settings for the cache.
+            KeystoreEncryptionSpi encSpi = new KeystoreEncryptionSpi();
+            encSpi.setKeyStorePath(System.getProperty("user.dir") + "\\ignite_keystore.jks");
+            encSpi.setKeyStorePassword(appProps.getProperty("keystore.password").toCharArray());
+            encSpi.setKeySize(256);
+            encSpi.setMasterKeyName("ignite.master.key");
+            igniteConfiguration.setEncryptionSpi(encSpi);
+
             igniteConfiguration.setDataStorageConfiguration(dataStorageConfiguration);
             igniteConfiguration.setCacheConfiguration(cfg);
             ignite = Ignition.start(igniteConfiguration);
-            //ignite.active(true);
+            ignite.active(true);
         }
-        //cache = ignite.getOrCreateCache(cfg);
-        //objectCache = ignite.getOrCreateCache(Constants.CACHE_ENTRY_OBJECT_NAME);
+
         objectCacheStr = ignite.getOrCreateCache(Constants.CACHE_ENTRY_OBJECT_NAME);
     }
 
@@ -168,7 +186,6 @@ public  class DataStore implements DataStoreDao{
         }
     }
 
-    //method for removing the token entry from cache object and leave the access/audit logs.
     @Override
     public boolean removeTokenEntry(String key, String clientId) {
         CacheEntryObject cacheEntryObject;
@@ -179,15 +196,18 @@ public  class DataStore implements DataStoreDao{
             if(clientColloboration.isAllowed(clientId)) {
                 cacheEntryObject.accessEntries.add(new AccessEntry(new Date(), clientId, Constants.DATA_ACTION_REMOVED_TOKEN_ENTRY_DATA));
                 //remove the existing object from the cache.
-                objectCacheStr.remove(key);
-                //create a new object to be stored with empty value.
-                JSONObject jsonObject = cacheEntryObject.getJsonObject();
-                jsonObject.remove(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME);
-                jsonObject.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME, Constants.IGNITE_DEFAULT_VALUE_DELETED);
-                cacheEntryObject.setJsonObject(jsonObject);
-                //add a modified cache object with the same key.
-                objectCacheStr.put(key, cacheEntryObject);
-                return true;
+                if(objectCacheStr.remove(key)){
+                    //create a new object to be stored with empty value.
+                    JSONObject jsonObject = cacheEntryObject.getJsonObject();
+                    jsonObject.remove(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME);
+                    jsonObject.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME, Constants.IGNITE_DEFAULT_VALUE_DELETED);
+                    cacheEntryObject.setJsonObject(jsonObject);
+                    //add a modified cache object with the same key.
+                    objectCacheStr.put(key, cacheEntryObject);
+                    return true;
+                }else{
+                    return  false;
+                }
             } else{
                 cacheEntryObject.accessEntries.add(new AccessEntry(new Date(), clientId, Constants.DATA_STORE_ACTION_DENIED));
                 //remove the existing object from the cache.
@@ -199,6 +219,17 @@ public  class DataStore implements DataStoreDao{
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return false;
+        }
+    }
+
+    public void initPropertyFile(){
+        String rootPath = System.getProperty("user.dir");
+        String appConfigPath = rootPath + "\\app.properties";
+        appProps = new Properties();
+        try {
+            appProps.load(new FileInputStream(appConfigPath));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
