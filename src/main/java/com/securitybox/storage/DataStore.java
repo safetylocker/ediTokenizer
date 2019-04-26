@@ -46,9 +46,17 @@ public  class DataStore implements DataStoreDao{
             //Set ignite data storage locations
             DataStorageConfiguration dataStorageConfiguration = new DataStorageConfiguration();
             dataStorageConfiguration.getDefaultDataRegionConfiguration().setPersistenceEnabled(true);
-            dataStorageConfiguration.setStoragePath(System.getProperty("user.dir") + "\\ignite\\storage\\");
-            dataStorageConfiguration.setWalPath(System.getProperty("user.dir") + "\\ignite\\walpath\\");
-            dataStorageConfiguration.setWalArchivePath(System.getProperty("user.dir") + "\\ignite\\walarchivepath\\");
+            dataStorageConfiguration.setStoragePath(System.getProperty("user.dir")
+                    + System.getProperty("file.separator") + "ignite"
+                    + System.getProperty("file.separator") + "storage"
+                    + System.getProperty("file.separator"));
+            dataStorageConfiguration.setWalPath(System.getProperty("user.dir") + System.getProperty("file.separator") + "ignite"
+                    + System.getProperty("file.separator") + "walpath"
+                    + System.getProperty("file.separator"));
+            dataStorageConfiguration.setWalArchivePath(System.getProperty("user.dir")
+                    + System.getProperty("file.separator") + "ignite"
+                    + System.getProperty("file.separator") + "walarchivepath" +
+                    System.getProperty("file.separator"));
             dataStorageConfiguration.setWalMode(WALMode.BACKGROUND);
 
             //Set encryption settings for the cache.
@@ -223,8 +231,8 @@ public  class DataStore implements DataStoreDao{
     }
 
     public void initPropertyFile(){
-        String rootPath = System.getProperty("user.dir");
-        String appConfigPath = rootPath + "\\app.properties";
+        String rootPath = System.getProperty("user.dir") + System.getProperty("file.separator");
+        String appConfigPath = rootPath + "app.properties";
         appProps = new Properties();
         try {
             appProps.load(new FileInputStream(appConfigPath));
