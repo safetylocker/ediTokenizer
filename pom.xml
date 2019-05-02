@@ -94,7 +94,6 @@
             <url>https://mymavenrepo.com/repo/COgMeZKcgMwsws1u2oAm/</url>
         </repository>
     </repositories>
-
     <distributionManagement>
         <repository>
             <id>myMavenRepo.write</id>
