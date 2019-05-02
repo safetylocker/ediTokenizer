@@ -1,14 +1,22 @@
 package com.securitybox.models;
 
+import org.apache.commons.text.StringTokenizer;
+import org.apache.log4j.Logger;
+
 public class CSVRecord{
     String[] fields;
     String fieldDelimeter;
+    StringTokenizer stringTokenizer;
+    final Logger logger = Logger.getLogger(this.getClass().getName());
 
     //Constructor to split the CSV record into fields.
     public CSVRecord(String fieldDelimeter, String escapeChar,String record) {
 
         this.fieldDelimeter = fieldDelimeter;
-        fields = record.split("\""+this.fieldDelimeter + "\"");
+        stringTokenizer = new StringTokenizer(record,fieldDelimeter);
+        stringTokenizer.setIgnoreEmptyTokens(false);
+        //fields = record.split("\\"+this.fieldDelimeter );
+        fields = stringTokenizer.getTokenArray();
     }
     //Method to get number of elements in given record.
     public String getField(int i){

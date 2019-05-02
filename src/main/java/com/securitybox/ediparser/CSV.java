@@ -4,11 +4,11 @@ import com.securitybox.constants.Constants;
 import com.securitybox.models.CSVRecord;
 import com.securitybox.models.CacheEntryObject;
 import com.securitybox.tokenizer.Tokenizer;
-
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.apache.commons.text.StringTokenizer;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -68,15 +68,18 @@ public class CSV extends EdiDocument {
         return response ;
     }
 
-    //method to seperate elements from the CSV record
+    //method to seperate records
     public JSONArray seperateElements(String input, String delimeter) throws JSONException {
-        ArrayList<String> arrayList = new ArrayList<String>(Arrays.asList(input.split("\\"+delimeter )));
+        //ArrayList<String> arrayList = new ArrayList<String>(Arrays.asList(input.split("\\"+delimeter )));
+        StringTokenizer stringTokenizer = new StringTokenizer(input,delimeter);
+        stringTokenizer.setIgnoreEmptyTokens(false);
+        ArrayList<String> arrayList = new ArrayList<String>(stringTokenizer.getTokenList());
         JSONArray jsonArray= new JSONArray();
         String response="";
         int currentPos=0;
         //break the segment
         while(arrayList.size() > currentPos){
-            jsonArray.put(currentPos,arrayList.get(currentPos));
+            jsonArray.put(currentPos,arrayList.get(currentPos).trim());
             currentPos++;
         }
         return jsonArray;

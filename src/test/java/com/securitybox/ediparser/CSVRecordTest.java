@@ -6,7 +6,7 @@ import org.junit.Test;
 
 public class CSVRecordTest {
 
-    String record = "0000001339::20100615::682249465:Box 2326 ::40315:GEBORG:031-581600:031-581600::837483438:1932098535::42651:1060530195:012-3456789:::";
+    String record = "0000001339::20100615";
     CSVRecord csvRecord = new CSVRecord(":","",record);
 
 
@@ -20,7 +20,7 @@ public class CSVRecordTest {
 
     @Test
     public void getCount() {
-        Assert.assertEquals(21,csvRecord.getCount());
+        Assert.assertEquals(4,csvRecord.getCount());
     }
 
     @Test
