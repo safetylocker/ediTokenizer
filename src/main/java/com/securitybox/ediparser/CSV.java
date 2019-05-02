@@ -28,9 +28,10 @@ public class CSV extends EdiDocument {
         //get line as objects
         JSONArray csvResponse = seperateElements(message,recordDelimeter);
         for(int i= 0 ; i < csvResponse.length(); i++ ) {
+            logger.debug("Current CSV record handled  " + csvResponse.getString(i) );
             CSVRecord csvRecord = new CSVRecord(fieldDelimeter,"",csvResponse.getString(i).replaceAll(recordDelimeter,""));
             //Iterate through CVS file records.
-            for(int j=0;j<csvRecord.getCount(); j++ ){
+            for(int j=0;j<csvRecord.getCount()-1; j++ ){
                 JSONObject requestedElement;
                 for(int k=0 ; k < objectsToBeTokenized.length();k++){
                     requestedElement = objectsToBeTokenized.getJSONObject(k);
@@ -41,6 +42,7 @@ public class CSV extends EdiDocument {
                         jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,csvRecord.getField(j));
                         //initialize cache object item with the data to be written.
                         if(method.equalsIgnoreCase(Constants.TOKENIZER_METHOD_TOKENIZE)) {
+                            logger.debug("Request tokenizing element " + csvRecord.getField(j));
                            jsonObjTemp.put(Constants.IGNITE_DEFAULT_CACHE_OBJECT_STORE_NAME,tokenizer.tokenize(csvRecord.getField(j),requestedElement.getInt(Constants.CSV_DATA_ELEMENT_LENGTH),senderId,receiverIds)) ;
                         }else if(method.equalsIgnoreCase(Constants.TOKENIZER_METHOD_DETOKENIZE)) {
                             //get the key to be retrieved from current record.
@@ -59,15 +61,16 @@ public class CSV extends EdiDocument {
                     }
                 }
             }
+            logger.debug("CSV record " + csvRecord.getRecord());
             response = response +  csvRecord.getRecord() + recordDelimeter;
         }
-        logger.debug("Response to be returned from csv tokenizer(de-tokenizer " + response);
+        logger.debug("Response to be returned from csv tokenizer/de-tokenizer " + response);
         return response ;
     }
 
-    //method to seperate elemnts from the EDIFACT segments, composite elements given the separator .
+    //method to seperate elements from the CSV record
     public JSONArray seperateElements(String input, String delimeter) throws JSONException {
-        ArrayList<String> arrayList = new ArrayList<String>(Arrays.asList(input.split("\\"+delimeter)));
+        ArrayList<String> arrayList = new ArrayList<String>(Arrays.asList(input.split("\\"+delimeter )));
         JSONArray jsonArray= new JSONArray();
         String response="";
         int currentPos=0;
@@ -76,12 +79,6 @@ public class CSV extends EdiDocument {
             jsonArray.put(currentPos,arrayList.get(currentPos));
             currentPos++;
         }
-        //rebuild the response to be returned
-        for(int i = 0;i<jsonArray.length();i++ ){
-            if(i > 0)
-                response +=  delimeter + jsonArray.get(i).toString();
-            else
-                response +=  jsonArray.get(i).toString();        }
         return jsonArray;
     }
 

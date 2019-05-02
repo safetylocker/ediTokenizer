@@ -13,11 +13,11 @@ import java.util.ArrayList;
 import static org.junit.Assert.*;
 
 public class CSVTest {
-        String csvFile="AAA:BBB:CCC:DDD\n" + "KKK:2222:EEE:3333\n";
+        String csvFile="AAA|BBB|CCC|DDD\n" + "KKK|2222|EEE|3333\n";
         String senderId="ClientA";
         String receiverId="ClientB";
         ArrayList<String> receiverIds=new ArrayList<String>();
-        String recordDelimer="\n",fieldDelimeter=":";
+        String recordDelimer="\n",fieldDelimeter="|";
         JSONArray jsonArray = new JSONArray();
 
     @Test
@@ -30,8 +30,7 @@ public class CSVTest {
 
             JSONObject obj_2=new JSONObject();
             obj_2.put(Constants.CSV_DATA_ELEMENT_POSITION,4);
-            obj_2.put(Constants.CSV_DATA_ELEMENT_LENGTH,135);
-
+            obj_2.put(Constants.CSV_DATA_ELEMENT_LENGTH,234);
 
             JSONObject obj_3=new JSONObject();
             obj_3.put(Constants.CSV_DATA_ELEMENT_POSITION,8);
