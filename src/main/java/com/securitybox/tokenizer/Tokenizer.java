@@ -10,6 +10,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
 import java.util.zip.Adler32;
 import java.util.zip.Checksum;
@@ -85,7 +86,7 @@ public class Tokenizer implements TokenizerDao {
     public String tokenize(String valueToTokenize, int length, String senderId, ArrayList<String> receiverIds) {
         try {
             String token=tokenize(valueToTokenize,length);
-            logger.debug("Current token created/value/requested length" + token+"/"+valueToTokenize+"/"+length);
+            logger.debug("Current token created/value/requested length-" + token+"/"+valueToTokenize+"/"+length);
             if(dataStore.storeValue(valueToTokenize,token,senderId,receiverIds))
                 return token;
             else
@@ -106,7 +107,9 @@ public class Tokenizer implements TokenizerDao {
     public CacheEntryObject deTokenize(String key, String clientId) {
         logger.debug("Current key to detokenize detokenize " + key);
         if(key=="" || key==null) {
-            return null;
+            CacheEntryObject tempCacheEntryObject_1 = new CacheEntryObject();
+            tempCacheEntryObject_1.addErrorEntry(new AccessEntry(new Date(),clientId,Constants.ERROR_TOKEN_RETRIEVE));
+            return tempCacheEntryObject_1;
         }else {
             return dataStore.retrieveObject(key, clientId);
         }
