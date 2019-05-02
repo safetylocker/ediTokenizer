@@ -11,7 +11,7 @@ public class CSVRecord{
     }
     //Method to get number of elements in given record.
     public String getField(int i){
-        return i<=fields.length ?fields[i]:null;
+        return i<fields.length ?fields[i]:null;
     }
 
     //method to set field in CSV record.

@@ -1,8 +1,10 @@
 package com.securitybox.models;
+import com.securitybox.constants.Constants;
 import com.securitybox.models.AccessEntry;
 import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class CacheEntryObject implements Serializable {
@@ -19,18 +21,63 @@ public class CacheEntryObject implements Serializable {
     //json object to store the real data being tokenized.
     JSONObject jsonObject;
     //recrod the time of the token creation time.
-    public Date tokenCretionTime;
+    private Date tokenCretionOn,tokenValidTill;
+    Calendar calendar;
 
     //constructor for the cache entry object
     public CacheEntryObject(){
-        tokenCretionTime = new Date();
+        tokenCretionOn = new Date();
         accessEntries = new ArrayList<AccessEntry>();
         errorEntries = new ArrayList<AccessEntry>();
         receiverIds = new ArrayList<String>();
+        calendar = new Calendar() {
+            @Override
+            protected void computeTime() {
+
+            }
+
+            @Override
+            protected void computeFields() {
+
+            }
+
+            @Override
+            public void add(int field, int amount) {
+
+            }
+
+            @Override
+            public void roll(int field, boolean up) {
+
+            }
+
+            @Override
+            public int getMinimum(int field) {
+                return 0;
+            }
+
+            @Override
+            public int getMaximum(int field) {
+                return 0;
+            }
+
+            @Override
+            public int getGreatestMinimum(int field) {
+                return 0;
+            }
+
+            @Override
+            public int getLeastMaximum(int field) {
+                return 0;
+            }
+        };
+        calendar.setTime(tokenCretionOn);
+        calendar.add(Calendar.DATE, Constants.DATA_STORE_CACHE_OBJECT_DEFAULT_VALID_DAYS);
+        tokenValidTill = calendar.getTime();
     }
     //constructor for the cache entry object
     public CacheEntryObject(String senderId,ArrayList<String> receiverIds,JSONObject jsonObject){
-        tokenCretionTime = new Date();
+        tokenCretionOn = new Date();
         accessEntries = new ArrayList();
         this.senderId=senderId;
         this.jsonObject =jsonObject;

@@ -4,6 +4,7 @@ import com.securitybox.constants.Constants;
 import com.securitybox.models.AccessEntry;
 import com.securitybox.models.CacheEntryObject;
 import com.securitybox.storage.DataStore;
+import org.apache.log4j.Logger;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -17,6 +18,7 @@ public class Tokenizer implements TokenizerDao {
   public static MessageDigest md;
   public Checksum checksum ;
   public static DataStore dataStore;
+  final Logger logger = Logger.getLogger(this.getClass().getName());
 
   public Tokenizer() {
       dataStore = new DataStore();
@@ -83,6 +85,7 @@ public class Tokenizer implements TokenizerDao {
     public String tokenize(String valueToTokenize, int length, String senderId, ArrayList<String> receiverIds) {
         try {
             String token=tokenize(valueToTokenize,length);
+            logger.debug("Current token created/value/requested length" + token+"/"+valueToTokenize+"/"+length);
             if(dataStore.storeValue(valueToTokenize,token,senderId,receiverIds))
                 return token;
             else
@@ -101,7 +104,7 @@ public class Tokenizer implements TokenizerDao {
     }
 
     public CacheEntryObject deTokenize(String key, String clientId) {
-        System.out.println("Current key to detokenize detokenize()" + key);
+        logger.debug("Current key to detokenize detokenize " + key);
         if(key=="" || key==null) {
             return null;
         }else {

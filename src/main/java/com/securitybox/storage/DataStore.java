@@ -12,6 +12,8 @@ import org.apache.ignite.cache.CacheMode;
 import org.apache.ignite.configuration.*;
 import org.apache.ignite.spi.encryption.keystore.KeystoreEncryptionSpi;
 import org.apache.ignite.transactions.TransactionException;
+import org.apache.log4j.Logger;
+import org.apache.lucene.util.SloppyMath;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,6 +29,7 @@ public  class DataStore implements DataStoreDao{
     public static Ignite ignite;
     IgniteCache<String, CacheEntryObject> objectCacheStr;
     Properties appProps;
+    final Logger logger = Logger.getLogger(this.getClass().getName());
 
 
     //initiate a ignite cache with default settings to be used for storing token and values
@@ -116,12 +119,12 @@ public  class DataStore implements DataStoreDao{
     //Token type string for retrieving value while updating the access entry
     @Override
     public CacheEntryObject retrieveObject(String key, String clientId) {
-        System.out.println("Current key to detokenize retrieveObject()" + key);
+        logger.debug("Current key to de-tokenize and used to retrieve cache object " + key);
         CacheEntryObject cacheEntryObject;
         try {
             return updateEntry(key,clientId,Constants.DATA_STORE_ACTION_DETOKENIZED);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage());
             //Return an error cache entry object back
             CacheEntryObject tempCacheEntryObject_1 = new CacheEntryObject();
             tempCacheEntryObject_1.addErrorEntry(new AccessEntry(new Date(),clientId,Constants.ERROR_TOKEN_RETRIEVE));
@@ -131,12 +134,12 @@ public  class DataStore implements DataStoreDao{
 
     //method for retrieving the access/audit logs from the cache storage.
      public CacheEntryObject retrieveLogs(String key, String clientId) {
-        System.out.println("Current key to detokenize retrieveObject()" + key);
+        logger.debug("Current key to de-tokenize retrieve access logs " + key);
         CacheEntryObject cacheEntryObject;
         try {
             return updateEntry(key,clientId,Constants.DATA_STORE_ACTION_ACCESED_LOGS);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage());
             //Return an error cache entry object back
             CacheEntryObject tempCacheEntryObject_1 = new CacheEntryObject();
             tempCacheEntryObject_1.addErrorEntry(new AccessEntry(new Date(),clientId,Constants.ERROR_LOGS_RETRIEVE));
@@ -146,6 +149,7 @@ public  class DataStore implements DataStoreDao{
 
     //method for updating access entry in given cache object.
     private CacheEntryObject updateEntry(String key,String clientId,String action){
+        logger.debug("Current key used to retrive cache entry object " + key);
         CacheEntryObject cacheEntryObject =  objectCacheStr.get(key);
         ClientColloboration clientColloboration = new ClientColloboration(cacheEntryObject);
         //check if client is allowed to have action on the token
@@ -172,11 +176,11 @@ public  class DataStore implements DataStoreDao{
     //method to get access logs from a cache jsonObject.
     @Override
     public ArrayList<AccessEntry> getAccessLogs(String key,String clientId) {
-        System.out.println("Current key to get access logs" + key);
+        logger.debug("Current key to get access logs " + key);
         try {
             return updateEntry(key,clientId,Constants.DATA_STORE_ACTION_ACCESED_LOGS).getAccessLogs();
         } catch (Exception e) {
-            System.out.println(e.getCause());
+            logger.error(e.getCause());
             //Return and empty array list back
             return new ArrayList<AccessEntry>();
         }
@@ -184,11 +188,11 @@ public  class DataStore implements DataStoreDao{
 
     @Override
     public ArrayList<AccessEntry> getErrorEntries(String key, String clientId) {
-        System.out.println("Current key to get access logs" + key);
+        logger.debug("Current key to get access logs " + key);
         try {
             return updateEntry(key,clientId,Constants.DATA_STORE_ACTION_ACCESED_LOGS).getErrorEntries();
         } catch (Exception e) {
-            System.out.println(e.getCause());
+            logger.error(e.getCause());
             //Return and empty array list back
             return new ArrayList<AccessEntry>();
         }
@@ -225,7 +229,7 @@ public  class DataStore implements DataStoreDao{
                 return false;
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+           logger.error(e.getMessage());
             return false;
         }
     }

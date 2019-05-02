@@ -19,7 +19,7 @@ public class ClientColloboration {
         return false;
     }
 
-    public boolean isAllowed(String clientId){
+    public boolean  isAllowed(String clientId){
         boolean returnVal=false;
         System.out.println("Check client id for access to object " + clientId);
         //if the client is sender, grant the access to the client.

@@ -44,5 +44,7 @@ public class Constants {
     public final static String DATA_STORE_ACTION_CREATTION_FAILURE ="Error storing token value.";
     public final static String DATA_STORE_ACTION_DENIED ="Client access denied due to access restrictions for the client.";
 
+    public final static int DATA_STORE_CACHE_OBJECT_DEFAULT_VALID_DAYS=365;
+
 
 }
