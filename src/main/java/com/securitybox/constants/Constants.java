@@ -13,10 +13,10 @@ public class Constants {
     public static final String ERROR_TOKEN_RETRIEVE = "Error retrieving token due to access restriction/token not available.";
     public static final String ERROR_LOGS_RETRIEVE = "Error retrieving audit logs.";
 
-    public static String EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR=":";
-    public static String EDIFACT_DATA_ELEMENT_SEPERATOR="+";
-    public static String EDIFACT_SEGMENT_TERMINATOR="'";
-    public static String EDIFACT_DECIMAL_SEPERATOR=".";
+    public final static String EDIFACT_COMPONENT_DATA_ELEMENT_SEPERATOR=":";
+    public final static String EDIFACT_DATA_ELEMENT_SEPERATOR="+";
+    public final static String EDIFACT_SEGMENT_TERMINATOR="'";
+    public final static String EDIFACT_DECIMAL_SEPERATOR=".";
 
     public final static String DOCUMENT_TYPE_CSV="CSV";
     public final static String CSV_DATA_ELEMENT_POSITION = "dataElementPosition";
@@ -47,4 +47,5 @@ public class Constants {
     public final static int DATA_STORE_CACHE_OBJECT_DEFAULT_VALID_DAYS=365;
 
 
+    public static final String DOCUMENT_TYPE_JSON = "JSON";
 }

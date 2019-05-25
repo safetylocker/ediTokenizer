@@ -82,9 +82,9 @@ public class EdiDocumentParserTester {
 //         tmp1= edifact.docuemntHandler(Constants.TOKENIZER_METHOD_DETOKENIZE,objectToTokenized,tmp,sender,receiver);
 //         System.out.println("detokenzed reuqest " + tmp1);
 
-        tmp = edifact.docuemntHandler(Constants.TOKENIZER_METHOD_TOKENIZE,objectToTokenized,completeEDIFACT,sender,receiver);
+        tmp = edifact.docuemntHandler(Constants.TOKENIZER_METHOD_TOKENIZE,objectToTokenized,completeEDIFACT,sender,receiver,"","");
         System.out.println("tokenized request " + tmp);
-        tmp1= edifact.docuemntHandler(Constants.TOKENIZER_METHOD_DETOKENIZE,objectToTokenized,tmp,sender,receiver);
+        tmp1= edifact.docuemntHandler(Constants.TOKENIZER_METHOD_DETOKENIZE,objectToTokenized,tmp,sender,receiver,"","");
         System.out.println("detokenzed reuqest " + tmp1);
     }
 }

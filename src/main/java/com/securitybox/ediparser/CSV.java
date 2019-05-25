@@ -90,9 +90,5 @@ public class CSV extends EdiDocument {
         return tokenizer.removeToken(key);
     }
 
-    @Override
-    public String docuemntHandler(String method, JSONArray objectsToBeTokenized, String message, String senderId, ArrayList<String> receiverIds) throws JSONException, NoSuchAlgorithmException {
-        return null;
-    }
 }
 

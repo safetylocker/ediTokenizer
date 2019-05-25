@@ -27,7 +27,7 @@ public class EDIFACT extends EdiDocument {
     }
 
     @Override
-    public String docuemntHandler(String method, JSONArray objectsToBeTokenized, String message, String senderId, final ArrayList<String> receiverIds) throws JSONException, NoSuchAlgorithmException {
+    public String docuemntHandler(String method, JSONArray objectsToBeTokenized, String message, String senderId, ArrayList<String> receiverIds,String recordDelimeter,String fieldDelimeter) throws JSONException, NoSuchAlgorithmException {
         String response = "";
         String EDIFACT_SEGMENT_TERMINATOR="";
         String EDIFACT_DATA_ELEMENT_SEPERATOR="";
@@ -194,9 +194,5 @@ public class EDIFACT extends EdiDocument {
         return jsonArray;
     }
 
-    @Override
-    public String docuemntHandler(String method, JSONArray objectsToBeTokenized, String message, String senderId, ArrayList<String> receiverIds, String recordDelimeter, String fieldDelimeter) throws JSONException, NoSuchAlgorithmException {
-        return null;
-    }
 }
 

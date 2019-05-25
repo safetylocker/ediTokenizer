@@ -105,7 +105,7 @@ public class Tokenizer implements TokenizerDao {
     }
 
     public CacheEntryObject deTokenize(String key, String clientId) {
-        logger.debug("Current key to detokenize detokenize " + key);
+        logger.debug("Current key to detokenize a token " + key);
         if(key=="" || key==null) {
             CacheEntryObject tempCacheEntryObject_1 = new CacheEntryObject();
             tempCacheEntryObject_1.addErrorEntry(new AccessEntry(new Date(),clientId,Constants.ERROR_TOKEN_RETRIEVE));

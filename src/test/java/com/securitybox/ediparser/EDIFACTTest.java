@@ -110,8 +110,9 @@ public class EDIFACTTest {
 
         //Test with complete EDIFACT file as an input
         if(logger.isDebugEnabled())logger.debug("Sedner ID set to " + receiver);
-        completeEdiTokenized_0 = edifact.docuemntHandler(Constants.TOKENIZER_METHOD_TOKENIZE,objectToTokenized,completeEDIFACT,sender,receiver);
-        completeEdiDeTokenized_0= edifact.docuemntHandler(Constants.TOKENIZER_METHOD_DETOKENIZE,objectToTokenized,completeEdiTokenized_0,sender,receiver);
+
+        completeEdiTokenized_0 = edifact.docuemntHandler(Constants.TOKENIZER_METHOD_TOKENIZE,objectToTokenized,completeEDIFACT,sender,receiver,"","");
+        completeEdiDeTokenized_0= edifact.docuemntHandler(Constants.TOKENIZER_METHOD_DETOKENIZE,objectToTokenized,completeEdiTokenized_0,sender,receiver,"","");
         assertEquals(completeEDIFACT,completeEdiDeTokenized_0);
 
         //Test with partial EDIFACT file
